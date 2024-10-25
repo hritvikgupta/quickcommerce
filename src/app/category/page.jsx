@@ -1,4 +1,6 @@
     "use client"; // Mark this component as a Client Component
+    export const dynamic = 'force-dynamic';
+
     import { Card, CardContent } from "../components/ui/card"; // Import Card and CardContent
     import Image from "next/image";
     import { useSearchParams } from "next/navigation"; // For dynamic routing
