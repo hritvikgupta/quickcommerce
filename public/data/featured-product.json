@@ -1,0 +1,212 @@
+{
+  "bata": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1,  "name": "Leather Shoes", "size": "M", "price": "49.99", "rating": 4 },
+          { "id": 2, "name": "Canvas Sneakers", "size": "L", "price": "29.99", "rating": 5 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Leather Shoes", "size": "M", "price": "49.99", "rating": 4 },
+          { "id": 2, "name": "Canvas Sneakers", "size": "L", "price": "29.99", "rating": 5 },
+          { "id": 3, "name": "Running Shoes", "size": "M", "price": "59.99", "rating": 4 }
+        ]
+      }
+    ]
+  },
+  "biba": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Anarkali Suit", "size": "M", "price": "59.99", "rating": 5 },
+          { "id": 2, "name": "Printed Kurta", "size": "L", "price": "39.99", "rating": 4 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Anarkali Suit", "size": "M", "price": "59.99", "rating": 5 },
+          { "id": 2, "name": "Printed Kurta", "size": "L", "price": "39.99", "rating": 4 },
+          { "id": 3, "name": "Lehenga Choli", "size": "S", "price": "79.99", "rating": 5 }
+        ]
+      }
+    ]
+  },
+  "clarks": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Leather Boots", "size": "M", "price": "99.99", "rating": 5 },
+          { "id": 2, "name": "Walking Shoes", "size": "L", "price": "59.99", "rating": 4 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Leather Boots", "size": "M", "price": "99.99", "rating": 5 },
+          { "id": 2, "name": "Walking Shoes", "size": "L", "price": "59.99", "rating": 4 },
+          { "id": 3, "name": "Casual Sneakers", "size": "M", "price": "79.99", "rating": 4 }
+        ]
+      }
+    ]
+  },
+  "croma": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "4K LED TV", "size": "55 inch", "price": "599.99", "rating": 5 },
+          { "id": 2, "name": "Refrigerator", "size": "300L", "price": "399.99", "rating": 4 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "4K LED TV", "size": "55 inch", "price": "599.99", "rating": 5 },
+          { "id": 2, "name": "Refrigerator", "size": "300L", "price": "399.99", "rating": 4 },
+          { "id": 3, "name": "Smartphone", "size": "128GB", "price": "299.99", "rating": 4 }
+        ]
+      }
+    ]
+  },
+  "dmart": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Rice 5kg Bag", "size": "5kg", "price": "12.99", "rating": 5 },
+          { "id": 2, "name": "Cooking Oil 1L", "size": "1L", "price": "6.49", "rating": 4 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Rice 5kg Bag", "size": "5kg", "price": "12.99", "rating": 5 },
+          { "id": 2, "name": "Cooking Oil 1L", "size": "1L", "price": "6.49", "rating": 4 },
+          { "id": 3, "name": "Wheat Flour 5kg", "size": "5kg", "price": "9.99", "rating": 5 }
+        ]
+      }
+    ]
+  },
+  "fabindia": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Handloom Saree", "size": "One size", "price": "79.99", "rating": 4 },
+          { "id": 2, "name": "Cotton Kurta", "size": "L", "price": "49.99", "rating": 5 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Handloom Saree", "size": "One size", "price": "79.99", "rating": 4 },
+          { "id": 2, "name": "Cotton Kurta", "size": "L", "price": "49.99", "rating": 5 },
+          { "id": 3, "name": "Printed Dupatta", "size": "One size", "price": "19.99", "rating": 4 }
+        ]
+      }
+    ]
+  },
+  "godrej": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Office Chair", "size": "Adjustable", "price": "149.99", "rating": 5 },
+          { "id": 2, "name": "Wooden Cabinet", "size": "Medium", "price": "99.99", "rating": 4 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          {"id": 1,  "name": "Office Chair", "size": "Adjustable", "price": "149.99", "rating": 5 },
+          { "id": 2, "name": "Wooden Cabinet", "size": "Medium", "price": "99.99", "rating": 4 },
+          { "id": 3, "name": "Study Table", "size": "Large", "price": "199.99", "rating": 5 }
+        ]
+      }
+    ]
+  },
+  "ikea": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Office Desk", "size": "Large", "price": "129.99", "rating": 4 },
+          { "id": 2, "name": "Bookshelf", "size": "Medium", "price": "89.99", "rating": 5 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Office Desk", "size": "Large", "price": "129.99", "rating": 4 },
+          { "id": 2, "name": "Bookshelf", "size": "Medium", "price": "89.99", "rating": 5 },
+          { "id": 3, "name": "Dining Set", "size": "4-seater", "price": "249.99", "rating": 5 }
+        ]
+      }
+    ]
+  },
+  "reliance_fresh": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Fresh Apples", "size": "1kg", "price": "2.99", "rating": 4 },
+          { "id": 2, "name": "Wheat Flour 5kg", "size": "5kg", "price": "9.99", "rating": 5 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Fresh Apples", "size": "1kg", "price": "2.99", "rating": 4 },
+          { "id": 2, "name": "Wheat Flour 5kg", "size": "5kg", "price": "9.99", "rating": 5 },
+          { "id": 3, "name": "Cooking Oil 1L", "size": "1L", "price": "6.49", "rating": 4 }
+        ]
+      }
+    ]
+  },
+  "reliance_trends": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Printed Shirt", "size": "M", "price": "29.99", "rating": 4 },
+          { "id": 2, "name": "Cargo Pants", "size": "L", "price": "49.99", "rating": 5 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Printed Shirt", "size": "M", "price": "29.99", "rating": 4 },
+          { "id": 2, "name": "Cargo Pants", "size": "L", "price": "49.99", "rating": 5 },
+          { "id": 3, "name": "Jeans", "size": "M", "price": "39.99", "rating": 5 }
+        ]
+      }
+    ]
+  }
+}

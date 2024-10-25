@@ -1,0 +1,35 @@
+[
+    {
+      "storeName": "Biba",
+      "storeImage": "/images/biba-logo.png",
+      "deliveryTime": "Delivery by 3:00pm",
+      "items": [
+        {
+          "id": 1,
+          "name": "Product A",
+          "image": "/images/product-a.png",
+          "quantity": 2
+        },
+        {
+          "id": 2,
+          "name": "Product B",
+          "image": "/images/product-b.png",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "storeName": "Another Store",
+      "storeImage": "/images/another-store-logo.png",
+      "deliveryTime": "Delivery by 5:00pm",
+      "items": [
+        {
+          "id": 3,
+          "name": "Product C",
+          "image": "/images/product-c.png",
+          "quantity": 1
+        }
+      ]
+    }
+  ]
+  

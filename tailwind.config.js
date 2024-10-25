@@ -10,6 +10,8 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'dark-text': '#1F2937', // You can set a global dark text color
+
       },
     },
   },

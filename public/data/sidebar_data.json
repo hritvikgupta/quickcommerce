@@ -1,0 +1,30 @@
+{
+    "steps": [
+      {
+        "id": 1,
+        "label": "Order Method",
+        "completed": true
+      },
+      {
+        "id": 2,
+        "label": "Store Hours",
+        "completed": true
+      },
+      {
+        "id": 3,
+        "label": "Menu",
+        "completed": false
+      },
+      {
+        "id": 4,
+        "label": "Pricing Plan",
+        "completed": false
+      },
+      {
+        "id": 5,
+        "label": "Bank Account",
+        "completed": false
+      }
+    ]
+  }
+  

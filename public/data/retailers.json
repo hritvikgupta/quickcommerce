@@ -1,0 +1,171 @@
+{
+    "bata": {
+      "name": "Bata",
+      "categories": ["Footwear", "Offers"],
+      "logo": "/images/bata.png",
+      "description": "Affordable and comfortable footwear",
+      "banner": {
+        "text": "Flat 20% off on selected styles",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Leather Shoes", "size": "M", "price": "49.99", "rating": 4 },
+        { "id": 2, "name": "Canvas Sneakers", "size": "L", "price": "29.99", "rating": 5 }
+      ]
+    },
+    "biba": {
+      "name": "Biba",
+      "categories": ["Fashion and Lifestyle", "Offers"],
+      "logo": "/images/biba.png",
+      "description": "Traditional Indian Wear • Upto 50% off",
+      "banner": {
+        "text": "Flat 10% off on your first purchase",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Anarkali Suit", "size": "M", "price": "59.99", "rating": 5 },
+        { "id": 2, "name": "Printed Kurta", "size": "L", "price": "39.99", "rating": 4 }
+      ]
+    },
+    "clarks": {
+      "name": "Clarks",
+      "categories": ["Footwear", "Offers"],
+      "logo": "/images/clarks.png",
+      "description": "Stylish and comfortable footwear",
+      "banner": {
+        "text": "Save 25% on all casual shoes",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Leather Boots", "size": "M", "price": "99.99", "rating": 5 },
+        { "id": 2, "name": "Walking Shoes", "size": "L", "price": "59.99", "rating": 4 }
+      ]
+    },
+    "croma": {
+      "name": "Croma",
+      "categories": ["Electronics and Appliances", "Offers"],
+      "logo": "/images/croma.png",
+      "description": "Best electronics at affordable prices",
+      "banner": {
+        "text": "Up to 20% off on top brands",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "4K LED TV", "size": "55 inch", "price": "599.99", "rating": 5 },
+        { "id": 2, "name": "Refrigerator", "size": "300L", "price": "399.99", "rating": 4 }
+      ]
+    },
+    "dmart": {
+      "name": "D-Mart",
+      "categories": ["Grocery and Supermarkets", "Offers", "Alcohol"],
+      "logo": "/images/dmart.jpeg",
+      "description": "Affordable prices • In-store pickup available",
+      "banner": {
+        "text": "Save big on everyday essentials",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Rice 5kg Bag", "size": "5kg", "price": "12.99", "rating": 5 },
+        { "id": 2, "name": "Cooking Oil 1L", "size": "1L", "price": "6.49", "rating": 4 }
+      ]
+    },
+    "fabindia": {
+      "name": "FabIndia",
+      "categories": ["Fashion and Lifestyle", "Offers"],
+      "logo": "/images/fabindia.png",
+      "description": "Ethnic and Handcrafted products • Upto 40% off",
+      "banner": {
+        "text": "Special discount on handloom clothing",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Handloom Saree", "size": "One size", "price": "79.99", "rating": 4 },
+        { "id": 2, "name": "Cotton Kurta", "size": "L", "price": "49.99", "rating": 5 }
+      ]
+    },
+    "godrej": {
+      "name": "Godrej Interio",
+      "categories": ["Home Furnishing and Decor", "Offers"],
+      "logo": "/images/godrej.png",
+      "description": "Quality furniture for home and office",
+      "banner": {
+        "text": "Special discount on office furniture",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Office Chair", "size": "Adjustable", "price": "149.99", "rating": 5 },
+        { "id": 2, "name": "Wooden Cabinet", "size": "Medium", "price": "99.99", "rating": 4 }
+      ]
+    },
+    "ikea": {
+      "name": "IKEA",
+      "categories": ["Home Furnishing and Decor", "Offers"],
+      "logo": "/images/ikea.png",
+      "description": "Affordable and functional home decor",
+      "banner": {
+        "text": "Flat 15% off on new collection",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Office Desk", "size": "Large", "price": "129.99", "rating": 4 },
+        { "id": 2, "name": "Bookshelf", "size": "Medium", "price": "89.99", "rating": 5 }
+      ]
+    },
+    "lifestyle": {
+      "name": "Lifestyle",
+      "categories": ["Fashion and Lifestyle", "Offers"],
+      "logo": "/images/lifestyle.png",
+      "description": "Latest fashion and trends",
+      "banner": {
+        "text": "Up to 30% off on selected items",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Casual Shirt", "size": "M", "price": "29.99", "rating": 4 },
+        { "id": 2, "name": "Denim Jeans", "size": "L", "price": "39.99", "rating": 5 }
+      ]
+    },
+    "liberty": {
+      "name": "Liberty Shoes",
+      "categories": ["Footwear", "Offers"],
+      "logo": "/images/liberty.png",
+      "description": "Comfortable and durable footwear",
+      "banner": {
+        "text": "Flat 15% off on selected styles",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Leather Sandals", "size": "L", "price": "39.99", "rating": 4 },
+        { "id": 2, "name": "Running Shoes", "size": "M", "price": "59.99", "rating": 5 }
+      ]
+    },
+    "reliance_fresh": {
+      "name": "Reliance Fresh",
+      "categories": ["Grocery and Supermarkets", "Alcohol", "Offers"],
+      "logo": "/images/reliacefresh.png",
+      "description": "Fresh groceries and household items",
+      "banner": {
+        "text": "Get 5% cashback on orders above $50",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Fresh Apples", "size": "1kg", "price": "2.99", "rating": 4 },
+        { "id": 2, "name": "Wheat Flour 5kg", "size": "5kg", "price": "9.99", "rating": 5 }
+      ]
+    },
+    "reliance_trends": {
+      "name": "Reliance Trends",
+      "categories": ["Fashion and Lifestyle", "Offers"],
+      "logo": "/images/reliancetrends.png",
+      "description": "Latest fashion trends • Upto 50% off",
+      "banner": {
+        "text": "Buy 2, Get 1 Free on apparel",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "id": 1, "name": "Printed Shirt", "size": "M", "price": "29.99", "rating": 4 },
+        { "id": 2, "name": "Cargo Pants", "size": "L", "price": "49.99", "rating": 5 }
+      ]
+    }
+  }
+  

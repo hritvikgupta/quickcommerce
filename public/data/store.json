@@ -1,0 +1,96 @@
+{
+  "biba": {
+    "name": "Biba",
+    "logo": "/images/download (2).png",
+    "description": "Traditional Indian Wear • Upto 50% off",
+    "banner": {
+      "text": "Flat 10% off on your first purchase",
+      "cta": "Shop Now"
+    },
+    "products": [
+      { "name": "Anarkali Suit", "size": "M", "price": "59.99", "rating": 5 },
+      { "name": "Printed Kurta", "size": "L", "price": "39.99", "rating": 4 }
+    ]
+  },
+
+    "shoppersstop": {
+      "name": "ShoppersStop",
+      "logo": "/images/download (1).jpeg",
+      "description": "High-end fashion wear • Upto 60% off",
+      "banner": {
+        "text": "Exclusive 20% off on select brands",
+        "cta": "Shop Now"
+      },
+      "products": [
+        { "name": "Men's Blazer", "size": "L", "price": "89.99", "rating": 4 },
+        { "name": "Women's Handbag", "size": "One size", "price": "45.99", "rating": 5 }
+      ]
+    }
+  
+  ,
+  "westside": {
+    "name": "Westside",
+    "logo": "/images/download (1).png",
+    "description": "Affordable fashion • Free Shipping",
+    "banner": {
+      "text": "Get Free Shipping on orders above $50",
+      "cta": "Shop Now"
+    },
+    "products": [
+      { "name": "Casual T-Shirt", "size": "M", "price": "12.99", "rating": 4 },
+      { "name": "Denim Jeans", "size": "L", "price": "29.99", "rating": 5 }
+    ]
+  },
+  "trends": {
+    "name": "Trends",
+    "logo": "/images/download.png",
+    "description": "Latest fashion trends • Upto 70% off",
+    "banner": {
+      "text": "Buy 2, Get 1 Free",
+      "cta": "Shop Now"
+    },
+    "products": [
+      { "name": "Leather Jacket", "size": "M", "price": "99.99", "rating": 5 },
+      { "name": "Woolen Scarf", "size": "One size", "price": "14.99", "rating": 4 }
+    ]
+  },
+  "pantaloons": {
+    "name": "Pantaloons",
+    "logo": "/images/download.jpeg",
+    "description": "Wide range of clothing • Upto 30% off",
+    "banner": {
+      "text": "Save an additional 10% on your next order",
+      "cta": "Shop Now"
+    },
+    "products": [
+      { "name": "Formal Shirt", "size": "L", "price": "25.99", "rating": 4 },
+      { "name": "Chinos", "size": "M", "price": "39.99", "rating": 5 }
+    ]
+  },
+  "dmart": {
+    "name": "Dmart",
+    "logo": "/images/download (2).jpeg",
+    "description": "Affordable prices • In-store pickup available",
+    "banner": {
+      "text": "Save big on everyday essentials",
+      "cta": "Shop Now"
+    },
+    "products": [
+      { "name": "Rice 5kg Bag", "size": "5kg", "price": "12.99", "rating": 5 },
+      { "name": "Cooking Oil 1L", "size": "1L", "price": "6.49", "rating": 4 }
+    ]
+  },
+  "manyavar": {
+    "name": "Manyavar",
+    "logo": "/images/download (3).png",
+    "description": "Exclusive ethnic wear • 10% off",
+    "banner": {
+      "text": "Get Rs. 500 off on wedding attire",
+      "cta": "Shop Now"
+    },
+    "products": [
+      { "name": "Sherwani", "size": "M", "price": "149.99", "rating": 5 },
+      { "name": "Kurta Pajama", "size": "L", "price": "59.99", "rating": 4 }
+    ]
+  }
+}

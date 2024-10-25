@@ -1,0 +1,26 @@
+{
+    "aisles": [
+      {
+        "name": "Tailgating",
+        "products": [
+          { "name": "Chips", "price": "$4.99", "image": "/path/to/chips.jpg" },
+          { "name": "Sausages", "price": "$7.99", "image": "/path/to/sausages.jpg" }
+        ]
+      },
+      {
+        "name": "Produce",
+        "products": [
+          { "name": "Bananas", "price": "$1.50", "image": "/path/to/bananas.jpg" },
+          { "name": "Apples", "price": "$3.00", "image": "/path/to/apples.jpg" }
+        ]
+      },
+      {
+        "name": "Beverages",
+        "products": [
+          { "name": "Coke", "price": "$1.99", "image": "/path/to/coke.jpg" },
+          { "name": "Orange Juice", "price": "$5.99", "image": "/path/to/juice.jpg" }
+        ]
+      }
+    ]
+  }
+  
