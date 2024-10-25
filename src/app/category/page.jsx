@@ -1,6 +1,5 @@
-    "use client"; // Mark this component as a Client Component
-    export const dynamic = 'force-dynamic';
-
+"use client";
+import { Suspense } from "react";
     import { Card, CardContent } from "../components/ui/card"; // Import Card and CardContent
     import Image from "next/image";
     import { useSearchParams } from "next/navigation"; // For dynamic routing
@@ -8,7 +7,13 @@
     import Link from "next/link"; // Import Link for navigation
     import SideBar from "../components/SideBar"; // Use the existing SideBar component
     import Header from "../components/Header"; // Import the Header component
-
+    function LoadingState() {
+        return (
+          <div className="flex items-center justify-center h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        );
+      }
     // Reusable Store Card component
     const StoreCard = ({ store }) => (
     <Link href={`/store/${encodeURIComponent(store.name.toLowerCase())}`} key={store.name}>
@@ -33,72 +38,93 @@
     </Link>
     );
 
-    export default function CategoryPage() {
-    const searchParams = useSearchParams(); // Using next/navigation for search params
+ // Separate content component that uses hooks
+function CategoryContent() {
+    const searchParams = useSearchParams();
     const [pageTitle, setPageTitle] = useState("Category");
     const [stores, setStores] = useState([]);
-
-    // Fetch the store data from the public/data/retailers.json
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
     useEffect(() => {
-        const title = searchParams.get("title");
-        if (title) {
-        setPageTitle(title);
-
-        // Fetch the retailers.json data
-        fetch("/data/retailers.json")
-            .then((res) => {
-            if (!res.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return res.json();
-            })
-            .then((data) => {
-            console.log("Retailers data:", data);  // Add logging to debug the data loading
-            
-            // Filter stores by category, ensuring it checks for category as a list
-            const filteredStores = Object.values(data).filter(
-                (store) => store.categories && store.categories.some(category => category.toLowerCase().includes(title.toLowerCase()))
-            );
-
-            console.log("Filtered stores:", filteredStores);  // Log filtered stores
-
-            if (filteredStores.length === 0) {
-                console.warn(`No stores found for category: ${title}`);
-            }
-
-            setStores(filteredStores);
-            })
-            .catch((error) => {
-            console.error("Failed to fetch retailers data:", error);
-            });
+      async function fetchStores() {
+        try {
+          const title = searchParams.get("title");
+          if (!title) {
+            setIsLoading(false);
+            return;
+          }
+  
+          setPageTitle(title);
+          const response = await fetch("/data/retailers.json");
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          
+          const filteredStores = Object.values(data).filter(
+            (store) => store.categories && 
+            store.categories.some(category => 
+              category.toLowerCase().includes(title.toLowerCase())
+            )
+          );
+  
+          setStores(filteredStores);
+        } catch (err) {
+          setError(err.message);
+          console.error("Failed to fetch retailers data:", err);
+        } finally {
+          setIsLoading(false);
         }
+      }
+  
+      fetchStores();
     }, [searchParams]);
-
-    return (
+  
+    if (error) {
+      return (
         <div className="flex h-screen bg-gray-100">
-        {/* Use the SideBar component */}
-        <SideBar />
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto">
-            {/* Header */}
+          <SideBar />
+          <main className="flex-1 overflow-y-auto">
             <Header />
-
-            {/* Content */}
-            <div className="max-w-7xl mx-auto p-4 space-y-8">
-            {/* Page title */}
+            <div className="max-w-7xl mx-auto p-4">
+              <div className="bg-red-50 p-4 rounded-md">
+                <p className="text-red-600">Error loading stores: {error}</p>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    }
+  
+    return (
+      <div className="flex h-screen bg-gray-100">
+        <SideBar />
+        <main className="flex-1 overflow-y-auto">
+          <Header />
+          <div className="max-w-7xl mx-auto p-4 space-y-8">
             <h1 className="text-4xl font-bold text-black">{pageTitle}</h1>
             <div className="grid md:grid-cols-2 gap-4">
-                {stores.length > 0 ? (
-                stores.map((store, index) => (
-                    <StoreCard key={index} store={store} />
-                ))
-                ) : (
-                <p>No stores available for this category.</p>
-                )}
+              {!isLoading && stores.length === 0 && (
+                <p className="text-gray-600">No stores available for this category.</p>
+              )}
+              {stores.map((store, index) => (
+                <StoreCard key={`${store.name}-${index}`} store={store} />
+              ))}
             </div>
-            </div>
+          </div>
         </main>
-        </div>
+      </div>
     );
-    }
+  }
+  
+  // Main page component with Suspense
+  export default function CategoryPage() {
+    return (
+      <Suspense fallback={<LoadingState />}>
+        <CategoryContent />
+      </Suspense>
+    );
+  }
