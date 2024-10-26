@@ -29,18 +29,18 @@ const Header = ({ scrollToPricing }) => {
               className="object-contain"
             />
           </Link>
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex space-x-1"> {/* Reduced from space-x-4 to space-x-2 */}
             <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
               Home
             </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/pricing')}>
+            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={scrollToPricing}>
               Pricing
             </Button>
   
             {/* Services Button with Dropdown */}
             <div className="relative">
               <button
-                className="font-bold mt-2 text-green-900 hover:text-green-700 flex items-center pb-1" // Adjust padding-bottom
+                className="font-bold mt-2 ml-4 text-green-900 hover:text-green-700 flex items-center pb-1" // Adjust padding-bottom
                 onClick={toggleDropdown}
               >
                 Services <ChevronDown className="ml-1" />
@@ -50,9 +50,6 @@ const Header = ({ scrollToPricing }) => {
                   <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">Online Ordering</Link>
                   <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">Delivery & Pickup</Link>
                   <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">Promotions</Link>
-
-                  {/* <Link href="/sponsored-listings" className="block px-4 py-2 text-black hover:bg-gray-100">Sponsored Listings</Link>
-                  <Link href="/phone-ordering" className="block px-4 py-2 text-black hover:bg-gray-100">Phone Ordering</Link> */}
                 </div>
               )}
             </div>
@@ -61,9 +58,9 @@ const Header = ({ scrollToPricing }) => {
               Contact
             </Button>
             <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
-            About Us
-          </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
+              About Us
+            </Button>
+            <Button variant="ghost" className="ml-[-10px] font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
               Go To InstaMarkt Store
             </Button>
           </div>
