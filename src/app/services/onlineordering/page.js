@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
-import { Input } from "../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
 import { Apple, ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -86,23 +86,33 @@ const Header = ({ scrollToPricing }) => {
       <div className="max-w-6xl mx-auto grid grid-cols-1 min-h-[550px] md:grid-cols-2 gap-8 items-center">
         {/* Left side text content */}
         <div>
-          <h1 className="text-4xl text-black md:text-5xl font-bold mb-4">Pick the Best Plan for Your Store</h1>
-          <p className="text-xl text-black mb-8">
-            Unlock more sales with products and services that help you scale and find new customers, improve profitability,
-            and take your business to the next level.
-          </p>
+        <h1 className="text-4xl text-black md:text-5xl font-bold mb-4">
+  Grow Your Sales with Online Ordering and open your <span className="text-green-600">Quick commerce store</span>
+</h1>
+<p className="text-xl text-black mb-8">
+  With platform fee starting with as low as <span className="font-bold text-green-800">Rs 499</span>
+  , connect with more customers want and boost sales by offering what your customers and get your product delivered to them, and build your retail brand with us.
+</p>
+
           <Button
-            className="bg-green-900 hover:bg-green-700 rounded-full text-white"
+            className="bg-green-600 hover:bg-green-700 rounded-full text-white"
             onClick={scrollToSignup}  // Scrolls to the signup form when clicked
           >
-            Get Started with InstaMarkt Business
+            <p className='text-bold'>Get Started with InstaMarkt Business</p>
           </Button>
+          <Link
+              href="/contact"
+              className="text-green-800 mt-5 ml-3 text-bold hover:text-green-800 flex items-center"
+            >
+              Contact sales for demo and customized planning
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
         </div>
   
         {/* Right side image content */}
         <div className="flex justify-center">
           <Image
-            src="/images/customer_selling.png" // Replace with your image path
+            src="/images/onlineordering.png" // Replace with your image path
             alt="InstaMarkt Business Plans"
             width={500}
             height={400}
@@ -162,111 +172,7 @@ const HowItWorks = () => {
   );
 };
 
-const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected }) => {
-    return (
-      <div
-        onClick={onSelect}
-        className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
-          selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-        } min-h-[450px]`}
-      >
-        <div className="flex-grow">
-          {/* Title Section */}
-          <h2 className="text-2xl font-bold text-black">{title}</h2>
-  
-          {/* Pricing Section */}
-          <div className="flex items-center space-x-2 mb-4">
-            {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
-            <p className="text-xl text-green-600 font-semibold">{price}</p>
-          </div>
-          {/* Line Below Pricing */}
-          <hr className="border-gray-300 my-4" />
-  
-          {/* Commission and Description */}
-          <p className="text-md font-medium text-black">{commission}</p>
-          <p className="text-md text-gray-600 mb-4">{description}</p>
-  
-          {/* Features Section */}
-          <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-            {features.map((feature, index) =>
-              feature.included ? (
-                <li key={index} className="flex items-center text-sm">
-                  <span className="text-green-600 mr-2">&#10003;</span>
-                  {feature.name}
-                </li>
-              ) : null
-            )}
-          </ul>
-  
-          {/* Line Above Excluded Features */}
-          <hr className="border-gray-300 my-4" />
-  
-          {/* Excluded Features */}
-          <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-            {features.map((feature, index) =>
-              !feature.included ? (
-                <li key={index} className="flex items-center text-sm">
-                  <span className="text-red-600 mr-2">&#10060;</span>
-                  {feature.name}
-                </li>
-              ) : null
-            )}
-          </ul>
-        </div>
-  
-        {/* Button positioned at the bottom */}
-        <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
-      </div>
-    );
-  };
-  
 
-const PricingSection = ({ title, plans }) => {
-    const [selectedPlan, setSelectedPlan] = useState(null);
-  
-    const handlePlanSelect = (plan) => {
-      setSelectedPlan(plan);
-    };
-  
-    return (
-      <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Link aligned to the right above the heading */}
-          <div className="flex justify-end mb-4">
-            <Link
-              href="/contact"
-              className="text-green-800 text-bold hover:text-green-800 flex items-center"
-            >
-              Contact Sales For Query
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-  
-          <h2 className="text-4xl font-bold mb-6 text-center text-green-900">{title}</h2>
-          <p className="text-lg text-gray-600 mb-8 text-center">
-            Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
-          </p>
-          {/* Changed from flex to grid */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-            {plans.map((plan, index) => (
-              <PricingPlanCard
-                key={index}
-                title={plan.title}
-                originalPrice={plan.originalPrice}
-                price={plan.price}
-                commission={plan.commission}
-                description={plan.description}
-                features={plan.features}
-                buttonText={plan.buttonText}
-                onSelect={() => handlePlanSelect(plan.plan)}
-                selected={selectedPlan === plan.plan}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  };
   
   const AdditionalPricingOptionsSection = () => {
     return (
@@ -368,156 +274,6 @@ const PricingSection = ({ title, plans }) => {
   
   
 
-// Plans for Small Scale Retailers
-const smallScalePlans = [
-  {
-    title: "Starter Plan",
-    originalPrice: "Rs 999",
-    price: "Rs 499 for 7 Days",
-    commission: "12% per order",
-    description: "Ideal for new small businesses. No delivery charges of first 200 orders",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Basic Support", included: true },
-      { name: "Limited Reach", included: false },
-      { name: "Premium Listing", included: false },
-    ],
-    buttonText: "Select Starter",
-    plan: 'starter',
-  },
-  {
-    title: "Basic Plan",
-    originalPrice: "Rs 1,499",
-    price: "Rs 1,099 for 30 Days",
-    commission: "10% per order",
-    description: "Grow your small business.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Standard Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Premium Listing", included: false },
-    ],
-    buttonText: "Select Basic",
-    plan: 'basic',
-  },
-  {
-    title: "Advanced Plan",
-    originalPrice: "Rs 2,499",
-    price: "Rs 2,099 for 60 Days",
-    commission: "8% per order",
-    description: "Maximize your small business potential.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Premium Listing", included: true },
-    ],
-    buttonText: "Select Advanced",
-    plan: 'advanced',
-  },
-];
-
-// Plans for Medium Scale Retailers
-const mediumScalePlans = [
-  {
-    title: "Growth Plan",
-    originalPrice: "Rs 4,999",
-    price: "Rs 4,499 for 10 Days",
-    commission: "15% per order",
-    description: "Scale your medium business.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Standard Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: false },
-    ],
-    buttonText: "Select Growth",
-    plan: 'growth',
-  },
-  {
-    title: "Premium Plan",
-    originalPrice: "Rs 8,999",
-    price: "Rs 7,999 for 30 Days",
-    commission: "12% per order",
-    description: "Expand your medium business reach.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-    ],
-    buttonText: "Select Premium",
-    plan: 'premium',
-  },
-  {
-    title: "Enterprise Plan",
-    originalPrice: "Rs 15,999",
-    price: "Rs 14,999 for 60 Days",
-    commission: "10% per order",
-    description: "Maximize your medium business growth.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Dedicated Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-      { name: "Growth Guarantee", included: true },
-    ],
-    buttonText: "Select Enterprise",
-    plan: 'enterprise',
-  },
-];
-
-// Plans for Large Scale Retailers
-const largeScalePlans = [
-  {
-    title: "Pro Plan",
-    originalPrice: "Rs 25,999",
-    price: "Rs 23,999 for 10 Days",
-    commission: "20% per order",
-    description: "Ideal for large retailers seeking expansion.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-    ],
-    buttonText: "Select Pro",
-    plan: 'pro',
-  },
-  {
-    title: "Elite Plan",
-    originalPrice: "Rs 45,999",
-    price: "Rs 42,999 for 60 Days",
-    commission: "15% per order",
-    description: "For large retailers wanting maximum visibility.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Dedicated Support", included: true },
-      { name: "Maximum Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-      { name: "Premium Listing", included: true },
-    ],
-    buttonText: "Select Elite",
-    plan: 'elite',
-  },
-  {
-    title: "Ultimate Plan",
-    originalPrice: "Rs 75,999",
-    price: "Rs 69,999 for 180 Days",
-    commission: "12% per order",
-    description: "The best plan for large retailers.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Dedicated Support", included: true },
-      { name: "Maximum Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-      { name: "Premium Listing", included: true },
-      { name: "Growth Guarantee", included: true },
-    ],
-    buttonText: "Select Ultimate",
-    plan: 'ultimate',
-  },
-];
 
 const SignUpForm = ({ signUpRef }) => {
   const [businessName, setBusinessName] = useState('');
@@ -580,6 +336,66 @@ const SignUpForm = ({ signUpRef }) => {
     </section>
   );
 };
+const GrowBrand = () => {
+    return (
+      <section className="bg-white py-20">
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl text-green-900 font-bold mb-12 text-black">Move your retail business to quick commerce retail and deliver customers instantly</h2>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            
+            {/* Column 1 */}
+            <div className="flex flex-col items-center">
+              <Image
+                src="/images/growsales.png" // Replace with the actual path to your icon image
+                alt="Grow Your Sales Icon"
+                width={300}
+                height={200}
+                className="mb-4"
+              />
+              <h3 className="text-xl font-semibold text-black mb-2">Grow Your Sales</h3>
+              <p className="text-gray-700">
+              We help you connect with new and returning customers, building a reliable marketplace for your business. 
+              Create a seamless online ordering experience to keep your customers engaged and loyal to your brand.              </p>
+            </div>
+            
+            {/* Column 2 */}
+            <div className="flex flex-col items-center">
+              <Image
+                src="/images/buildbrand.png" // Replace with the actual path to your icon image
+                alt="Build Your Brand Icon"
+                width={300}
+                height={200}
+                className="mb-4"
+              />
+              <h3 className="text-xl font-semibold text-black mb-2">Build Your Quick Commerce Brand</h3>
+              <p className="text-gray-700">
+              With our online ordering platform, you can offer your customers the convenience of ordering from anywhere, 
+  at any time, we will help to connect with drivers. Increase your reach and visibility, attract new customers, and retain existing.
+              </p>
+            </div>
+            
+            {/* Column 3 */}
+            <div className="flex flex-col items-center">
+              <Image
+                src="/images/customerloyality.png" // Replace with the actual path to your icon image
+                alt="Increase Customer Loyalty Icon"
+                width={250}
+                height={200}
+                className="mb-4"
+              />
+              <h3 className="text-xl font-semibold text-black mb-4 ">Increase Customer Loyalty</h3>
+              <p className="text-gray-700">
+              Sell effortlessly on your InstaMarkt quick commerce store. Engage customers with real-time product notifications, attract new buyers, and keep them coming back.
+           </p>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+    );
+  };
+  
 
 const FAQ = () => {
   const [openQuestion, setOpenQuestion] = useState(null);
@@ -685,20 +501,7 @@ export default function BusinessPage() {
       <Header />
       <main>
         <Hero scrollToSignup={scrollToSignup} />
-
-        {/* Pricing Sections */}
-        <PricingSection
-          title="Platform Fee Pricing Options For Small Scale Retailers Having 50 Outlets or Less PAN India"
-          plans={smallScalePlans}
-        />
-        <PricingSection
-          title="Platform Fee Pricing Options For Medium Scale Retailers Having 50 To 500 Outlets or Less PAN India"
-          plans={mediumScalePlans}
-        />
-        <PricingSection
-          title="Platform Fee Pricing Options For Large Scale Retails Having More than 500 Outlets PAN India"
-          plans={largeScalePlans}
-        />
+        <GrowBrand/>
         <AdditionalPricingOptionsSection />
 
         <HowItWorks />

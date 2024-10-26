@@ -55,7 +55,12 @@ const SelectItem = ({ value, children, onClick }) => (
 );
 
 const Header = ({ scrollToPricing }) => {
-    const router = useRouter(); // Initialize useRouter for navigation
+    const router = useRouter();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+    const toggleDropdown = () => {
+      setIsDropdownOpen((prev) => !prev); // Toggle dropdown visibility
+    };
   
     return (
       <header className="bg-white shadow-sm p-4">
@@ -70,21 +75,44 @@ const Header = ({ scrollToPricing }) => {
             />
           </Link>
           <div className="hidden md:flex space-x-4">
-            {/* Scroll to Pricing Section */}
-            <Button variant="ghost" className="font-bold  text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
+            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
               Home
             </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700"onClick={() => router.push('/pricing')}>
+            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={scrollToPricing}>
               Pricing
             </Button>
   
-            {/* Contact button triggers navigation to /contact */}
+            {/* Services Button with Dropdown */}
+            <div className="relative">
+              <button
+                className="font-bold mt-2 text-green-900 hover:text-green-700 flex items-center pb-1" // Adjust padding-bottom
+                onClick={toggleDropdown}
+              >
+                Services <ChevronDown className="ml-1" />
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute bg-white shadow-lg rounded-md mt-2 p-2 w-48 z-10">
+                  <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">Online Ordering</Link>
+                  <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">Delivery & Pickup</Link>
+                  <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">Promotions</Link>
+                  {/* <Link href="/sponsored-listings" className="block px-4 py-2 text-black hover:bg-gray-100">Sponsored Listings</Link>
+                  <Link href="/phone-ordering" className="block px-4 py-2 text-black hover:bg-gray-100">Phone Ordering</Link> */}
+                </div>
+              )}
+            </div>
+  
             <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
               Contact
             </Button>
+            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
+            About Us
+          </Button>
+            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
+              Go To InstaMarkt Store
+            </Button>
           </div>
-          <nav className="flex space-x-4"></nav>
-          <div className="flex mx-200 space-x-2">
+  
+          <div className="flex space-x-2">
             <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
               <p className="text-white font-bold">Log In</p>
             </Button>

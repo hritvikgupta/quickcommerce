@@ -1,108 +1,118 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
-import { Input } from "../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
 import { Apple, ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
 const Header = ({ scrollToPricing }) => {
-    const router = useRouter();
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
-    const toggleDropdown = () => {
-      setIsDropdownOpen((prev) => !prev); // Toggle dropdown visibility
-    };
-  
-    return (
-      <header className="bg-white shadow-sm p-4">
-        <div className="flex justify-between items-center">
-          <Link href="/business" className="flex items-center space-x-2">
-            <Image
-              src="/images/insta_market_business.png"
-              alt="InstaMarkt Logo"
-              width={400}
-              height={150}
-              className="object-contain"
-            />
-          </Link>
-          <div className="hidden md:flex space-x-4">
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
-              Home
-            </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/pricing')}>
-              Pricing
-            </Button>
-  
-            {/* Services Button with Dropdown */}
-            <div className="relative">
-              <button
-                className="font-bold mt-2 text-green-900 hover:text-green-700 flex items-center pb-1" // Adjust padding-bottom
-                onClick={toggleDropdown}
-              >
-                Services <ChevronDown className="ml-1" />
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute bg-white shadow-lg rounded-md mt-2 p-2 w-48 z-10">
-                  <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">Online Ordering</Link>
-                  <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">Delivery & Pickup</Link>
-                  <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">Promotions</Link>
+  const router = useRouter();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-                  {/* <Link href="/sponsored-listings" className="block px-4 py-2 text-black hover:bg-gray-100">Sponsored Listings</Link>
-                  <Link href="/phone-ordering" className="block px-4 py-2 text-black hover:bg-gray-100">Phone Ordering</Link> */}
-                </div>
-              )}
-            </div>
-  
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
-              Contact
-            </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev); // Toggle dropdown visibility
+  };
+
+  return (
+    <header className="bg-white shadow-sm p-4">
+      <div className="flex justify-between items-center">
+        <Link href="/business" className="flex items-center space-x-2">
+          <Image
+            src="/images/insta_market_business.png"
+            alt="InstaMarkt Logo"
+            width={400}
+            height={150}
+            className="object-contain"
+          />
+        </Link>
+        <div className="hidden md:flex space-x-4">
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
+            Home
+          </Button>
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/pricing')}>
+            Pricing
+          </Button>
+
+          {/* Services Button with Dropdown */}
+          <div className="relative">
+            <button
+              className="font-bold mt-2 text-green-900 hover:text-green-700 flex items-center pb-1" // Adjust padding-bottom
+              onClick={toggleDropdown}
+            >
+              Services <ChevronDown className="ml-1" />
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute bg-white shadow-lg rounded-md mt-2 p-2 w-48 z-10">
+                <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">Online Ordering</Link>
+                <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">Delivery & Pickup</Link>
+                <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">Promotions</Link>
+
+                {/* <Link href="/sponsored-listings" className="block px-4 py-2 text-black hover:bg-gray-100">Sponsored Listings</Link>
+                <Link href="/phone-ordering" className="block px-4 py-2 text-black hover:bg-gray-100">Phone Ordering</Link> */}
+              </div>
+            )}
+          </div>
+
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
+            Contact
+          </Button>
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
             About Us
           </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
-              Go To InstaMarkt Store
-            </Button>
-          </div>
-  
-          <div className="flex space-x-2">
-            <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-              <p className="text-white font-bold">Log In</p>
-            </Button>
-            <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-              <p className="text-white font-bold">Sign Up</p>
-            </Button>
-          </div>
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
+            Go To InstaMarkt Store
+          </Button>
         </div>
-      </header>
-    );
-  };
+
+        <div className="flex space-x-2">
+          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
+            <p className="text-white font-bold">Log In</p>
+          </Button>
+          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
+            <p className="text-white font-bold">Sign Up</p>
+          </Button>
+        </div>
+      </div>
+    </header>
+  );
+};
 
   const Hero = ({ scrollToSignup }) => (
     <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
       <div className="max-w-6xl mx-auto grid grid-cols-1 min-h-[550px] md:grid-cols-2 gap-8 items-center">
         {/* Left side text content */}
         <div>
-          <h1 className="text-4xl text-black md:text-5xl font-bold mb-4">Pick the Best Plan for Your Store</h1>
-          <p className="text-xl text-black mb-8">
-            Unlock more sales with products and services that help you scale and find new customers, improve profitability,
-            and take your business to the next level.
-          </p>
+        <h1 className="text-4xl text-black md:text-5xl font-bold mb-4">
+  We will help you connected to delivery partners with realtime tracking for <span className="text-green-600">Quick commerce store</span>
+</h1>
+<p className="text-xl text-black mb-8">
+  <span className="font-bold text-green-800">With Rs 0 Commission on the first 200 orders</span>, you can jumpstart your quick commerce journey! Reach your customers directly, boost your brand, and enjoy seamless sales with no hidden costs.
+</p>
+
+
           <Button
-            className="bg-green-900 hover:bg-green-700 rounded-full text-white"
+            className="bg-green-600 hover:bg-green-700 rounded-full text-white"
             onClick={scrollToSignup}  // Scrolls to the signup form when clicked
           >
-            Get Started with InstaMarkt Business
+            <p className='text-bold'>Get Started with InstaMarkt Business</p>
           </Button>
+          <Link
+              href="/contact"
+              className="text-green-800 mt-5 ml-3 text-bold hover:text-green-800 flex items-center"
+            >
+              Contact sales for demo and customized planning
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
         </div>
   
         {/* Right side image content */}
         <div className="flex justify-center">
           <Image
-            src="/images/customer_selling.png" // Replace with your image path
+            src="/images/deliveryorders.png" // Replace with your image path
             alt="InstaMarkt Business Plans"
             width={500}
             height={400}
@@ -162,111 +172,7 @@ const HowItWorks = () => {
   );
 };
 
-const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected }) => {
-    return (
-      <div
-        onClick={onSelect}
-        className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
-          selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-        } min-h-[450px]`}
-      >
-        <div className="flex-grow">
-          {/* Title Section */}
-          <h2 className="text-2xl font-bold text-black">{title}</h2>
-  
-          {/* Pricing Section */}
-          <div className="flex items-center space-x-2 mb-4">
-            {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
-            <p className="text-xl text-green-600 font-semibold">{price}</p>
-          </div>
-          {/* Line Below Pricing */}
-          <hr className="border-gray-300 my-4" />
-  
-          {/* Commission and Description */}
-          <p className="text-md font-medium text-black">{commission}</p>
-          <p className="text-md text-gray-600 mb-4">{description}</p>
-  
-          {/* Features Section */}
-          <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-            {features.map((feature, index) =>
-              feature.included ? (
-                <li key={index} className="flex items-center text-sm">
-                  <span className="text-green-600 mr-2">&#10003;</span>
-                  {feature.name}
-                </li>
-              ) : null
-            )}
-          </ul>
-  
-          {/* Line Above Excluded Features */}
-          <hr className="border-gray-300 my-4" />
-  
-          {/* Excluded Features */}
-          <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-            {features.map((feature, index) =>
-              !feature.included ? (
-                <li key={index} className="flex items-center text-sm">
-                  <span className="text-red-600 mr-2">&#10060;</span>
-                  {feature.name}
-                </li>
-              ) : null
-            )}
-          </ul>
-        </div>
-  
-        {/* Button positioned at the bottom */}
-        <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
-      </div>
-    );
-  };
-  
 
-const PricingSection = ({ title, plans }) => {
-    const [selectedPlan, setSelectedPlan] = useState(null);
-  
-    const handlePlanSelect = (plan) => {
-      setSelectedPlan(plan);
-    };
-  
-    return (
-      <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Link aligned to the right above the heading */}
-          <div className="flex justify-end mb-4">
-            <Link
-              href="/contact"
-              className="text-green-800 text-bold hover:text-green-800 flex items-center"
-            >
-              Contact Sales For Query
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-  
-          <h2 className="text-4xl font-bold mb-6 text-center text-green-900">{title}</h2>
-          <p className="text-lg text-gray-600 mb-8 text-center">
-            Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
-          </p>
-          {/* Changed from flex to grid */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-            {plans.map((plan, index) => (
-              <PricingPlanCard
-                key={index}
-                title={plan.title}
-                originalPrice={plan.originalPrice}
-                price={plan.price}
-                commission={plan.commission}
-                description={plan.description}
-                features={plan.features}
-                buttonText={plan.buttonText}
-                onSelect={() => handlePlanSelect(plan.plan)}
-                selected={selectedPlan === plan.plan}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  };
   
   const AdditionalPricingOptionsSection = () => {
     return (
@@ -368,156 +274,6 @@ const PricingSection = ({ title, plans }) => {
   
   
 
-// Plans for Small Scale Retailers
-const smallScalePlans = [
-  {
-    title: "Starter Plan",
-    originalPrice: "Rs 999",
-    price: "Rs 499 for 7 Days",
-    commission: "12% per order",
-    description: "Ideal for new small businesses. No delivery charges of first 200 orders",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Basic Support", included: true },
-      { name: "Limited Reach", included: false },
-      { name: "Premium Listing", included: false },
-    ],
-    buttonText: "Select Starter",
-    plan: 'starter',
-  },
-  {
-    title: "Basic Plan",
-    originalPrice: "Rs 1,499",
-    price: "Rs 1,099 for 30 Days",
-    commission: "10% per order",
-    description: "Grow your small business.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Standard Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Premium Listing", included: false },
-    ],
-    buttonText: "Select Basic",
-    plan: 'basic',
-  },
-  {
-    title: "Advanced Plan",
-    originalPrice: "Rs 2,499",
-    price: "Rs 2,099 for 60 Days",
-    commission: "8% per order",
-    description: "Maximize your small business potential.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Premium Listing", included: true },
-    ],
-    buttonText: "Select Advanced",
-    plan: 'advanced',
-  },
-];
-
-// Plans for Medium Scale Retailers
-const mediumScalePlans = [
-  {
-    title: "Growth Plan",
-    originalPrice: "Rs 4,999",
-    price: "Rs 4,499 for 10 Days",
-    commission: "15% per order",
-    description: "Scale your medium business.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Standard Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: false },
-    ],
-    buttonText: "Select Growth",
-    plan: 'growth',
-  },
-  {
-    title: "Premium Plan",
-    originalPrice: "Rs 8,999",
-    price: "Rs 7,999 for 30 Days",
-    commission: "12% per order",
-    description: "Expand your medium business reach.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-    ],
-    buttonText: "Select Premium",
-    plan: 'premium',
-  },
-  {
-    title: "Enterprise Plan",
-    originalPrice: "Rs 15,999",
-    price: "Rs 14,999 for 60 Days",
-    commission: "10% per order",
-    description: "Maximize your medium business growth.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Dedicated Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-      { name: "Growth Guarantee", included: true },
-    ],
-    buttonText: "Select Enterprise",
-    plan: 'enterprise',
-  },
-];
-
-// Plans for Large Scale Retailers
-const largeScalePlans = [
-  {
-    title: "Pro Plan",
-    originalPrice: "Rs 25,999",
-    price: "Rs 23,999 for 10 Days",
-    commission: "20% per order",
-    description: "Ideal for large retailers seeking expansion.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-    ],
-    buttonText: "Select Pro",
-    plan: 'pro',
-  },
-  {
-    title: "Elite Plan",
-    originalPrice: "Rs 45,999",
-    price: "Rs 42,999 for 60 Days",
-    commission: "15% per order",
-    description: "For large retailers wanting maximum visibility.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Dedicated Support", included: true },
-      { name: "Maximum Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-      { name: "Premium Listing", included: true },
-    ],
-    buttonText: "Select Elite",
-    plan: 'elite',
-  },
-  {
-    title: "Ultimate Plan",
-    originalPrice: "Rs 75,999",
-    price: "Rs 69,999 for 180 Days",
-    commission: "12% per order",
-    description: "The best plan for large retailers.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Dedicated Support", included: true },
-      { name: "Maximum Reach", included: true },
-      { name: "Access Premium Customers", included: true },
-      { name: "Premium Listing", included: true },
-      { name: "Growth Guarantee", included: true },
-    ],
-    buttonText: "Select Ultimate",
-    plan: 'ultimate',
-  },
-];
 
 const SignUpForm = ({ signUpRef }) => {
   const [businessName, setBusinessName] = useState('');
@@ -580,6 +336,66 @@ const SignUpForm = ({ signUpRef }) => {
     </section>
   );
 };
+const GrowBrand = () => {
+    return (
+      <section className="bg-white py-20">
+  <div className="container mx-auto text-center">
+    <h2 className="text-4xl text-4xl text-green-900 font-bold mb-12 text-black">With InstaMart's Delivery Partner, Receive Orders And Deliver Them Instantly</h2>
+    
+    <div className="grid md:grid-cols-3 gap-8">
+      
+      {/* Column 1 */}
+      <div className="flex flex-col items-center">
+        <Image
+          src="/images/manageorder.png" // Replace with the actual path to your icon image
+          alt="Instant Order Management Icon"
+          width={150}
+          height={200}
+          className="mb-4"
+        />
+        <h3 className="text-xl font-semibold text-black mb-2">Manage Orders Seamlessly</h3>
+        <p className="text-gray-700">
+          Handle orders instantly and keep your operations smooth with real-time updates and automated order management.
+        </p>
+      </div>
+      
+      {/* Column 2 */}
+      <div className="flex flex-col items-center">
+        <Image
+          src="/images/realtimetracking.png" // Replace with the actual path to your icon image
+          alt="Real-Time Tracking Icon"
+          width={150}
+          height={200}
+          className="mb-4"
+        />
+        <h3 className="text-xl font-semibold text-black mb-2">Real-Time Delivery Tracking</h3>
+        <p className="text-gray-700">
+          Provide your customers with live tracking, keeping them informed about the delivery status every step of the way.
+        </p>
+      </div>
+      
+      {/* Column 3 */}
+      <div className="flex flex-col items-center">
+        <Image
+          src="/images/247support.png" // Replace with the actual path to your icon image
+          alt="24/7 Support Icon"
+          width={150}
+          height={200}
+          className="mb-4"
+        />
+        <h3 className="text-xl font-semibold text-black mb-2">24/7 Dedicated Support</h3>
+        <p className="text-gray-700">
+          Access round-the-clock support for all your delivery needs, from technical assistance to live order help.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    );
+  };
+  
 
 const FAQ = () => {
   const [openQuestion, setOpenQuestion] = useState(null);
@@ -617,7 +433,44 @@ const FAQ = () => {
     </section>
   );
 };
+const PartnerBenefits = () => {
+  return (
+    <section className="bg-white py-20 min-h-[700px]">
+      <div className="container mt-10 mx-auto flex flex-col md:flex-row items-center gap-8">
+        
+        {/* Image Section */}
+        <div className="md:w-1/2">
+          <Image
+            src="/images/customerinstantly.png" // Replace with your actual image path
+            alt="InstaMart Delivery Partner"
+            width={1000}
+            height={1000}
+            className="rounded-lg"
+          />
+        </div>
+        
+        {/* Text Section */}
+        <div className="md:w-1/2">
+          <h2 className="text-3xl font-bold text-black mb-4">Reach InstaMart Customers Instantly</h2>
+          <p className="text-lg text-gray-700 mb-6">
+            Boost your business by partnering with InstaMart’s delivery network. Tap into a growing customer base that values convenience and speed. With zero delivery fees on the first 200 orders, attract more customers without any extra cost.
+          </p>
+          <p className="text-lg text-gray-700 mb-6">
+            Promote your store to our extensive network of InstaMart shoppers who order frequently. Enjoy increased visibility and watch your take-home revenue grow as you deliver a seamless experience.
+          </p>
+          
+          {/* Link to Pricing Page */}
+          <Link href="/pricing">
+            <span className="bg-green-700 text-white font-bold py-3 px-6 rounded-full hover:bg-green-800 inline-block cursor-pointer">
+              Explore plans and pricing
+            </span>
+          </Link>
+        </div>
 
+      </div>
+    </section>
+  );
+};
 const Footer = () => (
   <footer className="bg-gray-100 py-12">
     <div className="container mx-auto grid md:grid-cols-5 gap-8">
@@ -685,20 +538,8 @@ export default function BusinessPage() {
       <Header />
       <main>
         <Hero scrollToSignup={scrollToSignup} />
-
-        {/* Pricing Sections */}
-        <PricingSection
-          title="Platform Fee Pricing Options For Small Scale Retailers Having 50 Outlets or Less PAN India"
-          plans={smallScalePlans}
-        />
-        <PricingSection
-          title="Platform Fee Pricing Options For Medium Scale Retailers Having 50 To 500 Outlets or Less PAN India"
-          plans={mediumScalePlans}
-        />
-        <PricingSection
-          title="Platform Fee Pricing Options For Large Scale Retails Having More than 500 Outlets PAN India"
-          plans={largeScalePlans}
-        />
+        <GrowBrand/>
+        <PartnerBenefits/>
         <AdditionalPricingOptionsSection />
 
         <HowItWorks />
