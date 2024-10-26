@@ -150,7 +150,7 @@ const HowItWorks = () => {
           <div className="flex justify-center">
             <video
               ref={videoRef} // Attach ref to video element
-              src="/images/instamarktbusiness.mp4"
+              src="/instamarktbusiness.mp4"
               alt="InstaMarkt Store Setup"
               width="600"
               height="400"
