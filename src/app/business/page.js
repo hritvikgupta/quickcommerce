@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'; // For navigation
 
-const Header = ({ scrollToPricing }) => {
+const Header = ({ scrollToPricing, scrollToSignup }) => {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -66,7 +66,7 @@ const Header = ({ scrollToPricing }) => {
         </div>
 
         <div className="flex space-x-2">
-          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToPricing}>
+          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToSignup}>
             <p className="text-white font-bold">Get Started</p>
           </Button>
         </div>
@@ -679,7 +679,7 @@ export default function BusinessPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header scrollToPricing={scrollToPricing} /> {/* Pass the scrollToPricing function as a prop */}
+      <Header scrollToPricing={scrollToPricing} scrollToSignup={scrollToSignup} /> {/* Pass the scrollToPricing function as a prop */}
       <main>
         <Hero scrollToSignup={scrollToSignup} />
         <GrowBrand />
