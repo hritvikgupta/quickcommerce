@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
-const Header = ({ scrollToPricing }) => {
+const Header = ({ scrollToSignup }) => { // Update to scrollToSignup
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
@@ -29,18 +29,16 @@ const Header = ({ scrollToPricing }) => {
               className="object-contain"
             />
           </Link>
-          <div className="hidden md:flex space-x-1"> {/* Reduced from space-x-4 to space-x-2 */}
+          <div className="hidden md:flex space-x-1">
             <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
               Home
             </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={scrollToPricing}>
+            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/pricing')}> {/* Updated to scrollToSignup */}
               Pricing
             </Button>
-  
-            {/* Services Button with Dropdown */}
             <div className="relative">
               <button
-                className="font-bold mt-2 ml-4 text-green-900 hover:text-green-700 flex items-center pb-1" // Adjust padding-bottom
+                className="font-bold mt-2 ml-4 text-green-900 hover:text-green-700 flex items-center pb-1"
                 onClick={toggleDropdown}
               >
                 Services <ChevronDown className="ml-1" />
@@ -53,7 +51,6 @@ const Header = ({ scrollToPricing }) => {
                 </div>
               )}
             </div>
-  
             <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
               Contact
             </Button>
@@ -64,19 +61,17 @@ const Header = ({ scrollToPricing }) => {
               Go To InstaMarkt Store
             </Button>
           </div>
-  
           <div className="flex space-x-2">
-            <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-              <p className="text-white font-bold">Log In</p>
-            </Button>
-            <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-              <p className="text-white font-bold">Sign Up</p>
+            <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToSignup}> {/* Updated to scrollToSignup */}
+              <p className="text-white font-bold">Get Started</p>
             </Button>
           </div>
         </div>
       </header>
     );
   };
+
+  
 
   const Hero = ({ scrollToSignup }) => (
     <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
@@ -159,111 +154,101 @@ const HowItWorks = () => {
   );
 };
 
-const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected }) => {
-    return (
-      <div
-        onClick={onSelect}
-        className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
-          selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-        } min-h-[450px]`}
-      >
-        <div className="flex-grow">
-          {/* Title Section */}
-          <h2 className="text-2xl font-bold text-black">{title}</h2>
-  
-          {/* Pricing Section */}
-          <div className="flex items-center space-x-2 mb-4">
-            {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
-            <p className="text-xl text-green-600 font-semibold">{price}</p>
-          </div>
-          {/* Line Below Pricing */}
-          <hr className="border-gray-300 my-4" />
-  
-          {/* Commission and Description */}
-          <p className="text-md font-medium text-black">{commission}</p>
-          <p className="text-md text-gray-600 mb-4">{description}</p>
-  
-          {/* Features Section */}
-          <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-            {features.map((feature, index) =>
-              feature.included ? (
-                <li key={index} className="flex items-center text-sm">
-                  <span className="text-green-600 mr-2">&#10003;</span>
-                  {feature.name}
-                </li>
-              ) : null
-            )}
-          </ul>
-  
-          {/* Line Above Excluded Features */}
-          <hr className="border-gray-300 my-4" />
-  
-          {/* Excluded Features */}
-          <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-            {features.map((feature, index) =>
-              !feature.included ? (
-                <li key={index} className="flex items-center text-sm">
-                  <span className="text-red-600 mr-2">&#10060;</span>
-                  {feature.name}
-                </li>
-              ) : null
-            )}
-          </ul>
+const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected, skuRange }) => {
+  return (
+    <div
+      onClick={onSelect}
+      className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
+        selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
+      } min-h-[450px]`}
+    >
+      <div className="flex-grow">
+        <h2 className="text-2xl font-bold text-black">{title}</h2>
+        
+        {/* SKU Range Section */}
+        <p className="text-md text-gray-700 font-medium mb-2">SKU Range: {skuRange}</p>
+        
+        {/* Pricing Section */}
+        <div className="flex items-center space-x-2 mb-4">
+          {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
+          <p className="text-xl text-green-600 font-semibold">{price}</p>
         </div>
-  
-        {/* Button positioned at the bottom */}
-        <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
+        
+        <hr className="border-gray-300 my-4" />
+        
+        {/* Commission and Description */}
+        <p className="text-md font-medium text-black">{commission}</p>
+        <p className="text-md text-gray-600 mb-4">{description}</p>
+        
+        {/* Features Section */}
+        <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
+          {features.map((feature, index) =>
+            feature.included ? (
+              <li key={index} className="flex items-center text-sm">
+                <span className="text-green-600 mr-2">&#10003;</span>
+                {feature.name}
+              </li>
+            ) : null
+          )}
+        </ul>
+        
+        <hr className="border-gray-300 my-4" />
+        
+        {/* Excluded Features */}
+        <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
+          {features.map((feature, index) =>
+            !feature.included ? (
+              <li key={index} className="flex items-center text-sm">
+                <span className="text-red-600 mr-2">&#10060;</span>
+                {feature.name}
+              </li>
+            ) : null
+          )}
+        </ul>
       </div>
-    );
-  };
-  
+      
+      <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
+    </div>
+  );
+};
 
+// Updated PricingSection to include SKU Range for each card
 const PricingSection = ({ title, plans }) => {
-    const [selectedPlan, setSelectedPlan] = useState(null);
-  
-    const handlePlanSelect = (plan) => {
-      setSelectedPlan(plan);
-    };
-  
-    return (
-      <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Link aligned to the right above the heading */}
-          <div className="flex justify-end mb-4">
-            <Link
-              href="/contact"
-              className="text-green-800 text-bold hover:text-green-800 flex items-center"
-            >
-              Contact Sales For Query
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-  
-          <h2 className="text-4xl font-bold mb-6 text-center text-green-900">{title}</h2>
-          <p className="text-lg text-gray-600 mb-8 text-center">
-            Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
-          </p>
-          {/* Changed from flex to grid */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-            {plans.map((plan, index) => (
-              <PricingPlanCard
-                key={index}
-                title={plan.title}
-                originalPrice={plan.originalPrice}
-                price={plan.price}
-                commission={plan.commission}
-                description={plan.description}
-                features={plan.features}
-                buttonText={plan.buttonText}
-                onSelect={() => handlePlanSelect(plan.plan)}
-                selected={selectedPlan === plan.plan}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
+  const [selectedPlan, setSelectedPlan] = useState(null);
+
+  const handlePlanSelect = (plan) => {
+    setSelectedPlan(plan);
   };
+
+  return (
+    <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-4xl font-bold mb-6 text-center text-green-900">{title}</h2>
+        <p className="text-lg text-gray-600 mb-8 text-center">
+          Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
+        </p>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+          {plans.map((plan, index) => (
+            <PricingPlanCard
+              key={index}
+              title={plan.title}
+              originalPrice={plan.originalPrice}
+              price={plan.price}
+              commission={plan.commission}
+              description={plan.description}
+              features={plan.features}
+              buttonText={plan.buttonText}
+              onSelect={() => handlePlanSelect(plan.plan)}
+              selected={selectedPlan === plan.plan}
+              skuRange={plan.skuRange} // Pass SKU Range to each card
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
   
   const AdditionalPricingOptionsSection = () => {
     return (
@@ -366,6 +351,7 @@ const PricingSection = ({ title, plans }) => {
   
 
 // Plans for Small Scale Retailers
+// Plans for Small Scale Retailers
 const smallScalePlans = [
   {
     title: "Starter Plan",
@@ -381,6 +367,7 @@ const smallScalePlans = [
     ],
     buttonText: "Select Starter",
     plan: 'starter',
+    skuRange: '0-500', // SKU range for small retailers
   },
   {
     title: "Basic Plan",
@@ -396,6 +383,7 @@ const smallScalePlans = [
     ],
     buttonText: "Select Basic",
     plan: 'basic',
+    skuRange: '500-999',
   },
   {
     title: "Advanced Plan",
@@ -411,6 +399,7 @@ const smallScalePlans = [
     ],
     buttonText: "Select Advanced",
     plan: 'advanced',
+    skuRange: '1000-4999',
   },
 ];
 
@@ -430,6 +419,7 @@ const mediumScalePlans = [
     ],
     buttonText: "Select Growth",
     plan: 'growth',
+    skuRange: '0-500', // SKU range for medium retailers
   },
   {
     title: "Premium Plan",
@@ -445,6 +435,7 @@ const mediumScalePlans = [
     ],
     buttonText: "Select Premium",
     plan: 'premium',
+    skuRange: '500-999',
   },
   {
     title: "Enterprise Plan",
@@ -461,6 +452,7 @@ const mediumScalePlans = [
     ],
     buttonText: "Select Enterprise",
     plan: 'enterprise',
+    skuRange: '1000-4999',
   },
 ];
 
@@ -480,6 +472,7 @@ const largeScalePlans = [
     ],
     buttonText: "Select Pro",
     plan: 'pro',
+    skuRange: '500-999', // SKU range for large retailers
   },
   {
     title: "Elite Plan",
@@ -496,6 +489,7 @@ const largeScalePlans = [
     ],
     buttonText: "Select Elite",
     plan: 'elite',
+    skuRange: '1000-4999',
   },
   {
     title: "Ultimate Plan",
@@ -513,11 +507,16 @@ const largeScalePlans = [
     ],
     buttonText: "Select Ultimate",
     plan: 'ultimate',
+    skuRange: '5000+',
   },
 ];
 
+
 const SignUpForm = ({ signUpRef }) => {
   const [businessName, setBusinessName] = useState('');
+  const [businessType, setBusinessType] = useState('');
+  const [businessAddress, setBusinessAddress] = useState('');
+  const [skuCount, setSkuCount] = useState('');
   const router = useRouter();
 
   const handleSubmit = (e) => {
@@ -531,11 +530,11 @@ const SignUpForm = ({ signUpRef }) => {
     <section ref={signUpRef} className="bg-green-500 text-white py-20">
       <div className="container mx-auto flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-10 md:mb-0">
-          <h2 className="text-4xl font-bold mb-6">Sign Up and Unlock Sales</h2>
+          <h2 className="text-4xl font-bold mb-6">Sign up and unlock sales</h2>
           <p className="text-xl mb-4">Increase your retail business to reach audiences on their doorsteps</p>
           <Image
             src="/images/boostsales.png"
-            alt="Boost Sales"
+            alt="Bottom Left Image"
             width={400}
             height={400}
             className="rounded-lg mx-20"
@@ -554,18 +553,52 @@ const SignUpForm = ({ signUpRef }) => {
             <input
               type="text"
               placeholder="Business Address"
+              value={businessAddress}
+              onChange={(e) => setBusinessAddress(e.target.value)}
+              required
               className="w-full p-2 border border-gray-300 rounded-lg"
             />
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              required
+              className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
+            >
+              <option value="" disabled hidden>Select Business Type</option>
+              <option value="Restaurant">Restaurant</option>
+              <option value="Grocery">Grocery (fresh produce, perishables, shelf-stable products, dairy goods, pre-packaged meals)</option>
+              <option value="Alcohol">Alcohol</option>
+              <option value="Convenience">Convenience (everyday products, shelf-stable products, hot food / ready to eat)</option>
+              <option value="Flower Shop">Flower Shop</option>
+              <option value="Pet Store">Pet Store</option>
+              <option value="Retail">Retail</option>
+              <option value="Order Food">I want to order food...</option>
+              <option value="Become Dasher">I want to become a Dasher...</option>
+            </select>
+            <select
+              value={skuCount}
+              onChange={(e) => setSkuCount(e.target.value)}
+              required
+              className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
+            >
+              <option value="" disabled hidden>Total SKUs for Sale</option>
+              <option value="0-500">Less than 100</option>
+              <option value="500-1000">100 to 500</option>
+              <option value="1000-5000">500 to 1000</option>
+              <option value="5000+">1000 or more</option>
+            </select>
             <div className="flex space-x-4">
               <input
                 type="email"
                 placeholder="Email Address"
                 className="w-1/2 p-2 border border-gray-300 rounded-lg"
+                required
               />
               <input
                 type="tel"
                 placeholder="Business Phone"
                 className="w-1/2 p-2 border border-gray-300 rounded-lg"
+                required
               />
             </div>
             <button type="submit" className="w-full h-10 bg-green-900 hover:bg-green-600 text-white rounded-full">
@@ -676,10 +709,11 @@ export default function BusinessPage() {
       signUpRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <Header scrollToSignup={scrollToSignup} /> {/* Pass scrollToSignup here */}
       <main>
         <Hero scrollToSignup={scrollToSignup} />
 

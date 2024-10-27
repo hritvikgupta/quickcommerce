@@ -33,7 +33,7 @@ const Header = ({ scrollToPricing }) => {
           <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
             Home
           </Button>
-          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={scrollToPricing}>
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/pricing')}>
             Pricing
           </Button>
 
@@ -66,17 +66,15 @@ const Header = ({ scrollToPricing }) => {
         </div>
 
         <div className="flex space-x-2">
-          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-            <p className="text-white font-bold">Log In</p>
-          </Button>
-          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-            <p className="text-white font-bold">Sign Up</p>
+          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToPricing}>
+            <p className="text-white font-bold">Get Started</p>
           </Button>
         </div>
       </div>
     </header>
   );
 };
+
 
 const Hero = ({ scrollToSignup }) => (
   <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
@@ -274,67 +272,104 @@ const HowItWorks = () => {
   
 
 
-const SignUpForm = ({ signUpRef }) => {
-  const [businessName, setBusinessName] = useState('');
-  const router = useRouter();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (businessName) {
-      router.push(`/marketplace?businessName=${encodeURIComponent(businessName)}`);
-    }
+  const SignUpForm = ({ signUpRef }) => {
+    const [businessName, setBusinessName] = useState('');
+    const [businessType, setBusinessType] = useState('');
+    const [businessAddress, setBusinessAddress] = useState('');
+    const [skuCount, setSkuCount] = useState('');
+    const router = useRouter();
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (businessName) {
+        router.push(`/marketplace?businessName=${encodeURIComponent(businessName)}`);
+      }
+    };
+  
+    return (
+      <section ref={signUpRef} className="bg-green-500 text-white py-20">
+        <div className="container mx-auto flex flex-col md:flex-row items-center">
+          <div className="md:w-1/2 mb-10 md:mb-0">
+            <h2 className="text-4xl font-bold mb-6">Sign up and unlock sales</h2>
+            <p className="text-xl mb-4">Increase your retail business to reach audiences on their doorsteps</p>
+            <Image
+              src="/images/boostsales.png"
+              alt="Bottom Left Image"
+              width={400}
+              height={400}
+              className="rounded-lg mx-20"
+            />
+          </div>
+          <div className="md:w-1/2 bg-white text-black p-8 rounded-lg">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                placeholder="Business Name"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg"
+              />
+              <input
+                type="text"
+                placeholder="Business Address"
+                value={businessAddress}
+                onChange={(e) => setBusinessAddress(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg"
+              />
+              <select
+                value={businessType}
+                onChange={(e) => setBusinessType(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
+              >
+                <option value="" disabled hidden>Select Business Type</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Grocery">Grocery (fresh produce, perishables, shelf-stable products, dairy goods, pre-packaged meals)</option>
+                <option value="Alcohol">Alcohol</option>
+                <option value="Convenience">Convenience (everyday products, shelf-stable products, hot food / ready to eat)</option>
+                <option value="Flower Shop">Flower Shop</option>
+                <option value="Pet Store">Pet Store</option>
+                <option value="Retail">Retail</option>
+                <option value="Order Food">I want to order food...</option>
+                <option value="Become Dasher">I want to become a Dasher...</option>
+              </select>
+              <select
+                value={skuCount}
+                onChange={(e) => setSkuCount(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
+              >
+                <option value="" disabled hidden>Total SKUs for Sale</option>
+                <option value="0-500">Less than 100</option>
+                <option value="500-1000">100 to 500</option>
+                <option value="1000-5000">500 to 1000</option>
+                <option value="5000+">1000 or more</option>
+              </select>
+              <div className="flex space-x-4">
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  className="w-1/2 p-2 border border-gray-300 rounded-lg"
+                  required
+                />
+                <input
+                  type="tel"
+                  placeholder="Business Phone"
+                  className="w-1/2 p-2 border border-gray-300 rounded-lg"
+                  required
+                />
+              </div>
+              <button type="submit" className="w-full h-10 bg-green-900 hover:bg-green-600 text-white rounded-full">
+                Start Free Trial
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    );
   };
-
-  return (
-    <section ref={signUpRef} className="bg-green-500 text-white py-20">
-      <div className="container mx-auto flex flex-col md:flex-row items-center">
-        <div className="md:w-1/2 mb-10 md:mb-0">
-          <h2 className="text-4xl font-bold mb-6">Sign Up and Unlock Sales</h2>
-          <p className="text-xl mb-4">Increase your retail business to reach audiences on their doorsteps</p>
-          <Image
-            src="/images/boostsales.png"
-            alt="Boost Sales"
-            width={400}
-            height={400}
-            className="rounded-lg mx-20"
-          />
-        </div>
-        <div className="md:w-1/2 bg-white text-black p-8 rounded-lg">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Business Name"
-              value={businessName}
-              onChange={(e) => setBusinessName(e.target.value)}
-              required
-              className="w-full p-2 border border-gray-300 rounded-lg"
-            />
-            <input
-              type="text"
-              placeholder="Business Address"
-              className="w-full p-2 border border-gray-300 rounded-lg"
-            />
-            <div className="flex space-x-4">
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="w-1/2 p-2 border border-gray-300 rounded-lg"
-              />
-              <input
-                type="tel"
-                placeholder="Business Phone"
-                className="w-1/2 p-2 border border-gray-300 rounded-lg"
-              />
-            </div>
-            <button type="submit" className="w-full h-10 bg-green-900 hover:bg-green-600 text-white rounded-full">
-              Start Free Trial
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
-};
 const GrowBrand = () => {
     return (
       <section className="bg-white py-20">
@@ -583,7 +618,13 @@ const Footer = () => (
 
 export default function BusinessPage() {
   const signUpRef = useRef(null);
+  const pricingRef = useRef(null); // Ref for the Pricing Section
 
+  const scrollToPricing = () => {
+    if (pricingRef.current) {
+      pricingRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   const scrollToSignup = () => {
     if (signUpRef.current) {
       signUpRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -592,7 +633,7 @@ export default function BusinessPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <Header scrollToPricing={scrollToSignup} /> {/* Pass the scrollToPricing function as a prop */}
       <main>
         <Hero scrollToSignup={scrollToSignup} />
         <GrowBrand/>

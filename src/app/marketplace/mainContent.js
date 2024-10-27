@@ -161,7 +161,7 @@ export default function MainContent({ selectedStep, onComplete }) {
     switch (selectedStep) {
       case 1:
         return (
-          <form onSubmit={handleSubmit} className="space-y-4 w-full">
+          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full">
             <h1 className="text-2xl font-bold text-black">How would you like to receive orders?</h1>
             <p className="text-lg text-gray-600">Choose a method to receive your orders. You can always change this later.</p>
 
@@ -192,7 +192,7 @@ export default function MainContent({ selectedStep, onComplete }) {
         );
       case 2:
         return (
-          <form onSubmit={handleSubmit} className="space-y-4 w-full">
+          <form onSubmit={handleSubmit} className=" mt-[-100px] space-y-4 w-full">
             <h1 className="text-2xl font-bold text-black">When are you open for business?</h1>
             <p className="text-lg text-gray-600">Let your customers know when you’re open for business. You can apply the same hours for all days or set different times for each day.</p>
 
@@ -215,7 +215,7 @@ export default function MainContent({ selectedStep, onComplete }) {
         );
       case 3:
         return (
-          <form onSubmit={handleSubmit} className="space-y-4 w-full text-center">
+          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full text-center">
             <h1 className="text-2xl font-bold text-black">Now, let’s add your menu</h1>
             <p className="text-lg text-gray-600">Provide a menu link or upload a menu file. You can always review and edit it before your store is live.</p>
             
@@ -260,7 +260,7 @@ export default function MainContent({ selectedStep, onComplete }) {
         );
       case 4: // Pricing Plan case
         return (
-          <form onSubmit={handleSubmit} className="space-y-4 w-full">
+          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full">
             <p className="text-lg text-gray-600 mb-8">
               Enjoy all our Marketplace plans with $0 credit card processing fee. Change or cancel your plan at any time.
             </p>
@@ -317,7 +317,7 @@ export default function MainContent({ selectedStep, onComplete }) {
         );
       case 5:
         return (
-          <form onSubmit={handleSubmit} className="space-y-4 w-full text-center">
+          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full text-center">
             <Input
               placeholder="Bank Account Number"
               name="bankAccount"
@@ -338,15 +338,15 @@ export default function MainContent({ selectedStep, onComplete }) {
       case 1:
         return (
           <>
-            <h1 className="text-3xl font-bold text-black">Now, let’s set your Order Method</h1>
-            <p className="text-lg text-gray-600">Add details about how customers can place orders.</p>
+            <h1 className="mt-[-150px] text-3xl font-bold text-black">Now, let’s set your Order Method</h1>
+            {/* <p className="mt-[-100px] text-lg text-gray-600">Add details about how customers can place orders.</p> */}
           </>
         );
       case 2:
         return (
           <>
-            <h1 className="text-3xl font-bold text-black">Set Your Store Hours</h1>
-            <p className="text-lg text-gray-600">Let your customers know when you’re open for business.</p>
+            <h1 className="mt-[-110px] text-3xl font-bold text-black">Set Your Store Hours</h1>
+            {/* <p className=" text-lg text-gray-600">Let your customers know when you’re open for business.</p> */}
           </>
         );
       case 3:
@@ -359,15 +359,15 @@ export default function MainContent({ selectedStep, onComplete }) {
       case 4:
         return (
           <>
-            <h1 className="text-3xl font-bold text-black">Choose a Pricing Plan</h1>
-            <p className="text-lg text-gray-600">Select a plan that fits your business needs.</p>
+            <h1 className="mt-[-150px] text-3xl font-bold text-black">Choose a Pricing Plan</h1>
+            <p className=" text-lg text-gray-600">Select a plan that fits your business needs.</p>
           </>
         );
       case 5:
         return (
           <>
-            <h1 className="text-3xl font-bold text-black">Add Your Bank Account</h1>
-            <p className="text-lg text-gray-600">Add your bank details to receive payments.</p>
+            <h1 className="mt-[-100px] text-3xl font-bold text-black">Add Your Bank Account</h1>
+            <p className="mt-[-100px] text-lg text-gray-600">Add your bank details to receive payments.</p>
           </>
         );
       default:

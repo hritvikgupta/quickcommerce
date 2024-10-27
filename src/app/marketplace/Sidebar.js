@@ -16,7 +16,7 @@ export default function Sidebar({ steps, selectedStep, onSelectStep }) {
   }, [searchParams]);
 
   return (
-    <div className="w-64 bg-white p-4 border-r border-gray-200 h-full">
+    <div className="ml-5 w-64 bg-white p-4 border-r border-gray-200 h-full">
       <div className="mb-4">
         <h3 className="font-bold text-black text-lg mb-4">{businessName || 'Your Store Name'}</h3>
         <span className="text-sm text-gray-500">Store</span>

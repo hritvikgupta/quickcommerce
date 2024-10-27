@@ -66,11 +66,8 @@ const Header = ({ scrollToPricing }) => {
         </div>
 
         <div className="flex space-x-2">
-          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-            <p className="text-white font-bold">Log In</p>
-          </Button>
-          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white">
-            <p className="text-white font-bold">Sign Up</p>
+          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToPricing}>
+            <p className="text-white font-bold">Get Started</p>
           </Button>
         </div>
       </div>
@@ -311,9 +308,12 @@ const HowItWorks = () => {
   };
   
 
-const SignUpForm = ({ signUpRef }) => {
+  const SignUpForm = ({ signUpRef }) => {
     const [businessName, setBusinessName] = useState('');
-    const router = useRouter(); // Now router should work correctly
+    const [businessType, setBusinessType] = useState('');
+    const [businessAddress, setBusinessAddress] = useState('');
+    const [skuCount, setSkuCount] = useState('');
+    const router = useRouter();
   
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -329,12 +329,12 @@ const SignUpForm = ({ signUpRef }) => {
             <h2 className="text-4xl font-bold mb-6">Sign up and unlock sales</h2>
             <p className="text-xl mb-4">Increase your retail business to reach audiences on their doorsteps</p>
             <Image
-          src="/images/boostsales.png"
-          alt="Bottom Left Image"
-          width={400}
-          height={400}
-          className="rounded-lg mx-20"
-        />
+              src="/images/boostsales.png"
+              alt="Bottom Left Image"
+              width={400}
+              height={400}
+              className="rounded-lg mx-20"
+            />
           </div>
           <div className="md:w-1/2 bg-white text-black p-8 rounded-lg">
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -349,18 +349,52 @@ const SignUpForm = ({ signUpRef }) => {
               <input
                 type="text"
                 placeholder="Business Address"
+                value={businessAddress}
+                onChange={(e) => setBusinessAddress(e.target.value)}
+                required
                 className="w-full p-2 border border-gray-300 rounded-lg"
               />
+              <select
+                value={businessType}
+                onChange={(e) => setBusinessType(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
+              >
+                <option value="" disabled hidden>Select Business Type</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Grocery">Grocery (fresh produce, perishables, shelf-stable products, dairy goods, pre-packaged meals)</option>
+                <option value="Alcohol">Alcohol</option>
+                <option value="Convenience">Convenience (everyday products, shelf-stable products, hot food / ready to eat)</option>
+                <option value="Flower Shop">Flower Shop</option>
+                <option value="Pet Store">Pet Store</option>
+                <option value="Retail">Retail</option>
+                <option value="Order Food">I want to order food...</option>
+                <option value="Become Dasher">I want to become a Dasher...</option>
+              </select>
+              <select
+                value={skuCount}
+                onChange={(e) => setSkuCount(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
+              >
+                <option value="" disabled hidden>Total SKUs for Sale</option>
+                <option value="0-500">Less than 100</option>
+                <option value="500-1000">100 to 500</option>
+                <option value="1000-5000">500 to 1000</option>
+                <option value="5000+">1000 or more</option>
+              </select>
               <div className="flex space-x-4">
                 <input
                   type="email"
                   placeholder="Email Address"
                   className="w-1/2 p-2 border border-gray-300 rounded-lg"
+                  required
                 />
                 <input
                   type="tel"
                   placeholder="Business Phone"
                   className="w-1/2 p-2 border border-gray-300 rounded-lg"
+                  required
                 />
               </div>
               <button type="submit" className="w-full h-10 bg-green-900 hover:bg-green-600 text-white rounded-full">
@@ -372,6 +406,7 @@ const SignUpForm = ({ signUpRef }) => {
       </section>
     );
   };
+  
   
 
 const FAQ = () => {
@@ -460,63 +495,64 @@ const Footer = () => (
       </div>
     </footer>
 );
-const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected }) => {
+const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected, skuRange }) => {
   return (
     <div
       onClick={onSelect}
-      className={`border-2 rounded-lg p-6 flex flex-col space-y-4 w-full md:w-1/3 transition-transform transform hover:scale-105 hover:shadow-lg ${
+      className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
         selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
       } min-h-[450px]`}
     >
       <div className="flex-grow">
-        {/* Title Section */}
         <h2 className="text-2xl font-bold text-black">{title}</h2>
+        
+        {/* SKU Range Section */}
+        <p className="text-md text-gray-700 font-medium mb-2">SKU Range: {skuRange}</p>
         
         {/* Pricing Section */}
         <div className="flex items-center space-x-2 mb-4">
-          <p className="text-xl text-red-500 line-through">{originalPrice}</p>
+          {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
           <p className="text-xl text-green-600 font-semibold">{price}</p>
         </div>
-        {/* Line Below Pricing */}
+        
         <hr className="border-gray-300 my-4" />
-  
+        
         {/* Commission and Description */}
         <p className="text-md font-medium text-black">{commission}</p>
         <p className="text-md text-gray-600 mb-4">{description}</p>
-  
+        
         {/* Features Section */}
         <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-          {features.map((feature, index) => (
+          {features.map((feature, index) =>
             feature.included ? (
               <li key={index} className="flex items-center text-sm">
                 <span className="text-green-600 mr-2">&#10003;</span>
                 {feature.name}
               </li>
             ) : null
-          ))}
+          )}
         </ul>
-
-        {/* Line Above Excluded Features */}
+        
         <hr className="border-gray-300 my-4" />
         
         {/* Excluded Features */}
         <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-          {features.map((feature, index) => (
+          {features.map((feature, index) =>
             !feature.included ? (
               <li key={index} className="flex items-center text-sm">
                 <span className="text-red-600 mr-2">&#10060;</span>
                 {feature.name}
               </li>
             ) : null
-          ))}
+          )}
         </ul>
       </div>
-
-      {/* Button positioned at the bottom */}
+      
       <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
     </div>
   );
 };
+
 
 const PricingSection = ({ pricingRef }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -540,6 +576,7 @@ const PricingSection = ({ pricingRef }) => {
       ],
       buttonText: "Select Starter",
       plan: 'starter',
+      skuRange: '0-500', // SKU range added
     },
     {
       title: "Basic Plan",
@@ -555,6 +592,7 @@ const PricingSection = ({ pricingRef }) => {
       ],
       buttonText: "Select Basic",
       plan: 'basic',
+      skuRange: '500-999', // SKU range added
     },
     {
       title: "Advanced Plan",
@@ -570,13 +608,13 @@ const PricingSection = ({ pricingRef }) => {
       ],
       buttonText: "Select Advanced",
       plan: 'advanced',
+      skuRange: '1000-4999', // SKU range added
     },
   ];
 
   return (
     <section ref={pricingRef} className="py-12 px-4 md:px-6 bg-white lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Link aligned to the right above the heading */}
+      <div className="max-w-screen-lg mx-auto">
         <div className="flex justify-end mb-4">
           <Link
             href="/pricing"
@@ -587,18 +625,15 @@ const PricingSection = ({ pricingRef }) => {
           </Link>
         </div>
   
-        {/* Centered heading */}
         <h2 className="text-4xl font-bold mb-6 text-center text-green-900">
           Platform Fee Starting Price Of just Rs 499 Rs For Small Retailers Of 50 Outlets or Less PAN India
         </h2>
   
-        {/* Subheading or description */}
         <p className="text-lg text-gray-600 mb-8 text-center">
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
         </p>
   
-        {/* Pricing Plan Cards */}
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+        <div className="flex flex-wrap justify-center gap-4"> {/* Flexbox centered container */}
           {plans.map((plan, index) => (
             <PricingPlanCard
               key={index}
@@ -611,6 +646,7 @@ const PricingSection = ({ pricingRef }) => {
               buttonText={plan.buttonText}
               onSelect={() => handlePlanSelect(plan.plan)}
               selected={selectedPlan === plan.plan}
+              skuRange={plan.skuRange} // Pass SKU Range to each card
             />
           ))}
         </div>
@@ -618,6 +654,8 @@ const PricingSection = ({ pricingRef }) => {
     </section>
   );
 };
+
+
 export default function BusinessPage() {
   const signUpRef = useRef(null); // Ref for the SignUpForm section
   const pricingRef = useRef(null); // Ref for the Pricing Section
