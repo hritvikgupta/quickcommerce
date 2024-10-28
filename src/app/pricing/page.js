@@ -212,7 +212,9 @@ const HowItWorks = () => {
       <div className="container mx-auto px-4 md:px-0">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-black mb-4">How to get your business on InstaMarkt</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-4">
+              How to get your business on InstaMarkt
+            </h2>
             <ul className="space-y-4 text-black text-base md:text-lg">
               <li>
                 <strong>1. Sign up and choose your partnership plan</strong>
@@ -228,17 +230,18 @@ const HowItWorks = () => {
               </li>
             </ul>
           </div>
+
           <div className="flex justify-center">
-            <video
-              ref={videoRef}
-              src="https://oeffyqfy88qvayhg.public.blob.vercel-storage.com/instamarktbusiness-8X2slbM7t6w4yZX7CRaJDjHwHreHle.mp4"
-              alt="InstaMarkt Store Setup"
-              className="w-full max-w-[600px] rounded-lg"
-              controls
-              autoPlay
-              loop
-              muted
-            />
+            <div className="w-full max-w-[600px] aspect-video rounded-lg overflow-hidden shadow-lg">
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                src="https://oeffyqfy88qvayhg.public.blob.vercel-storage.com/instamarktbusiness-8X2slbM7t6w4yZX7CRaJDjHwHreHle.mp4"
+                playsInline
+                controls
+                muted
+              />
+            </div>
           </div>
         </div>
       </div>
