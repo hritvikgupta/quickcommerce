@@ -4,107 +4,199 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Apple, ArrowRight, ChevronDown } from "lucide-react";
+import { Apple, ArrowRight, ChevronDown, Menu, X } from "lucide-react"; // Added Menu and X icons
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
-const Header = ({ scrollToSignup }) => { // Update to scrollToSignup
-    const router = useRouter();
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
-    const toggleDropdown = () => {
-      setIsDropdownOpen((prev) => !prev); // Toggle dropdown visibility
-    };
-  
-    return (
-      <header className="bg-white shadow-sm p-4">
-        <div className="flex justify-between items-center">
-          <Link href="/business" className="flex items-center space-x-2">
-            <Image
-              src="/images/insta_market_business.png"
-              alt="InstaMarkt Logo"
-              width={400}
-              height={150}
-              className="object-contain"
-            />
-          </Link>
-          <div className="hidden md:flex space-x-1">
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
-              Home
-            </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/pricing')}> {/* Updated to scrollToSignup */}
-              Pricing
-            </Button>
-            <div className="relative">
-              <button
-                className="font-bold mt-2 ml-4 text-green-900 hover:text-green-700 flex items-center pb-1"
-                onClick={toggleDropdown}
-              >
-                Services <ChevronDown className="ml-1" />
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute bg-white shadow-lg rounded-md mt-2 p-2 w-48 z-10">
-                  <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">Online Ordering</Link>
-                  <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">Delivery & Pickup</Link>
-                  <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">Promotions</Link>
-                </div>
-              )}
-            </div>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
-              Contact
-            </Button>
-            <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
-              About Us
-            </Button>
-            <Button variant="ghost" className="ml-[-10px] font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
-              Go To InstaMarkt Store
-            </Button>
-          </div>
-          <div className="flex space-x-2">
-            <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToSignup}> {/* Updated to scrollToSignup */}
-              <p className="text-white font-bold">Get Started</p>
-            </Button>
-          </div>
-        </div>
-      </header>
-    );
+const globalStyles = `
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const Header = ({ scrollToPricing, scrollToSignup }) => {
+  const router = useRouter();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
   };
 
-  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
 
-  const Hero = ({ scrollToSignup }) => (
-    <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 min-h-[550px] md:grid-cols-2 gap-8 items-center">
-        {/* Left side text content */}
-        <div>
-          <h1 className="text-4xl text-black md:text-5xl font-bold mb-4">Pick the Best Plan for Your Store</h1>
-          <p className="text-xl text-black mb-8">
-            Unlock more sales with products and services that help you scale and find new customers, improve profitability,
-            and take your business to the next level.
-          </p>
-          <Button
-            className="bg-green-900 hover:bg-green-700 rounded-full text-white"
-            onClick={scrollToSignup}  // Scrolls to the signup form when clicked
-          >
-            Get Started with InstaMarkt Business
+  return (
+    <header className="bg-white shadow-sm p-4">
+      <div className="flex justify-between items-center">
+        <Link href="/business" className="flex items-center space-x-2">
+          <Image
+            src="/images/insta_market_business.png"
+            alt="InstaMarkt Logo"
+            width={200}
+            height={75}
+            className="object-contain"
+          />
+        </Link>
+
+        {/* Mobile Menu Button */}
+        <button className="md:hidden" onClick={toggleMobileMenu}>
+          {isMobileMenuOpen ? (
+            <X className="h-6 w-6 text-green-900" />
+          ) : (
+            <Menu className="h-6 w-6 text-green-900" />
+          )}
+        </button>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex space-x-1">
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
+            Home
+          </Button>
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={scrollToPricing}>
+            Pricing
+          </Button>
+          
+          {/* Services Dropdown */}
+          <div className="relative">
+            <button
+              className="font-bold mt-2 ml-4 text-green-900 hover:text-green-700 flex items-center pb-1"
+              onClick={toggleDropdown}
+            >
+              Services <ChevronDown className="ml-1" />
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute bg-white shadow-lg rounded-md mt-2 p-2 w-48 z-10">
+                <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">Online Ordering</Link>
+                <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">Delivery & Pickup</Link>
+                <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">Promotions</Link>
+              </div>
+            )}
+          </div>
+
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
+            Contact
+          </Button>
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
+            About Us
+          </Button>
+          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
+            Go To InstaMarkt Store
           </Button>
         </div>
-  
-        {/* Right side image content */}
-        <div className="flex justify-center">
-          <Image
-            src="/images/customer_selling.png" // Replace with your image path
-            alt="InstaMarkt Business Plans"
-            width={500}
-            height={400}
-            className="object-cover rounded-lg"
-          />
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="absolute top-16 left-0 right-0 bg-white shadow-lg z-50 md:hidden">
+            <div className="flex flex-col p-4 space-y-3">
+              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/business')}>
+                Home
+              </Button>
+              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={scrollToPricing}>
+                Pricing
+              </Button>
+              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                Services {isDropdownOpen ? <ChevronDown className="inline ml-2" /> : <ChevronDown className="inline ml-2" />}
+              </Button>
+              {isDropdownOpen && (
+                <div className="pl-4 space-y-2">
+                  <Link href="/services/onlineordering" className="block py-2 text-green-900">Online Ordering</Link>
+                  <Link href="/services/deliveryandpickup" className="block py-2 text-green-900">Delivery & Pickup</Link>
+                  <Link href="/services/promotions" className="block py-2 text-green-900">Promotions</Link>
+                </div>
+              )}
+              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/contact')}>
+                Contact
+              </Button>
+              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/aboutus')}>
+                About Us
+              </Button>
+              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/')}>
+                Go To InstaMarkt Store
+              </Button>
+            </div>
+          </div>
+        )}
+
+        <div className="hidden md:flex space-x-2">
+          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToSignup}>
+            <p className="text-white font-bold">Get Started</p>
+          </Button>
         </div>
       </div>
-    </section>
+    </header>
   );
+};
+
   
+
+const Hero = ({ scrollToSignup, scrollToPricing }) => (
+  <section className="relative py-12 md:py-16 lg:py-20 px-4 md:px-6 bg-white lg:px-8 overflow-hidden">
+    <div className="max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+        {/* Left side text content */}
+        <div className="relative z-10 text-center md:text-left">
+          <div className="space-y-6 md:space-y-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-black font-bold leading-tight">
+              Pick the Best Plan for Your Store
+            </h1>
+            <p className="text-lg md:text-xl text-black/80 leading-relaxed max-w-xl mx-auto md:mx-0">
+              Unlock more sales with products and services that help you scale and find new customers, improve profitability,
+              and take your business to the next level.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <Button
+                className="w-full sm:w-auto bg-green-900 hover:bg-green-700 rounded-full text-white px-8 py-4 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200"
+                onClick={scrollToSignup}
+              >
+                Get Started Now
+              </Button>
+              {/* <Button
+                variant="outline"
+                className="w-full sm:w-auto border-2 border-green-900 text-green-900 hover:bg-green-50 rounded-full px-8 py-4 text-lg font-medium"
+                onClick={scrollToPricing}
+              >
+                View Pricing
+              </Button> */}
+            </div>
+            {/* Trust badges or social proof */}
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <p className="text-sm text-gray-600 mb-3">Trusted by leading brands</p>
+              <div className="flex flex-wrap justify-center md:justify-start gap-6">
+                <span className="text-gray-400 text-sm">🏆 4.9/5 Rating</span>
+                <span className="text-gray-400 text-sm">💫 1000+ Stores</span>
+                <span className="text-gray-400 text-sm">🌟 Top Rated Service</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right side image content */}
+        <div className="relative mt-8 md:mt-0">
+          <div className="absolute inset-0 bg-gradient-to-tr from-green-50 to-transparent rounded-full filter blur-3xl opacity-70"></div>
+          <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full">
+            <Image
+              src="/images/customer_selling.png"
+              alt="InstaMarkt Business Plans"
+              layout="fill"
+              objectFit="contain"
+              className="rounded-lg transform hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div className="absolute -top-4 -right-4 w-24 h-24 bg-green-100 rounded-full opacity-50"></div>
+          <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-green-50 rounded-full opacity-50"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 
 const HowItWorks = () => {
   const videoRef = useRef(null);
@@ -117,37 +209,37 @@ const HowItWorks = () => {
 
   return (
     <section className="bg-white py-20">
-      <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 className="text-3xl font-bold text-black mb-4">How to Get Your Business on InstaMarkt</h2>
-          <ul className="space-y-4 text-black text-lg">
-            <li>
-              <strong>1. Sign Up and Choose Your Partnership Plan</strong>
-              <p>Add store details, products, prices, and business hours to start with InstaMarkt.</p>
-            </li>
-            <li>
-              <strong>2. Set Up Your Delivery Options</strong>
-              <p>Integrate your inventory system or choose from our delivery management tools.</p>
-            </li>
-            <li>
-              <strong>3. Start Receiving Orders</strong>
-              <p>Activate your store on InstaMarkt and start managing orders to grow your business.</p>
-            </li>
-          </ul>
-        </div>
-        <div className="flex justify-center">
-          <video
-            ref={videoRef}
-            src="/images/instamarktbusiness.mp4"
-            alt="InstaMarkt Store Setup"
-            width="600"
-            height="400"
-            className="rounded-lg"
-            controls
-            autoPlay
-            loop
-            muted
-          />
+      <div className="container mx-auto px-4 md:px-0">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-4">How to get your business on InstaMarkt</h2>
+            <ul className="space-y-4 text-black text-base md:text-lg">
+              <li>
+                <strong>1. Sign up and choose your partnership plan</strong>
+                <p>Add store details, products, prices, and business hours to start with InstaMarkt.</p>
+              </li>
+              <li>
+                <strong>2. Set up your delivery options</strong>
+                <p>Integrate your inventory system or choose from our delivery management tools.</p>
+              </li>
+              <li>
+                <strong>3. Start receiving orders</strong>
+                <p>Activate your store on InstaMarkt and start managing orders to grow your business.</p>
+              </li>
+            </ul>
+          </div>
+          <div className="flex justify-center">
+            <video
+              ref={videoRef}
+              src="https://oeffyqfy88qvayhg.public.blob.vercel-storage.com/instamarktbusiness-8X2slbM7t6w4yZX7CRaJDjHwHreHle.mp4"
+              alt="InstaMarkt Store Setup"
+              className="w-full max-w-[600px] rounded-lg"
+              controls
+              autoPlay
+              loop
+              muted
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -158,89 +250,203 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
   return (
     <div
       onClick={onSelect}
-      className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
+      className={`border-2 rounded-lg p-4 md:p-6 flex flex-col space-y-3 md:space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
         selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-      } min-h-[450px]`}
+      } min-h-[400px] md:min-h-[450px] w-full`}
     >
       <div className="flex-grow">
-        <h2 className="text-2xl font-bold text-black">{title}</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-black">{title}</h2>
         
-        {/* SKU Range Section */}
-        <p className="text-md text-gray-700 font-medium mb-2">SKU Range: {skuRange}</p>
+        <p className="text-sm md:text-md text-gray-700 font-medium mb-2">
+          SKU Range: {skuRange}
+        </p>
         
-        {/* Pricing Section */}
-        <div className="flex items-center space-x-2 mb-4">
-          {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
-          <p className="text-xl text-green-600 font-semibold">{price}</p>
+        <div className="flex items-center flex-wrap gap-2 mb-3 md:mb-4">
+          {originalPrice && (
+            <p className="text-lg md:text-xl text-red-500 line-through">
+              {originalPrice}
+            </p>
+          )}
+          <p className="text-lg md:text-xl text-green-600 font-semibold">
+            {price}
+          </p>
         </div>
         
-        <hr className="border-gray-300 my-4" />
+        <hr className="border-gray-300 my-3 md:my-4" />
         
-        {/* Commission and Description */}
-        <p className="text-md font-medium text-black">{commission}</p>
-        <p className="text-md text-gray-600 mb-4">{description}</p>
+        <p className="text-sm md:text-md font-medium text-black">{commission}</p>
+        <p className="text-sm md:text-md text-gray-600 mb-3 md:mb-4">{description}</p>
         
-        {/* Features Section */}
-        <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
+        <ul className="list-none space-y-1 mb-3 md:mb-4">
           {features.map((feature, index) =>
             feature.included ? (
-              <li key={index} className="flex items-center text-sm">
-                <span className="text-green-600 mr-2">&#10003;</span>
-                {feature.name}
+              <li key={index} className="flex items-start text-sm">
+                <span className="text-green-600 mr-2 mt-0.5">&#10003;</span>
+                <span className="text-gray-600">{feature.name}</span>
               </li>
             ) : null
           )}
         </ul>
         
-        <hr className="border-gray-300 my-4" />
+        <hr className="border-gray-300 my-3 md:my-4" />
         
-        {/* Excluded Features */}
-        <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
+        <ul className="list-none space-y-1 mb-3 md:mb-4">
           {features.map((feature, index) =>
             !feature.included ? (
-              <li key={index} className="flex items-center text-sm">
-                <span className="text-red-600 mr-2">&#10060;</span>
-                {feature.name}
+              <li key={index} className="flex items-start text-sm">
+                <span className="text-red-600 mr-2 mt-0.5">&#10060;</span>
+                <span className="text-gray-600">{feature.name}</span>
               </li>
             ) : null
           )}
         </ul>
       </div>
       
-      <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
+      <div className="space-y-3">
+        <Button className="bg-green-900 w-full hover:bg-green-700 rounded-full text-white py-3">
+          {buttonText}
+        </Button>
+        <Link 
+          href="/contact" 
+          className="block text-center text-sm text-green-600 hover:text-green-700 underline"
+        >
+          Contact Sales for Query
+        </Link>
+      </div>
     </div>
   );
 };
 
-// Updated PricingSection to include SKU Range for each card
 const PricingSection = ({ title, plans }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollRef = useRef(null);
 
   const handlePlanSelect = (plan) => {
     setSelectedPlan(plan);
   };
 
+  // Function to scroll to specific slide
+  const scrollToSlide = (index) => {
+    if (scrollRef.current) {
+      const cardWidth = scrollRef.current.clientWidth;
+      scrollRef.current.scrollTo({
+        left: index * cardWidth,
+        behavior: 'smooth'
+      });
+      setCurrentIndex(index);
+    }
+  };
+
+  // Navigation handlers
+  const handleNext = () => {
+    const nextSlide = currentIndex + 1;
+    if (nextSlide < plans.length) {
+      scrollToSlide(nextSlide);
+    }
+  };
+
+  const handlePrev = () => {
+    const prevSlide = currentIndex - 1;
+    if (prevSlide >= 0) {
+      scrollToSlide(prevSlide);
+    }
+  };
+
+  // Handle scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const scrollPosition = scrollRef.current.scrollLeft;
+        const cardWidth = scrollRef.current.clientWidth;
+        const newActiveSlide = Math.round(scrollPosition / cardWidth);
+        setCurrentIndex(newActiveSlide);
+      }
+    };
+
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   return (
-    <section className="py-12 px-4 md:px-6 bg-white lg:px-8">
+    <section className="py-8 md:py-12 px-4 md:px-6 bg-white lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-6 text-center text-green-900">{title}</h2>
-        <p className="text-lg text-gray-600 mb-8 text-center">
+        {/* Heading */}
+        <h2 className="text-3xl md:text-4xl font-bold text-green-900 text-center mb-2 md:mb-4">
+          {title}
+        </h2>
+
+        {/* Contact Sales Link */}
+        <Link
+          href="/contact"
+          className="text-sm text-green-600 hover:text-green-700 flex items-center justify-center mb-4 md:mb-6"
+        >
+          Contact Sales for Query
+          <ArrowRight className="ml-1 h-4 w-4" />
+        </Link>
+
+        <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8 text-center px-4">
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
         </p>
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+
+        {/* Mobile view with single card carousel */}
+        <div className="relative md:hidden">
+          {/* Scrollable container */}
+          <div
+            ref={scrollRef}
+            className="overflow-x-auto scrollbar-hide"
+            style={{ scrollSnapType: 'x mandatory' }}
+          >
+            <div
+              className="flex"
+              style={{ width: `${plans.length * 100}%` }}
+            >
+              {plans.map((plan, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0"
+                  style={{ width: `${100 / plans.length}%` }}
+                >
+                  <div className="px-4">
+                    <PricingPlanCard
+                      {...plan}
+                      onSelect={() => handlePlanSelect(plan.plan)}
+                      selected={selectedPlan === plan.plan}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+
+          {/* Navigation Arrows */}
+          <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center px-2">
+            {/* ... existing navigation buttons ... */}
+          </div>
+
+          {/* Carousel indicators */}
+          <div className="flex justify-center items-center space-x-3 mt-6">
+            {/* ... existing carousel indicators ... */}
+          </div>
+
+          {/* Current Plan Indicator */}
+          <div className="text-center mt-4 text-sm font-medium text-gray-600">
+            {currentIndex + 1} of {plans.length} - {plans[currentIndex].title}
+          </div>
+        </div>
+
+        {/* Desktop grid layout */}
+        <div className="hidden md:grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {plans.map((plan, index) => (
             <PricingPlanCard
               key={index}
-              title={plan.title}
-              originalPrice={plan.originalPrice}
-              price={plan.price}
-              commission={plan.commission}
-              description={plan.description}
-              features={plan.features}
-              buttonText={plan.buttonText}
+              {...plan}
               onSelect={() => handlePlanSelect(plan.plan)}
               selected={selectedPlan === plan.plan}
-              skuRange={plan.skuRange} // Pass SKU Range to each card
             />
           ))}
         </div>
@@ -249,7 +455,17 @@ const PricingSection = ({ title, plans }) => {
   );
 };
 
-  
+
+// Add to your global CSS
+const styles = `
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+`;
   const AdditionalPricingOptionsSection = () => {
     return (
       <section className="py-12 px-4 md:px-6 bg-gray-100 lg:px-8">
@@ -517,94 +733,172 @@ const SignUpForm = ({ signUpRef }) => {
   const [businessType, setBusinessType] = useState('');
   const [businessAddress, setBusinessAddress] = useState('');
   const [skuCount, setSkuCount] = useState('');
+  const [businessEmail, setBusinessEmail] = useState('');
+  const [businessPhone, setBusinessPhone] = useState('');
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (businessName) {
       router.push(`/marketplace?businessName=${encodeURIComponent(businessName)}`);
+
+      const businessData = {
+        fields: {
+          Name: businessName,
+          Type: businessType,
+          Address: businessAddress.trim(),
+          "SKU Count": skuCount,
+          "Business Email": businessEmail,
+          "Business Phone": businessPhone,
+          Status: 'Pending'
+        }
+      };
+
+      try {
+        const businessResponse = await axios.post(
+          `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table`,
+          businessData,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        const businessRecordId = businessResponse.data.id;
+        console.log("Business record ID:", businessRecordId);
+
+      } catch (error) {
+        console.error("Error adding data to Airtable:", error);
+        console.error("Error details:", error.response ? error.response.data : "No response data");
+      }
     }
   };
 
   return (
     <section ref={signUpRef} className="bg-green-500 text-white py-20">
-      <div className="container mx-auto flex flex-col md:flex-row items-center">
-        <div className="md:w-1/2 mb-10 md:mb-0">
-          <h2 className="text-4xl font-bold mb-6">Sign up and unlock sales</h2>
-          <p className="text-xl mb-4">Increase your retail business to reach audiences on their doorsteps</p>
-          <Image
-            src="/images/boostsales.png"
-            alt="Bottom Left Image"
-            width={400}
-            height={400}
-            className="rounded-lg mx-20"
-          />
-        </div>
-        <div className="md:w-1/2 bg-white text-black p-8 rounded-lg">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Business Name"
-              value={businessName}
-              onChange={(e) => setBusinessName(e.target.value)}
-              required
-              className="w-full p-2 border border-gray-300 rounded-lg"
-            />
-            <input
-              type="text"
-              placeholder="Business Address"
-              value={businessAddress}
-              onChange={(e) => setBusinessAddress(e.target.value)}
-              required
-              className="w-full p-2 border border-gray-300 rounded-lg"
-            />
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              required
-              className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
-            >
-              <option value="" disabled hidden>Select Business Type</option>
-              <option value="Restaurant">Restaurant</option>
-              <option value="Grocery">Grocery (fresh produce, perishables, shelf-stable products, dairy goods, pre-packaged meals)</option>
-              <option value="Alcohol">Alcohol</option>
-              <option value="Convenience">Convenience (everyday products, shelf-stable products, hot food / ready to eat)</option>
-              <option value="Flower Shop">Flower Shop</option>
-              <option value="Pet Store">Pet Store</option>
-              <option value="Retail">Retail</option>
-              <option value="Order Food">I want to order food...</option>
-              <option value="Become Dasher">I want to become a Dasher...</option>
-            </select>
-            <select
-              value={skuCount}
-              onChange={(e) => setSkuCount(e.target.value)}
-              required
-              className="w-full p-2 border border-gray-300 rounded-lg text-gray-500"
-            >
-              <option value="" disabled hidden>Total SKUs for Sale</option>
-              <option value="0-500">Less than 100</option>
-              <option value="500-1000">100 to 500</option>
-              <option value="1000-5000">500 to 1000</option>
-              <option value="5000+">1000 or more</option>
-            </select>
-            <div className="flex space-x-4">
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="w-1/2 p-2 border border-gray-300 rounded-lg"
-                required
-              />
-              <input
-                type="tel"
-                placeholder="Business Phone"
-                className="w-1/2 p-2 border border-gray-300 rounded-lg"
-                required
-              />
-            </div>
-            <button type="submit" className="w-full h-10 bg-green-900 hover:bg-green-600 text-white rounded-full">
-              Start Free Trial
-            </button>
-          </form>
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex flex-col md:flex-row items-start justify-between max-w-6xl mx-auto">
+          {/* Left side content */}
+          <div className="w-full md:w-5/12 mb-10 md:mb-0 md:pr-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
+              Sign up and unlock sales
+            </h2>
+            <p className="text-lg md:text-xl leading-relaxed">
+              Increase your retail business to reach audiences on their doorsteps.
+              Join thousands of businesses that trust us with their delivery needs.
+            </p>
+            <ul className="mt-8 space-y-4">
+              <li className="flex items-center">
+                <span className="mr-3">✓</span>
+                Quick and easy setup
+              </li>
+              <li className="flex items-center">
+                <span className="mr-3">✓</span>
+                No hidden fees
+              </li>
+              <li className="flex items-center">
+                <span className="mr-3">✓</span>
+                24/7 support team
+              </li>
+            </ul>
+          </div>
+
+          {/* Right side form */}
+          <div className="w-full md:w-6/12 bg-white rounded-lg shadow-xl p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">Business Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter your business name"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">Business Address</label>
+                <input
+                  type="text"
+                  placeholder="Enter your business address"
+                  value={businessAddress}
+                  onChange={(e) => setBusinessAddress(e.target.value)}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">Business Type</label>
+                <select
+                  value={businessType}
+                  onChange={(e) => setBusinessType(e.target.value)}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  <option value="" disabled hidden>Select Business Type</option>
+                  <option value="Restaurant">Restaurant</option>
+                  <option value="Grocery">Grocery</option>
+                  <option value="Alcohol">Alcohol</option>
+                  <option value="Convenience">Convenience</option>
+                  <option value="Flower Shop">Flower Shop</option>
+                  <option value="Pet Store">Pet Store</option>
+                  <option value="Retail">Retail</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">Total SKUs</label>
+                <select
+                  value={skuCount}
+                  onChange={(e) => setSkuCount(e.target.value)}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  <option value="" disabled hidden>Total SKUs for Sale</option>
+                  <option value="0-500">Less than 100</option>
+                  <option value="500-1000">100 to 500</option>
+                  <option value="1000-5000">500 to 1000</option>
+                  <option value="5000+">1000 or more</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">Business Email</label>
+                <input
+                  type="email"
+                  placeholder="Enter your business email"
+                  value={businessEmail}
+                  onChange={(e) => setBusinessEmail(e.target.value)}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">Business Phone</label>
+                <input
+                  type="tel"
+                  placeholder="Enter your business phone"
+                  value={businessPhone}
+                  onChange={(e) => setBusinessPhone(e.target.value)}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="w-full p-3 bg-green-900 hover:bg-green-700 text-white rounded-full font-medium transition-colors duration-200"
+              >
+                Start Free Trial
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
@@ -627,8 +921,8 @@ const FAQ = () => {
 
   return (
     <section className="py-20 bg-black text-white">
-      <div className="container mx-auto">
-        <h2 className="text-3xl font-bold mb-8 text-center text-white">Frequently Asked Questions</h2>
+      <div className="container mx-auto px-4 md:px-0">
+        <h2 className="text-3xl font-bold mb-8 text-center text-white">Frequently asked questions</h2>
         <div className="space-y-4">
           {questions.map((q, index) => (
             <div key={index} className="border-b pb-4 border-gray-500">
@@ -648,74 +942,77 @@ const FAQ = () => {
   );
 };
 
+
 const Footer = () => (
   <footer className="bg-gray-100 py-12">
-    <div className="container mx-auto grid md:grid-cols-5 gap-8">
-      <div>
-        <h3 className="font-semibold mb-4 text-black">Get Deliveries with InstaMarkt</h3>
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm" className="text-black border-green-900">
-            <Apple className="mr-2 h-4 w-4" /> iOS
-          </Button>
-          <Button variant="outline" size="sm" className="text-black border-green-900">
-            <ArrowRight className="mr-2 h-4 w-4" /> Android
-          </Button>
+    <div className="container mx-auto px-4 md:px-0 grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div>
+          <h3 className="font-semibold mb-4 text-black">Get deliveries with InstaMarkt</h3>
+          <div className="flex space-x-2">
+            <Button variant="outline" size="sm" className="text-black border-green-900">
+              <Apple className="mr-2 h-4 w-4" /> iOS
+            </Button>
+            <Button variant="outline" size="sm" className="text-black border-green-900">
+              <ArrowRight className="mr-2 h-4 w-4" /> Android
+            </Button>
+          </div>
+        </div>
+        {[
+          { title: "Popular Departments", items: ["Fashion", "Electronics", "Home Essentials", "Beauty & Personal Care", "Health & Wellness"] },
+          { title: "More Departments", items: ["Alcohol", "Beverages", "Frozen Food", "Organic Grocery"] },
+          { title: "Get to Know Us", items: ["Press", "Careers", "Blog", "Ideas & Guides", "Help"] },
+          { title: "Groceries & Essentials", items: ["Grocery", "Dairy Products", "Meat", "Seafood", "Pantry Food"] }
+        ].map((column, index) => (
+          <div key={index}>
+            <h3 className="font-semibold mb-4 text-black">{column.title}</h3>
+            <ul className="space-y-2">
+              {column.items.map((item, itemIndex) => (
+                <li key={itemIndex}>
+                  <Link href="#" className="text-black hover:text-gray-700">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div className="container mx-auto mt-8 pt-8 border-t border-gray-300">
+        <div className="flex justify-between items-center">
+          <p className="text-black">&copy; 2024 InstaMarkt</p>
+          <div className="flex space-x-4">
+            <Link href="#" className="text-black hover:text-gray-700">
+              Terms of Service
+            </Link>
+            <Link href="#" className="text-black hover:text-gray-700">
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
-      {[
-        {
-          title: "Popular Departments",
-          items: ["Fashion", "Electronics", "Home Essentials", "Beauty & Personal Care", "Health & Wellness"],
-        },
-        { title: "More Departments", items: ["Alcohol", "Beverages", "Frozen Food", "Organic Grocery"] },
-        { title: "Get to Know Us", items: ["Press", "Careers", "Blog", "Ideas & Guides", "Help"] },
-        { title: "Groceries & Essentials", items: ["Grocery", "Dairy Products", "Meat", "Seafood", "Pantry Food"] },
-      ].map((column, index) => (
-        <div key={index}>
-          <h3 className="font-semibold mb-4 text-black">{column.title}</h3>
-          <ul className="space-y-2">
-            {column.items.map((item, itemIndex) => (
-              <li key={itemIndex}>
-                <Link href="#" className="text-black hover:text-gray-700">
-                  {item}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-    <div className="container mx-auto mt-8 pt-8 border-t border-gray-300">
-      <div className="flex justify-between items-center">
-        <p className="text-black">&copy; 2024 InstaMarkt</p>
-        <div className="flex space-x-4">
-          <Link href="#" className="text-black hover:text-gray-700">
-            Terms of Service
-          </Link>
-          <Link href="#" className="text-black hover:text-gray-700">
-            Privacy Policy
-          </Link>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 );
 
 export default function BusinessPage() {
   const signUpRef = useRef(null);
+  const pricingRef = useRef(null);
 
   const scrollToSignup = () => {
     if (signUpRef.current) {
       signUpRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  
+  const scrollToPricing = () => {
+    if (pricingRef.current) {
+      pricingRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header scrollToSignup={scrollToSignup} /> {/* Pass scrollToSignup here */}
       <main>
-        <Hero scrollToSignup={scrollToSignup} />
+        <Hero scrollToSignup={scrollToSignup} scrollToPricing={scrollToPricing} />
 
         {/* Pricing Sections */}
         <PricingSection

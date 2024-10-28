@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import axios from 'axios';
+
 
 // Define custom Input and Button directly in the file
 const Input = ({ className = '', ...props }) => {
@@ -44,32 +46,223 @@ const RadioButton = ({ label, description, value, checked, onChange }) => {
 };
 
 // Define the PricingPlanCard component
-const PricingPlanCard = ({ title, price, commission, description, features, buttonText, onSelect, selected }) => {
-  return (
-    <div
-      className={`border-2 rounded-lg p-6 space-y-4 text-left w-full md:w-1/3 transition-colors transform hover:scale-105 
-      ${selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'} 
-      hover:border-green-600 hover:bg-green-100 flex flex-col justify-between`} // Added flex and justify-between
-      onClick={onSelect}
-    >
+// const PricingPlanCard = ({ title, price, commission, description, features, buttonText, onSelect, selected }) => {
+//   return (
+//     <div
+//       className={`border-2 rounded-lg p-6 space-y-4 text-left w-full md:w-1/3 transition-colors transform hover:scale-105 
+//       ${selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'} 
+//       hover:border-green-600 hover:bg-green-100 flex flex-col justify-between`} // Added flex and justify-between
+//       onClick={onSelect}
+//     >
+//       <h2 className="text-2xl font-bold text-black">{title}</h2>
+//       <p className="text-xl text-green-600 font-semibold">{price}</p>
+//       <p className="text-md text-gray-600">{commission}</p>
+//       <p className="text-sm text-gray-600 mb-4">{description}</p>
+//       <ul className="list-disc ml-6 text-gray-600">
+//         {features.map((feature, index) => (
+//           <li key={index} className="text-sm">{feature}</li>
+//         ))}
+//       </ul>
+//       <Button className="mt-6 w-full">{buttonText}</Button>
+//     </div>
+//   );
+// };
+
+const smallScalePlans = [
+  {
+    title: "Starter Plan",
+    originalPrice: "Rs 999",
+    price: "Rs 499 for 7 Days",
+    commission: "12% per order",
+    description: "Ideal for new small businesses. No delivery charges of first 200 orders",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Basic Support", included: true },
+      { name: "Limited Reach", included: false },
+      { name: "Premium Listing", included: false },
+    ],
+    buttonText: "Select Starter",
+    plan: 'starter',
+    skuRange: '0-500', // SKU range for small retailers
+  },
+  {
+    title: "Basic Plan",
+    originalPrice: "Rs 1,499",
+    price: "Rs 1,099 for 30 Days",
+    commission: "10% per order",
+    description: "Grow your small business.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Standard Support", included: true },
+      { name: "Expanded Reach", included: true },
+      { name: "Premium Listing", included: false },
+    ],
+    buttonText: "Select Basic",
+    plan: 'basic',
+    skuRange: '500-999',
+  },
+  {
+    title: "Advanced Plan",
+    originalPrice: "Rs 2,499",
+    price: "Rs 2,099 for 60 Days",
+    commission: "8% per order",
+    description: "Maximize your small business potential.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Priority Support", included: true },
+      { name: "Expanded Reach", included: true },
+      { name: "Premium Listing", included: true },
+    ],
+    buttonText: "Select Advanced",
+    plan: 'advanced',
+    skuRange: '1000-4999',
+  },
+];
+
+// Plans for Medium Scale Retailers
+const mediumScalePlans = [
+  {
+    title: "Growth Plan",
+    originalPrice: "Rs 4,999",
+    price: "Rs 4,499 for 10 Days",
+    commission: "15% per order",
+    description: "Scale your medium business.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Standard Support", included: true },
+      { name: "Expanded Reach", included: true },
+      { name: "Access Premium Customers", included: false },
+    ],
+    buttonText: "Select Growth",
+    plan: 'growth',
+    skuRange: '0-500', // SKU range for medium retailers
+  },
+  {
+    title: "Premium Plan",
+    originalPrice: "Rs 8,999",
+    price: "Rs 7,999 for 30 Days",
+    commission: "12% per order",
+    description: "Expand your medium business reach.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Priority Support", included: true },
+      { name: "Expanded Reach", included: true },
+      { name: "Access Premium Customers", included: true },
+    ],
+    buttonText: "Select Premium",
+    plan: 'premium',
+    skuRange: '500-999',
+  },
+  {
+    title: "Enterprise Plan",
+    originalPrice: "Rs 15,999",
+    price: "Rs 14,999 for 60 Days",
+    commission: "10% per order",
+    description: "Maximize your medium business growth.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Dedicated Support", included: true },
+      { name: "Expanded Reach", included: true },
+      { name: "Access Premium Customers", included: true },
+      { name: "Growth Guarantee", included: true },
+    ],
+    buttonText: "Select Enterprise",
+    plan: 'enterprise',
+    skuRange: '1000-4999',
+  },
+];
+
+// Plans for Large Scale Retailers
+const largeScalePlans = [
+  {
+    title: "Pro Plan",
+    originalPrice: "Rs 25,999",
+    price: "Rs 23,999 for 10 Days",
+    commission: "20% per order",
+    description: "Ideal for large retailers seeking expansion.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Priority Support", included: true },
+      { name: "Expanded Reach", included: true },
+      { name: "Access Premium Customers", included: true },
+    ],
+    buttonText: "Select Pro",
+    plan: 'pro',
+    skuRange: '500-999', // SKU range for large retailers
+  },
+  {
+    title: "Elite Plan",
+    originalPrice: "Rs 45,999",
+    price: "Rs 42,999 for 60 Days",
+    commission: "15% per order",
+    description: "For large retailers wanting maximum visibility.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Dedicated Support", included: true },
+      { name: "Maximum Reach", included: true },
+      { name: "Access Premium Customers", included: true },
+      { name: "Premium Listing", included: true },
+    ],
+    buttonText: "Select Elite",
+    plan: 'elite',
+    skuRange: '1000-4999',
+  },
+  {
+    title: "Ultimate Plan",
+    originalPrice: "Rs 75,999",
+    price: "Rs 69,999 for 180 Days",
+    commission: "12% per order",
+    description: "The best plan for large retailers.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Dedicated Support", included: true },
+      { name: "Maximum Reach", included: true },
+      { name: "Access Premium Customers", included: true },
+      { name: "Premium Listing", included: true },
+      { name: "Growth Guarantee", included: true },
+    ],
+    buttonText: "Select Ultimate",
+    plan: 'ultimate',
+    skuRange: '5000+',
+  },
+];
+const PricingPlanCard = ({ title, originalPrice, price, commission, description, features, buttonText, onSelect, selected, skuRange }) => (
+  <div
+    onClick={onSelect}
+    className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
+      selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
+    } min-h-[450px]`}
+  >
+    <div className="flex-grow">
       <h2 className="text-2xl font-bold text-black">{title}</h2>
-      <p className="text-xl text-green-600 font-semibold">{price}</p>
-      <p className="text-md text-gray-600">{commission}</p>
-      <p className="text-sm text-gray-600 mb-4">{description}</p>
-      <ul className="list-disc ml-6 text-gray-600">
+      <p className="text-md text-gray-700 font-medium mb-2">SKU Range: {skuRange}</p>
+      <div className="flex items-center space-x-2 mb-4">
+        {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
+        <p className="text-xl text-green-600 font-semibold">{price}</p>
+      </div>
+      <hr className="border-gray-300 my-4" />
+      <p className="text-md font-medium text-black">{commission}</p>
+      <p className="text-md text-gray-600 mb-4">{description}</p>
+      <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
         {features.map((feature, index) => (
-          <li key={index} className="text-sm">{feature}</li>
+          <li key={index} className="text-sm flex items-center">
+            <span className={`${feature.included ? 'text-green-600' : 'text-red-600'} mr-2`}>{feature.included ? '✓' : '✗'}</span>
+            {feature.name}
+          </li>
         ))}
       </ul>
-      <Button className="mt-6 w-full">{buttonText}</Button>
     </div>
-  );
-};
+    <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
+  </div>
+);
 
-export default function MainContent({ selectedStep, onComplete }) {
+export default function MainContent({ selectedStep, onComplete, businessName }) {
+  
   const [applySameHours, setApplySameHours] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState('');
+  const [selectedOrderMethod, setSelectedOrderMethod] = useState('');
   const [menuOption, setMenuOption] = useState('');
+  const [selectedPlan, setSelectedPlan] = useState('');
+  const [currentStep, setCurrentStep] = useState(1); // Add this to control navigation flow
   const [formData, setFormData] = useState({
     Monday: { open: '08:00 AM', close: '09:00 PM', closed: false },
     Tuesday: { open: '08:00 AM', close: '09:00 PM', closed: false },
@@ -79,27 +272,6 @@ export default function MainContent({ selectedStep, onComplete }) {
     Saturday: { open: '08:00 AM', close: '09:00 PM', closed: false },
     Sunday: { open: '08:00 AM', close: '09:00 PM', closed: false },
   });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSameHoursToggle = () => {
-    setApplySameHours(!applySameHours);
-    if (!applySameHours) {
-      const { open, close } = formData.Monday;
-      setFormData((prevFormData) => {
-        const updatedFormData = {};
-        for (const day in prevFormData) {
-          updatedFormData[day] = { ...prevFormData[day], open, close };
-        }
-        return updatedFormData;
-      });
-    }
-  };
 
   const handleInputChange = (e, day, field) => {
     const { value } = e.target;
@@ -116,262 +288,316 @@ export default function MainContent({ selectedStep, onComplete }) {
     }));
   };
 
-  const handlePlanSelect = (plan) => {
-    setSelectedPlan(plan);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onComplete(selectedStep); // Mark the step as completed
-  };
-
-  const renderHoursFields = (day) => (
-    <div className="flex items-center justify-between mb-4" key={day}>
-      <p className="text-black">{day}</p>
-      <div className="flex items-center space-x-4">
-        <Input
-          className="w-32"
-          type="text"
-          placeholder="Opening Time"
-          value={formData[day].open}
-          onChange={(e) => handleInputChange(e, day, 'open')}
-          disabled={formData[day].closed || (applySameHours && day !== 'Monday')}
-        />
-        <span>-</span>
-        <Input
-          className="w-32"
-          type="text"
-          placeholder="Closing Time"
-          value={formData[day].close}
-          onChange={(e) => handleInputChange(e, day, 'close')}
-          disabled={formData[day].closed || (applySameHours && day !== 'Monday')}
-        />
-        <Button
-          className="px-2"
-          type="button"
-          onClick={() => handleClosedToggle(day)}
-        >
-          {formData[day].closed ? 'Closed' : 'Open'}
-        </Button>
-      </div>
-    </div>
-  );
-
-  const renderForm = () => {
-    switch (selectedStep) {
-      case 1:
-        return (
-          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full">
-            <h1 className="text-2xl font-bold text-black">How would you like to receive orders?</h1>
-            <p className="text-lg text-gray-600">Choose a method to receive your orders. You can always change this later.</p>
-
-            {/* <RadioButton
-              label="DoorDash Tablet"
-              description="We’ll ship you a DoorDash tablet and send orders directly to it."
-              value="doordash_tablet"
-              checked={selectedPlan === 'doordash_tablet'}
-              onChange={() => setSelectedPlan('doordash_tablet')}
-            /> */}
-            <RadioButton
-              label="InstaMarkt DashBoard "
-              description="Use InstaMarkt Business To Manage and Receive Orders "
-              value="pos"
-              checked={selectedPlan === 'pos'}
-              onChange={() => setSelectedPlan('pos')}
-            />
-            <RadioButton
-              label="Email + Phone Confirmation"
-              description="Receive DoorDash orders via email and phone for confirmation."
-              value="email_phone"
-              checked={selectedPlan === 'email_phone'}
-              onChange={() => setSelectedPlan('email_phone')}
-            />
-
-            <Button type="submit">Next</Button>
-          </form>
-        );
-      case 2:
-        return (
-          <form onSubmit={handleSubmit} className=" mt-[-100px] space-y-4 w-full">
-            <h1 className="text-2xl font-bold text-black">When are you open for business?</h1>
-            <p className="text-lg text-gray-600">Let your customers know when you’re open for business. You can apply the same hours for all days or set different times for each day.</p>
-
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-black">Apply same store hours to all days</p>
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="form-checkbox h-5 w-5 text-green-600"
-                  checked={applySameHours}
-                  onChange={handleSameHoursToggle}
-                />
-              </label>
-            </div>
-
-            {Object.keys(formData).map(renderHoursFields)}
-
-            <Button type="submit">Submit Store Hours</Button>
-          </form>
-        );
-      case 3:
-        return (
-          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full text-center">
-            <h1 className="text-2xl font-bold text-black">Now, let’s add your menu</h1>
-            <p className="text-lg text-gray-600">Provide a menu link or upload a menu file. You can always review and edit it before your store is live.</p>
-            
-            <div className="flex justify-center text-sm space-x-4">
-              <RadioButton
-                label="Menu Link"
-                description=""
-                value="menu_link"
-                className="text-sm"
-                checked={menuOption === 'menu_link'}
-                onChange={() => setMenuOption('menu_link')}
-              />
-              <RadioButton
-                label="Upload Menu File"
-                description=""
-                value="menu_file"
-                checked={menuOption === 'menu_file'}
-                onChange={() => setMenuOption('menu_file')}
-              />
-            </div>
-
-            {menuOption === 'menu_link' && (
-              <Input
-                placeholder="Enter Menu Link"
-                name="menuUrl"
-                value={formData.menuUrl || ''}
-                onChange={handleChange}
-                required
-              />
-            )}
-
-            <Button type="submit" className="w-full">Next</Button>
-
-            <div className="mt-8 text-left">
-              <h3 className="text-lg font-bold text-black">High-performing menus usually include...</h3>
-              <ul className="list-disc ml-6 text-gray-600">
-                <li>Prices clearly listed with each item</li>
-                <li>Modifiers listed with the associated item</li>
-              </ul>
-            </div>
-          </form>
-        );
-      case 4: // Pricing Plan case
-        return (
-          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full">
-            <p className="text-lg text-gray-600 mb-8">
-              Enjoy all our Marketplace plans with $0 credit card processing fee. Change or cancel your plan at any time.
-            </p>
-
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-              <PricingPlanCard
-                title="Save On Cost"
-                price="$0 for 7 days"
-                commission="15% commission per delivery order"
-                description="Offer delivery & pickup to customers who already know you."
-                features={[
-                  'Limited visibility on DoorDash',
-                  'Reach customers nearby',
-                  'Highest customer delivery fee'
-                ]}
-                buttonText="Continue with Basic"
-                onSelect={() => handlePlanSelect('basic')}
-                selected={selectedPlan === 'basic'}
-              />
-
-              <PricingPlanCard
-                title="Reach More Customers"
-                price="$0 for 30 days"
-                commission="25% commission per delivery order"
-                description="Get discovered by new customers in your area."
-                features={[
-                  'Shown to new customers',
-                  'Reach customers further away',
-                  'Lower customer delivery fee',
-                  'Access DashPass customers'
-                ]}
-                buttonText="Continue with Plus"
-                onSelect={() => handlePlanSelect('plus')}
-                selected={selectedPlan === 'plus'}
-              />
-
-              <PricingPlanCard
-                title="Maximize Sales"
-                price="$0 for 30 days"
-                commission="30% commission per delivery order"
-                description="Stand out to the most new customers in your area."
-                features={[
-                  'Ranked higher on DoorDash',
-                  'Reach customers further away',
-                  'Lowest customer delivery fee',
-                  '20 orders/month guarantee'
-                ]}
-                buttonText="Continue with Premier"
-                onSelect={() => handlePlanSelect('premier')}
-                selected={selectedPlan === 'premier'}
-              />
-            </div>
-          </form>
-        );
-      case 5:
-        return (
-          <form onSubmit={handleSubmit} className="mt-[-100px] space-y-4 w-full text-center">
-            <Input
-              placeholder="Bank Account Number"
-              name="bankAccount"
-              value={formData.bankAccount || ''}
-              onChange={handleChange}
-              required
-            />
-            <Button type="submit">Submit Bank Account</Button>
-          </form>
-        );
-      default:
-        return <p>Select a section to get started.</p>;
+  const handleSameHoursToggle = () => {
+    setApplySameHours(!applySameHours);
+    if (!applySameHours) {
+      const { open, close } = formData.Monday;
+      setFormData((prevFormData) => {
+        const updatedFormData = {};
+        for (const day in prevFormData) {
+          updatedFormData[day] = { ...prevFormData[day], open, close };
+        }
+        return updatedFormData;
+      });
     }
+  };
+
+// Function to handle 'Order Method' submission
+const handleOrderMethodSubmit = async () => {
+  try {
+    // Step 1: Retrieve all records from the Business Table
+    const searchResponse = await axios.get(
+      `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const records = searchResponse.data.records;
+
+    // Step 2: Find the record with the matching business name (case-insensitive, trimmed)
+    const matchedRecord = records.find(
+      record => record.fields['Name'] &&
+                record.fields['Name'].trim().toLowerCase() === businessName.trim().toLowerCase()
+    );
+
+    if (matchedRecord) {
+      const businessRecordId = matchedRecord.id;
+
+      // Step 3: Update the 'Order Method' field in the matched Business Table record
+      await axios.patch(
+        `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table/${businessRecordId}`,
+        {
+          fields: {
+            "Order Method": selectedOrderMethod,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log("Successfully updated Business Table record with Order Method:", businessRecordId);
+
+      // Proceed to the next step
+      
+      onComplete(selectedStep); // Move to store hours step
+    } else {
+      console.error("No matching business record found for the provided business name.");
+    }
+  } catch (error) {
+    console.error("Error updating Business Data with Order Method:", error);
+    console.error("Error details:", error.response ? error.response.data : "No response data");
+  }
+};
+
+
+
+  const handleStoreHoursSubmit = async () => {
+    try {
+      for (const day in formData) {
+        const { open, close, closed } = formData[day];
+        
+        // Make sure that the `Is Open` field is explicitly a boolean
+        const isOpen = closed ? "false" : "true";
+  
+        await axios.post(
+          `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Store Hours`,
+          {
+            fields: {
+              "Business Name": businessName,
+              "WeekDay": day,
+              "Store Open Hour": closed ? '' : open,
+              "Store Close Hour": closed ? '' : close,
+              "Is Open": isOpen, // Ensures this is true or false
+            }
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+              'Content-Type': 'application/json',
+            }
+          }
+        );
+      }
+      onComplete(selectedStep);
+    } catch (error) {
+      console.error("Error saving Store Hours:", error);
+      console.error("Error details:", error.response ? error.response.data : "No response data");
+    }
+  };
+  
+
+  const handleMenuOptionSubmit = async () => {
+    try {
+      await axios.post(
+        `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Menu Option`,
+        {
+          fields: {
+            "Business Name": businessName,
+            "Menu Items": menuOption,
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      onComplete(selectedStep);
+    } catch (error) {
+      console.error("Error saving Menu Option:", error);
+    }
+  };
+
+  const [planScale, setPlanScale] = useState('small'); // To toggle between small, medium, and large plans
+
+  const handlePlanSelect = async (plan) => {
+    setSelectedPlan(plan.title);
+  
+    try {
+      // Step 1: Retrieve all records from the Business Table
+      const searchResponse = await axios.get(
+        `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      const records = searchResponse.data.records;
+  
+      // Step 2: Find the record with the matching business name (case-insensitive, trimmed)
+      const matchedRecord = records.find(
+        record => record.fields['Name'] &&
+                  record.fields['Name'].trim().toLowerCase() === businessName.trim().toLowerCase()
+      );
+  
+      if (matchedRecord) {
+        const recordId = matchedRecord.id;
+  
+        // Step 3: Update the 'Pricing Plan' field in the matched Business Table record
+        await axios.patch(
+          `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table/${recordId}`,
+          {
+            fields: {
+              "Pricing Plan": plan.title,
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+  
+        console.log("Successfully updated Business Table record with Pricing Plan:", recordId);
+        onComplete(selectedStep); // Proceed to the next step
+      } else {
+        console.error("Record with the specified business name not found.");
+      }
+    } catch (error) {
+      console.error("Error updating Pricing Plan:", error);
+      console.error("Error details:", error.response ? error.response.data : "No response data");
+    }
+  };
+  
+
+  const getPlansByScale = () => {
+    if (planScale === 'small') return smallScalePlans;
+    if (planScale === 'medium') return mediumScalePlans;
+    if (planScale === 'large') return largeScalePlans;
+    return [];
   };
 
   const renderHeader = () => {
     switch (selectedStep) {
       case 1:
+        return <h1 className="mt-[-150px] text-3xl font-bold text-black">Set Your Order Method</h1>;
+      case 2:
+        return <h1 className="mt-[-110px] text-3xl font-bold text-black">Set Your Store Hours</h1>;
+      case 3:
+        return <h1 className="text-3xl font-bold text-black">Add Your Menu Option</h1>;
+      default:
+        return null;
+    }
+  };
+
+  const renderForm = () => {
+    switch (selectedStep) {
+      case 1:
         return (
-          <>
-            <h1 className="mt-[-150px] text-3xl font-bold text-black">Now, let’s set your Order Method</h1>
-            {/* <p className="mt-[-100px] text-lg text-gray-600">Add details about how customers can place orders.</p> */}
-          </>
+          <div className="mt-[-100px] space-y-4 w-full">
+            <p className="text-lg text-gray-600">Choose a method to receive your orders. You can always change this later.</p>
+            <RadioButton
+              label="InstaMarkt Dashboard"
+              value="dashboard"
+              checked={selectedOrderMethod === 'dashboard'}
+              onChange={() => setSelectedOrderMethod('dashboard')}
+            />
+            <RadioButton
+              label="Email + Phone Confirmation"
+              value="email_phone"
+              checked={selectedOrderMethod === 'email_phone'}
+              onChange={() => setSelectedOrderMethod('email_phone')}
+            />
+            <Button onClick={handleOrderMethodSubmit}>Save Order Method</Button>
+          </div>
         );
       case 2:
         return (
-          <>
-            <h1 className="mt-[-110px] text-3xl font-bold text-black">Set Your Store Hours</h1>
-            {/* <p className=" text-lg text-gray-600">Let your customers know when you’re open for business.</p> */}
-          </>
+          <div className="mt-[-100px] space-y-4 w-full">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-black">Apply same store hours to all days</p>
+              <input
+                type="checkbox"
+                className="form-checkbox h-5 w-5 text-green-600"
+                checked={applySameHours}
+                onChange={handleSameHoursToggle}
+              />
+            </div>
+            {Object.keys(formData).map(day => (
+              <div key={day} className="flex items-center space-x-4 mb-4">
+                <p className="text-black">{day}</p>
+                <Input
+                  placeholder="Open Time"
+                  value={formData[day].open}
+                  onChange={(e) => handleInputChange(e, day, 'open')}
+                />
+                <Input
+                  placeholder="Close Time"
+                  value={formData[day].close}
+                  onChange={(e) => handleInputChange(e, day, 'close')}
+                />
+                <Button onClick={() => handleClosedToggle(day)}>
+                  {formData[day].closed ? 'Closed' : 'Open'}
+                </Button>
+              </div>
+            ))}
+            <Button onClick={handleStoreHoursSubmit}>Save Store Hours</Button>
+          </div>
         );
       case 3:
         return (
-          <>
-            {/* <h1 className="text-3xl font-bold text-black">Now, let’s add your menu</h1>
-            <p className="text-lg text-gray-600">Provide a menu link or upload a menu file.</p> */}
-          </>
+          <div className="mt-[-100px] space-y-4 w-full">
+            <p className="text-lg text-gray-600">Provide a menu link or upload a menu file.</p>
+            <RadioButton
+              label="Menu Link"
+              value="menu_link"
+              checked={menuOption === 'menu_link'}
+              onChange={() => setMenuOption('menu_link')}
+            />
+            <RadioButton
+              label="Upload Menu File"
+              value="menu_file"
+              checked={menuOption === 'menu_file'}
+              onChange={() => setMenuOption('menu_file')}
+            />
+            <Button onClick={handleMenuOptionSubmit}>Save Menu Option</Button>
+          </div>
         );
+
       case 4:
         return (
-          <>
-            <h1 className="mt-[-150px] text-3xl font-bold text-black">Choose a Pricing Plan</h1>
-            <p className=" text-lg text-gray-600">Select a plan that fits your business needs.</p>
-          </>
+          <div className="mt-[-100px] space-y-4 w-full">
+            <h2 className="text-3xl font-bold text-black mb-4">Choose a Pricing Plan</h2>
+            <div className="flex space-x-4 mb-8">
+              <Button onClick={() => setPlanScale('small')} className={planScale === 'small' ? 'bg-green-700' : ''}>Small Scale</Button>
+              <Button onClick={() => setPlanScale('medium')} className={planScale === 'medium' ? 'bg-green-700' : ''}>Medium Scale</Button>
+              <Button onClick={() => setPlanScale('large')} className={planScale === 'large' ? 'bg-green-700' : ''}>Large Scale</Button>
+            </div>
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+              {getPlansByScale().map((plan, index) => (
+                <PricingPlanCard
+                  key={index}
+                  title={plan.title}
+                  originalPrice={plan.originalPrice}
+                  price={plan.price}
+                  commission={plan.commission}
+                  description={plan.description}
+                  features={plan.features}
+                  buttonText={plan.buttonText}
+                  onSelect={() => handlePlanSelect(plan)}
+                  selected={selectedPlan === plan.title}
+                  skuRange={plan.skuRange}
+                />
+              ))}
+            </div>
+          </div>
         );
-      case 5:
-        return (
-          <>
-            <h1 className="mt-[-100px] text-3xl font-bold text-black">Add Your Bank Account</h1>
-            <p className="mt-[-100px] text-lg text-gray-600">Add your bank details to receive payments.</p>
-          </>
-        );
+
       default:
-        return null;
+        return <p>Select a section to get started.</p>;
     }
   };
 
@@ -380,7 +606,7 @@ export default function MainContent({ selectedStep, onComplete }) {
       <div className="text-center mb-8">
         {renderHeader()}
       </div>
-      <div className="w-full max-w-5xl"> {/* Adjusted max width */}
+      <div className="w-full max-w-5xl">
         {renderForm()}
       </div>
     </div>
