@@ -469,11 +469,11 @@ const SignUpForm = ({ signUpRef }) => {
   };
 
   return (
-    <section ref={signUpRef} className="bg-green-500 text-white py-20">
+    <section ref={signUpRef} className="bg-green-500 py-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row items-start justify-between max-w-6xl mx-auto">
           {/* Left side content */}
-          <div className="w-full md:w-5/12 mb-10 md:mb-0 md:pr-8">
+          <div className="w-full md:w-5/12 mb-10 md:mb-0 md:pr-8 text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
               Sign up and unlock sales
             </h2>
@@ -508,7 +508,7 @@ const SignUpForm = ({ signUpRef }) => {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
               </div>
 
@@ -520,7 +520,7 @@ const SignUpForm = ({ signUpRef }) => {
                   value={businessAddress}
                   onChange={(e) => setBusinessAddress(e.target.value)}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
               </div>
 
@@ -530,7 +530,7 @@ const SignUpForm = ({ signUpRef }) => {
                   value={businessType}
                   onChange={(e) => setBusinessType(e.target.value)}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
                 >
                   <option value="" disabled hidden>Select Business Type</option>
                   <option value="Restaurant">Restaurant</option>
@@ -549,7 +549,7 @@ const SignUpForm = ({ signUpRef }) => {
                   value={skuCount}
                   onChange={(e) => setSkuCount(e.target.value)}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
                 >
                   <option value="" disabled hidden>Total SKUs for Sale</option>
                   <option value="0-500">Less than 100</option>
@@ -567,7 +567,7 @@ const SignUpForm = ({ signUpRef }) => {
                   value={businessEmail}
                   onChange={(e) => setBusinessEmail(e.target.value)}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
               </div>
 
@@ -579,13 +579,13 @@ const SignUpForm = ({ signUpRef }) => {
                   value={businessPhone}
                   onChange={(e) => setBusinessPhone(e.target.value)}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
               </div>
 
               <button 
                 type="submit" 
-                className="w-full p-3 bg-green-900 hover:bg-green-700 text-white rounded-full font-medium transition-colors duration-200"
+                className="w-full p-3 bg-green-900 hover:bg-green-700 text-white rounded-full font-medium transition-colors duration-200 mt-6"
               >
                 Start Free Trial
               </button>
@@ -596,6 +596,7 @@ const SignUpForm = ({ signUpRef }) => {
     </section>
   );
 };
+
 const Footer = () => (
     <footer className="bg-gray-100 py-12">
       <div className="container mx-auto grid md:grid-cols-5 gap-8">
