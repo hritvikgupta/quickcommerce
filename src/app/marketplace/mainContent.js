@@ -1,7 +1,30 @@
 import { useState } from 'react';
 import axios from 'axios';
+import {  Monitor, Mail, Link2, Upload, Check, X, ChevronDown } from 'lucide-react';
 
-
+const Switch = ({ checked, onChange, className = '' }) => {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={onChange}
+      className={`
+        relative inline-flex h-6 w-11 items-center rounded-full
+        transition-colors duration-200 ease-in-out focus:outline-none
+        ${checked ? 'bg-green-600' : 'bg-gray-200'}
+        ${className}
+      `}
+    >
+      <span
+        className={`
+          inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out
+          ${checked ? 'translate-x-6' : 'translate-x-1'}
+        `}
+      />
+    </button>
+  );
+};
 // Define custom Input and Button directly in the file
 const Input = ({ className = '', ...props }) => {
   return (
@@ -25,25 +48,201 @@ const Button = ({ className = '', children, ...props }) => {
 };
 
 // Define the radio button component
-const RadioButton = ({ label, description, value, checked, onChange }) => {
+const RadioButton = ({ label, description, icon, value, checked, onChange }) => {
   return (
-    <label className={`block p-4 border-2 rounded-lg ${checked ? 'border-green-600' : 'border-gray-300'} cursor-pointer mb-4`}>
-      <div className="flex justify-between items-center">
-        <div className="text-left mr-4">
-          <p className="text-lg font-bold text-black">{label}</p>
-          <p className="text-sm text-gray-600">{description}</p>
+    <div 
+      onClick={onChange} // Change from label to div and add onClick here
+      className={`
+        block p-6 border-2 rounded-xl transition-all duration-200 cursor-pointer mb-4
+        ${checked ? 'border-green-600 bg-green-50/50' : 'border-gray-200 hover:border-green-400'}
+        transform hover:scale-[1.01] hover:shadow-md
+      `}
+    >
+      <div className="flex items-center space-x-4">
+        {icon && <div className="text-green-600">{icon}</div>}
+        <div className="flex-grow">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-lg font-semibold text-gray-900">{label}</p>
+              <p className="text-sm text-gray-600 mt-1">{description}</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div 
+                className={`
+                  w-6 h-6 rounded-full border-2 flex items-center justify-center
+                  ${checked ? 'border-green-600' : 'border-gray-300'}
+                `}
+              >
+                {checked && <div className="w-3 h-3 bg-green-600 rounded-full"></div>}
+              </div>
+            </div>
+          </div>
         </div>
-        <input
-          type="radio"
-          className="form-radio h-5 w-5 text-green-600"
-          value={value}
-          checked={checked}
-          onChange={onChange}
-        />
       </div>
-    </label>
+    </div>
   );
 };
+const SuccessMessage = ({ message }) => (
+  <div className="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg flex items-center space-x-2 z-50">
+    <Check className="w-5 h-5" />
+    <p>{message}</p>
+  </div>
+);
+
+const ErrorMessage = ({ message }) => (
+  <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2 z-50">
+    <X className="w-5 h-5" />
+    <p>{message}</p>
+  </div>
+);
+
+const OrderMethodSection = ({ selectedOrderMethod, setSelectedOrderMethod, onSubmit }) => (
+  <div className="max-w-2xl mx-auto space-y-6 bg-white p-8 rounded-2xl shadow-lg">
+    <h2 className="text-2xl font-bold text-gray-900 mb-6">How would you like to receive orders?</h2>
+    
+    <RadioButton
+      label="InstaMarkt Dashboard"
+      description="Manage all your orders through our intuitive dashboard with real-time updates"
+      icon={<Monitor className="w-6 h-6" />}
+      value="dashboard"
+      checked={selectedOrderMethod === 'dashboard'}
+      onChange={() => setSelectedOrderMethod('dashboard')}
+    />
+    
+    <RadioButton
+      label="Email + Phone Confirmation"
+      description="Receive orders via email and get phone confirmations for urgent orders"
+      icon={<Mail className="w-6 h-6" />}
+      value="email_phone"
+      checked={selectedOrderMethod === 'email_phone'}
+      onChange={() => setSelectedOrderMethod('email_phone')}
+    />
+
+    <Button 
+      onClick={onSubmit}
+      className="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium text-lg"
+      disabled={!selectedOrderMethod} // Disable button if no method is selected
+    >
+      Continue
+    </Button>
+  </div>
+);
+
+const StoreHoursSection = ({ formData, handleInputChange, applySameHours, handleSameHoursToggle, handleClosedToggle, onSubmit }) => (
+  <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+    <div className="flex justify-between items-center mb-8">
+      <h2 className="text-2xl font-bold text-gray-900">Set Your Store Hours</h2>
+      <div className="flex items-center space-x-3">
+        <span className="text-sm text-gray-600">Apply same hours to all days</span>
+        <Switch
+          checked={applySameHours}
+          onChange={handleSameHoursToggle}
+        />
+      </div>
+    </div>
+
+    <div className="grid gap-6">
+      {Object.keys(formData).map(day => (
+        <div key={day} className="bg-gray-50 p-4 rounded-xl">
+          <div className="flex items-center justify-between">
+            <div className="w-1/4">
+              <h3 className="font-medium text-gray-900">{day}</h3>
+            </div>
+            
+            <div className="flex-grow grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">Opening Time</label>
+                <Input
+                  type="time"
+                  value={formData[day].open}
+                  onChange={(e) => handleInputChange(e, day, 'open')}
+                  disabled={formData[day].closed}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">Closing Time</label>
+                <Input
+                  type="time"
+                  value={formData[day].close}
+                  onChange={(e) => handleInputChange(e, day, 'close')}
+                  disabled={formData[day].closed}
+                />
+              </div>
+            </div>
+
+            <div className="ml-4">
+              <Switch
+                checked={!formData[day].closed}
+                onChange={() => handleClosedToggle(day)}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <Button 
+      onClick={onSubmit}
+      className="w-full mt-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium text-lg"
+    >
+      Save Store Hours
+    </Button>
+  </div>
+);
+
+
+const MenuSection = ({ menuOption, setMenuOption, onSubmit }) => (
+  <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+    <h2 className="text-2xl font-bold text-gray-900 mb-6">How would you like to add your menu?</h2>
+
+    <div className="space-y-4">
+      <RadioButton
+        label="Add Menu Link"
+        description="Provide a link to your existing menu (PDF, website, or image)"
+        icon={<Link2 className="w-6 h-6" />}
+        value="menu_link"
+        checked={menuOption === 'menu_link'}
+        onChange={() => setMenuOption('menu_link')}
+      />
+
+      <RadioButton
+        label="Upload Menu File"
+        description="Upload your menu file directly (PDF, Word, or image formats)"
+        icon={<Upload className="w-6 h-6" />}
+        value="menu_file"
+        checked={menuOption === 'menu_file'}
+        onChange={() => setMenuOption('menu_file')}
+      />
+
+      {menuOption === 'menu_link' && (
+        <div className="mt-6">
+          <Input
+            type="url"
+            placeholder="Enter menu URL"
+            className="p-4"
+          />
+        </div>
+      )}
+
+      {menuOption === 'menu_file' && (
+        <div className="mt-6">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-green-500 transition-colors">
+            <Upload className="w-12 h-12 mx-auto text-gray-400" />
+            <p className="mt-2 text-sm text-gray-600">Drag and drop your menu file here, or click to browse</p>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <Button 
+      onClick={onSubmit}
+      className="w-full mt-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium text-lg"
+    >
+      Continue
+    </Button>
+  </div>
+);
 
 // Define the PricingPlanCard component
 // const PricingPlanCard = ({ title, price, commission, description, features, buttonText, onSelect, selected }) => {
@@ -229,30 +428,50 @@ const largeScalePlans = [
 const PricingPlanCard = ({ title, originalPrice, price, commission, description, features, buttonText, onSelect, selected, skuRange }) => (
   <div
     onClick={onSelect}
-    className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
-      selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-    } min-h-[450px]`}
+    className={`
+      border-2 rounded-xl p-6 flex flex-col space-y-4 transition-all duration-200
+      transform hover:scale-[1.02] hover:shadow-lg cursor-pointer
+      ${selected ? 'border-green-600 bg-green-50/50' : 'border-gray-200'}
+      min-h-[500px]
+    `}
   >
-    <div className="flex-grow">
-      <h2 className="text-2xl font-bold text-black">{title}</h2>
-      <p className="text-md text-gray-700 font-medium mb-2">SKU Range: {skuRange}</p>
-      <div className="flex items-center space-x-2 mb-4">
-        {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
-        <p className="text-xl text-green-600 font-semibold">{price}</p>
-      </div>
-      <hr className="border-gray-300 my-4" />
-      <p className="text-md font-medium text-black">{commission}</p>
-      <p className="text-md text-gray-600 mb-4">{description}</p>
-      <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-        {features.map((feature, index) => (
-          <li key={index} className="text-sm flex items-center">
-            <span className={`${feature.included ? 'text-green-600' : 'text-red-600'} mr-2`}>{feature.included ? '✓' : '✗'}</span>
-            {feature.name}
-          </li>
-        ))}
-      </ul>
+    <div>
+      <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+      <p className="text-sm text-gray-600 mt-1">SKU Range: {skuRange}</p>
     </div>
-    <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
+
+    <div className="space-y-2">
+      {originalPrice && (
+        <p className="text-sm text-red-500 line-through">{originalPrice}</p>
+      )}
+      <p className="text-2xl font-bold text-green-600">{price}</p>
+      <p className="text-sm font-medium text-gray-900">{commission}</p>
+    </div>
+
+    <p className="text-gray-600">{description}</p>
+
+    <div className="flex-grow space-y-2">
+      {features.map((feature, index) => (
+        <div key={index} className="flex items-start space-x-2">
+          {feature.included ? (
+            <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+          ) : (
+            <X className="w-5 h-5 text-red-400 flex-shrink-0" />
+          )}
+          <span className={feature.included ? 'text-gray-900' : 'text-gray-500'}>
+            {feature.name}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <Button className={`
+      w-full py-3 rounded-lg text-white font-medium
+      ${selected ? 'bg-green-600' : 'bg-gray-900'} 
+      hover:bg-green-700 transition-colors
+    `}>
+      {buttonText}
+    </Button>
   </div>
 );
 
@@ -600,6 +819,76 @@ const handleOrderMethodSubmit = async () => {
         return <p>Select a section to get started.</p>;
     }
   };
+  const renderContent = () => {
+    switch (selectedStep) {
+      case 1:
+        return (
+          <OrderMethodSection
+            selectedOrderMethod={selectedOrderMethod}
+            setSelectedOrderMethod={setSelectedOrderMethod}
+            onSubmit={handleOrderMethodSubmit}
+          />
+        );
+      case 2:
+        return (
+          <StoreHoursSection
+            formData={formData}
+            handleInputChange={handleInputChange}
+            applySameHours={applySameHours}
+            handleSameHoursToggle={handleSameHoursToggle}
+            handleClosedToggle={handleClosedToggle}
+            onSubmit={handleStoreHoursSubmit}
+          />
+        );
+      case 3:
+        return (
+          <MenuSection
+            menuOption={menuOption}
+            setMenuOption={setMenuOption}
+            onSubmit={handleMenuOptionSubmit}
+          />
+        );
+      case 4:
+        return (
+          <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900">Choose Your Plan</h2>
+              <p className="text-gray-600 mt-2">Select the plan that best fits your business</p>
+            </div>
+
+            <div className="flex justify-center space-x-4 mb-8">
+              {['small', 'medium', 'large'].map((scale) => (
+                <Button
+                  key={scale}
+                  onClick={() => setPlanScale(scale)}
+                  className={`
+                    rounded-full font-medium
+                    ${planScale === scale 
+                      ? 'bg-green-600 text-white shadow-lg' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}
+                  `}
+                >
+                  {scale.charAt(0).toUpperCase() + scale.slice(1)} Scale
+                </Button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {getPlansByScale().map((plan, index) => (
+                <PricingPlanCard
+                  key={index}
+                  {...plan}
+                  onSelect={() => handlePlanSelect(plan)}
+                  selected={selectedPlan === plan.title}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-20 lg:px-40 ml-40">
@@ -607,7 +896,7 @@ const handleOrderMethodSubmit = async () => {
         {renderHeader()}
       </div>
       <div className="w-full max-w-5xl">
-        {renderForm()}
+        {renderContent()}
       </div>
     </div>
   );
