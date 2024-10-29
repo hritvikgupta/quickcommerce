@@ -181,7 +181,7 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
         <div className="hidden md:flex space-x-2">
           <Button 
             className="bg-green-900 hover:bg-green-700 rounded-full text-white px-6 py-2 transform hover:scale-105 transition-all duration-200"
-            onClick={scrollToSignup}
+            onClick={scrollToPricing}
           >
             Get Started
           </Button>
