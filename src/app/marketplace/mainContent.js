@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import {  Monitor, Mail, Link2, Upload, Check, X, ChevronDown } from 'lucide-react';
-
+//switches
 const Switch = ({ checked, onChange, className = '' }) => {
   return (
     <button
@@ -25,6 +25,7 @@ const Switch = ({ checked, onChange, className = '' }) => {
     </button>
   );
 };
+
 // Define custom Input and Button directly in the file
 const Input = ({ className = '', ...props }) => {
   return (
