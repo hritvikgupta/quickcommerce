@@ -333,7 +333,7 @@ const GrowBrand = () => {
 
   const benefits = [
     {"title":"Online Ordering", "description":"Add online ordering for your products directly from retail store in the city to keep up with quick commerce and pay only 1% per product of delivery and monthly platform fees.", "image":"/images/customer_notification.png"},
-    {"title":"Actionable insights and incremental sales", "description":"With thoughtful controls and automation at your fingertips, Instacart helps you create impactful ads backed by industry-leading insights and real-time reporting.", "image":"/images/insights.png"},
+    {"title":"Actionable insights and incremental sales", "description":"With thoughtful controls and automation at your fingertips, Instamarkt helps you create impactful ads backed by industry-leading insights and real-time reporting.", "image":"/images/insights.png"},
     {"title":"Reach a wider audience with ease", "description":"Leverage our platform's expansive network to help your retail brand connect with a wider audience across multiple channels, enhancing your brand's visibility.", "image":"/images/audience.png"},
     {"title":"Efficient inventory management", "description":"Stay ahead with streamlined inventory tracking and real-time updates, minimizing stockouts and ensuring product availability for customers.", "image":"/images/inventory.png"},
     {"title":"Real-time customer notifications", "description":"Keep customers engaged and informed with instant notifications about new arrivals, restocks, and promotions, creating a personalized shopping experience.", "image":"/images/notification.png"},
