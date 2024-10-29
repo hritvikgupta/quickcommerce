@@ -1,36 +1,92 @@
 import { Home, Heart, List, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation"; // Import useSearchParams
+import { useSearchParams } from "next/navigation";
+
+// Utility function to normalize store names for comparison
+const normalizeStoreName = (name) => {
+  if (!name) return '';
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '') // Remove all special characters and spaces
+    .trim();
+};
+
+// Utility function to find store data in JSON
+const findStoreData = (data, storeName) => {
+  const normalizedSearchName = normalizeStoreName(storeName);
+  
+  // First try direct key match
+  if (data[storeName]) {
+    return data[storeName];
+  }
+
+  // Then try normalized key match
+  const storeKey = Object.keys(data).find(key => {
+    const normalizedKey = normalizeStoreName(key);
+    const normalizedStoreName = data[key].name ? normalizeStoreName(data[key].name) : normalizedKey;
+    return normalizedKey === normalizedSearchName || normalizedStoreName === normalizedSearchName;
+  });
+
+  return storeKey ? data[storeKey] : null;
+};
 
 export default function StorePageSidebar({ storeName, onAisleClick, onShopClick, activeTab, setActiveTab }) {
   const [aisles, setAisles] = useState([]);
   const [storeData, setStoreData] = useState(null);
-  const searchParams = useSearchParams(); // Use to get URL params
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const searchParams = useSearchParams();
 
-  // Get the referring category from URL params (e.g., ?ref=offers)
   const referringPage = searchParams.get("ref") || "home";
 
   useEffect(() => {
-    fetch('/data/aisles.json')
-      .then(response => response.json())
-      .then(data => {
-        if (data[storeName.toLowerCase()]) {
-          setAisles(data[storeName.toLowerCase()]);
-        }
-      })
-      .catch(error => console.error("Error loading aisles:", error));
-  }, [storeName]);
+    const fetchStoreData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  useEffect(() => {
-    fetch('/data/retailers.json')
-      .then(response => response.json())
-      .then(data => {
-        const storeInfo = data[storeName.toLowerCase()];
-        if (storeInfo) {
-          setStoreData(storeInfo);
+        // Fetch retailers data
+        const retailersResponse = await fetch('/data/retailers.json');
+        const retailersData = await retailersResponse.json();
+        
+        // Find store data using normalized comparison
+        const matchedStoreData = findStoreData(retailersData, storeName);
+        
+        if (matchedStoreData) {
+          setStoreData(matchedStoreData);
+          
+          // Fetch aisles data after finding store
+          const aislesResponse = await fetch('/data/aisles.json');
+          const aislesData = await aislesResponse.json();
+          
+          // Try to find aisles using both original and normalized store names
+          let storeAisles = findStoreData(aislesData, storeName);
+          
+          if (!storeAisles && matchedStoreData.name) {
+            // Try using the store's display name if key didn't work
+            storeAisles = findStoreData(aislesData, matchedStoreData.name);
+          }
+          
+          if (storeAisles) {
+            setAisles(Array.isArray(storeAisles) ? storeAisles : []);
+          } else {
+            console.warn(`No aisles found for store: ${storeName}`);
+            setAisles([]);
+          }
+        } else {
+          setError(`Store data not found for: ${storeName}`);
         }
-      })
-      .catch(error => console.error("Error loading store data:", error));
+      } catch (error) {
+        console.error("Error fetching store data:", error);
+        setError("Failed to load store data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (storeName) {
+      fetchStoreData();
+    }
   }, [storeName]);
 
   const handleTabClick = (tabName) => setActiveTab(tabName);
@@ -44,9 +100,16 @@ export default function StorePageSidebar({ storeName, onAisleClick, onShopClick,
 
   return (
     <aside className="fixed w-64 h-screen bg-white shadow-md flex flex-col">
-      {/* Static Logo and Name */}
+      {/* Store Logo and Name */}
       <div className="p-4 sticky top-0 z-10 bg-white">
-        {storeData ? (
+        {loading ? (
+          <div className="flex flex-col items-center">
+            <div className="w-16 h-16 bg-gray-200 rounded-full animate-pulse mb-2"></div>
+            <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500">{error}</div>
+        ) : storeData ? (
           <div className="flex flex-col items-center">
             <img
               src={storeData.logo || '/default-logo.png'}
@@ -56,14 +119,14 @@ export default function StorePageSidebar({ storeName, onAisleClick, onShopClick,
             <h2 className="text-lg font-semibold text-gray-900">{storeData.name}</h2>
           </div>
         ) : (
-          <p>Loading store data...</p>
+          <div className="text-center text-gray-500">Store not found</div>
         )}
       </div>
 
       {/* Scrollable Action Buttons and Aisles */}
       <div className="overflow-y-auto flex-grow p-4">
         <div className="space-y-4">
-          {/* Back button, changes based on the referring page */}
+          {/* Back button */}
           <a
             href={referringPage === "home" ? "/" : `/category?title=${referringPage}`}
             className={getButtonStyles(activeTab === referringPage)}
@@ -74,7 +137,11 @@ export default function StorePageSidebar({ storeName, onAisleClick, onShopClick,
             }}
           >
             <Home className="h-5 w-5" />
-            <span>{referringPage === "home" ? "Back to Home" : `Back to ${referringPage.charAt(0).toUpperCase() + referringPage.slice(1)}`}</span>
+            <span>
+              {referringPage === "home" 
+                ? "Back to Home" 
+                : `Back to ${referringPage.charAt(0).toUpperCase() + referringPage.slice(1)}`}
+            </span>
           </a>
 
           <button

@@ -167,7 +167,7 @@
       }
     ]
   },
-  "reliance_fresh": {
+  "reliancefresh": {
     "sections": [
       {
         "title": "Featured Products",
@@ -188,7 +188,28 @@
       }
     ]
   },
-  "reliance_trends": {
+  "trends": {
+    "sections": [
+      {
+        "title": "Featured Products",
+        "rank": 1,
+        "products": [
+          { "id": 1, "name": "Printed Shirt", "size": "M", "price": "29.99", "rating": 4 },
+          { "id": 2, "name": "Cargo Pants", "size": "L", "price": "49.99", "rating": 5 }
+        ]
+      },
+      {
+        "title": "All Products",
+        "rank": 2,
+        "products": [
+          { "id": 1, "name": "Printed Shirt", "size": "M", "price": "29.99", "rating": 4 },
+          { "id": 2, "name": "Cargo Pants", "size": "L", "price": "49.99", "rating": 5 },
+          { "id": 3, "name": "Jeans", "size": "M", "price": "39.99", "rating": 5 }
+        ]
+      }
+    ]
+  },
+  "liberty": {
     "sections": [
       {
         "title": "Featured Products",

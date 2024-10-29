@@ -139,8 +139,8 @@
         { "id": 2, "name": "Running Shoes", "size": "M", "price": "59.99", "rating": 5 }
       ]
     },
-    "reliance_fresh": {
-      "name": "Reliance Fresh",
+    "reliancefresh": {
+      "name": "reliance fresh",
       "categories": ["Grocery and Supermarkets", "Alcohol", "Offers"],
       "logo": "/images/reliacefresh.png",
       "description": "Fresh groceries and household items",
@@ -153,19 +153,15 @@
         { "id": 2, "name": "Wheat Flour 5kg", "size": "5kg", "price": "9.99", "rating": 5 }
       ]
     },
-    "reliance_trends": {
-      "name": "Reliance Trends",
+    "trends": {
+      "name": "trends",
       "categories": ["Fashion and Lifestyle", "Offers"],
       "logo": "/images/reliancetrends.png",
       "description": "Latest fashion trends • Upto 50% off",
       "banner": {
         "text": "Buy 2, Get 1 Free on apparel",
         "cta": "Shop Now"
-      },
-      "products": [
-        { "id": 1, "name": "Printed Shirt", "size": "M", "price": "29.99", "rating": 4 },
-        { "id": 2, "name": "Cargo Pants", "size": "L", "price": "49.99", "rating": 5 }
-      ]
+      }   
     }
   }
   
