@@ -981,64 +981,81 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
   const handleClick = (e) => {
     e.preventDefault();
     onSelect();
-    scrollToSignup(); // Call scrollToSignup when button is clicked
+    scrollToSignup();
   };
 
   return (
     <div
-      className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
+      className={`w-full md:w-[340px] border-2 rounded-lg p-4 md:p-6 flex flex-col transition-transform transform hover:scale-105 hover:shadow-lg ${
         selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-      } min-h-[450px]`}
+      } min-h-[500px] md:min-h-[650px]`} // Reduced height for mobile
     >
-      <div className="flex-grow">
-        <h2 className="text-2xl font-bold text-black">{title}</h2>
-        
-        <p className="text-md text-gray-700 font-medium mb-2">SKU Range: {skuRange}</p>
-        
-        <div className="flex items-center space-x-2 mb-4">
-          {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
-          <p className="text-xl text-green-600 font-semibold">{price}</p>
-        </div>
-        
-        <hr className="border-gray-300 my-4" />
-        
-        <p className="text-md font-medium text-black">{commission}</p>
-        <p className="text-md text-gray-600 mb-4">{description}</p>
-        
-        <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-          {features.map((feature, index) =>
-            feature.included ? (
-              <li key={index} className="flex items-center text-sm">
-                <span className="text-green-600 mr-2">&#10003;</span>
-                {feature.name}
-              </li>
-            ) : null
-          )}
-        </ul>
-        
-        <hr className="border-gray-300 my-4" />
-        
-        <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
-          {features.map((feature, index) =>
-            !feature.included ? (
-              <li key={index} className="flex items-center text-sm">
-                <span className="text-red-600 mr-2">&#10060;</span>
-                {feature.name}
-              </li>
-            ) : null
-          )}
-        </ul>
+      {/* Header Section */}
+      <div className="h-[90px] md:h-[120px]">
+        <h2 className="text-xl md:text-2xl font-bold text-black mb-2">{title}</h2>
+        <p className="text-sm md:text-md text-gray-700 font-medium">SKU Range: {skuRange}</p>
       </div>
-      
-      <Button 
-        className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white"
-        onClick={handleClick}
-      >
-        {buttonText}
-      </Button>
+
+      {/* Pricing Section */}
+      <div className="h-[60px] md:h-[80px] flex flex-col justify-center">
+        <div className="flex items-center gap-2 mb-1">
+          {originalPrice && <p className="text-lg md:text-xl text-red-500 line-through">{originalPrice}</p>}
+          <p className="text-lg md:text-xl text-green-600 font-semibold">{price}</p>
+        </div>
+        <p className="text-sm md:text-md font-medium text-black">{commission}</p>
+      </div>
+
+      <hr className="border-gray-300 my-3 md:my-4" />
+
+      {/* Description Section */}
+      <div className="h-[60px] md:h-[80px]">
+        <p className="text-sm md:text-md text-gray-600">{description}</p>
+      </div>
+
+      {/* Features Section */}
+      <div className="flex-grow overflow-auto py-3 md:py-4">
+        <div className="space-y-3 md:space-y-4">
+          {/* Included Features */}
+          <ul className="list-none space-y-1.5 md:space-y-2">
+            {features.map((feature, index) =>
+              feature.included ? (
+                <li key={index} className="flex items-start text-xs md:text-sm">
+                  <span className="text-green-600 mr-2 mt-0.5">✓</span>
+                  <span className="text-gray-600">{feature.name}</span>
+                </li>
+              ) : null
+            )}
+          </ul>
+
+          <hr className="border-gray-300" />
+
+          {/* Not Included Features */}
+          <ul className="list-none space-y-1.5 md:space-y-2">
+            {features.map((feature, index) =>
+              !feature.included ? (
+                <li key={index} className="flex items-start text-xs md:text-sm">
+                  <span className="text-red-600 mr-2 mt-0.5">✕</span>
+                  <span className="text-gray-600">{feature.name}</span>
+                </li>
+              ) : null
+            )}
+          </ul>
+        </div>
+      </div>
+
+      {/* Button Section */}
+      <div className="h-[50px] md:h-[60px] pt-3 md:pt-4">
+        <Button 
+          className="w-full bg-green-900 hover:bg-green-700 rounded-full text-white py-2 md:py-3"
+          onClick={handleClick}
+        >
+          <span className="text-sm md:text-base">{buttonText}</span>
+        </Button>
+      </div>
     </div>
   );
 };
+
 
 const PricingSection = ({ pricingRef, scrollToSignup }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -1103,41 +1120,34 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
   
 
   return (
-    <section ref={pricingRef} className="py-12 px-4 md:px-6 bg-white lg:px-8">
-      <div className="max-w-screen-lg mx-auto">
+    <section ref={pricingRef} className="py-8 md:py-12 px-4 md:px-6 bg-white lg:px-8">
+      <div className="max-w-7xl mx-auto">
         <div className="flex justify-end mb-4">
           <Link
             href="/pricing"
-            className="text-green-900 text-bold hover:text-green-800 flex items-center"
+            className="text-green-900 text-bold hover:text-green-800 flex items-center text-sm md:text-base"
           >
             See more pricing
             <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
   
-        <h2 className="text-4xl font-bold mb-6 text-center text-green-900">
-        Platform fee starts at Rs 0 for first-time retail partners, then Rs 499 for small retailers with up to 50 outlets PAN India.
-                </h2>
+        <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-center text-green-900">
+          Platform fee starts at Rs 0 for first-time retail partners, then Rs 499 for small retailers with up to 50 outlets PAN India.
+        </h2>
   
-        <p className="text-lg text-gray-600 mb-8 text-center">
+        <p className="text-base md:text-lg text-gray-600 mb-8 md:mb-12 text-center">
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
         </p>
   
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center items-stretch gap-4 md:gap-6">
           {plans.map((plan, index) => (
             <PricingPlanCard
               key={index}
-              title={plan.title}
-              originalPrice={plan.originalPrice}
-              price={plan.price}
-              commission={plan.commission}
-              description={plan.description}
-              features={plan.features}
-              buttonText={plan.buttonText}
+              {...plan}
               onSelect={() => handlePlanSelect(plan.plan)}
               selected={selectedPlan === plan.plan}
-              skuRange={plan.skuRange}
-              scrollToSignup={scrollToSignup} // Pass scrollToSignup function to card
+              scrollToSignup={scrollToSignup}
             />
           ))}
         </div>
