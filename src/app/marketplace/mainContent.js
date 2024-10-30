@@ -516,6 +516,7 @@ const FileUploadDropbox = ({ onFileUploadComplete, businessName }) => {
     </div>
   );
 };
+
 const MenuSection = ({ menuOption, setMenuOption, onSubmit, businessName, selectedFile, setSelectedFile }) => {
   const [menuLink, setMenuLink] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -523,12 +524,16 @@ const MenuSection = ({ menuOption, setMenuOption, onSubmit, businessName, select
   const [successMessage, setSuccessMessage] = useState('');
 
   const DROPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_DROPBOX_ACCESS_TOKEN;
-
+  const sanitizeBusinessName = (name) => {
+    return name.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
+  };
   const uploadToDropbox = async (file) => {
     try {
       // First, try using the current access token
       let accessToken = process.env.NEXT_PUBLIC_DROPBOX_ACCESS_TOKEN;
-  
+      const sanitizedBusinessName = sanitizeBusinessName(businessName);
+      const dropboxUploadPath = `/menus/${sanitizedBusinessName}_${file.name}`;
+
       // Function to perform the actual upload
       const performUpload = async (token) => {
         const dropboxUploadResponse = await axios({
@@ -538,7 +543,7 @@ const MenuSection = ({ menuOption, setMenuOption, onSubmit, businessName, select
           headers: {
             "Authorization": `Bearer ${token}`,
             "Dropbox-API-Arg": JSON.stringify({
-              path: `/menus/${file.name}`,
+              path: dropboxUploadPath,
               mode: "add",
               autorename: true,
               mute: false,
@@ -592,6 +597,9 @@ const MenuSection = ({ menuOption, setMenuOption, onSubmit, businessName, select
   
 
   const updateAirtableWithLink = async (shareLink, fileName) => {
+    const sanitizedBusinessName = sanitizeBusinessName(businessName);
+    const dropboxUploadPath = `${sanitizedBusinessName}_${fileName}`;
+
     try {
       // Find the business record
       const searchResponse = await axios.get(
@@ -619,7 +627,7 @@ const MenuSection = ({ menuOption, setMenuOption, onSubmit, businessName, select
           fields: {
             "Menu Type": "file",
             "Menu URL": shareLink,
-            "Menu File Name": fileName
+            "Menu File Name": dropboxUploadPath
           }
         },
         {
