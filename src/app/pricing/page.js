@@ -580,68 +580,74 @@ const styles = `
 // Plans for Small Scale Retailers
 const smallScalePlans = [
   {
-    title: "Starter Plan",
-    originalPrice: "Rs 999",
-    price: "Rs 499 for 7 Days",
-    commission: "12% per order",
-    description: "Ideal for new small businesses. No delivery charges of first 200 orders",
+    title: "Free Trial",
+    originalPrice: "Rs 499",
+    price: "Rs 0 for 15 Days",
+    commission: "14% per order",
+    description: "Get started at zero cost! Ideal for new small businesses.",
     features: [
       { name: "Online Ordering", included: true },
       { name: "Basic Support", included: true },
-      { name: "Limited Reach", included: false },
-      { name: "Premium Listing", included: false },
+      { name: "Delivery for First 50 Orders Free", included: true },
+      { name: "Limited Reach", included: true },
+      { name: "No Premium Listing", included: false },
+    ],
+    buttonText: "Start Free Trial",
+    plan: 'trial',
+    skuRange: '0-250', // SKU range for small retailers
+  },
+  {
+    title: "Starter Plan",
+    originalPrice: "Rs 999",
+    price: "Rs 499 for 30 Days",
+    commission: "12% per order",
+    description: "Perfect for small businesses to increase visibility.",
+    features: [
+      { name: "Online Ordering", included: true },
+      { name: "Standard Support", included: true },
+      { name: "Delivery for First 200 Orders Free", included: true },
+      { name: "Expanded Reach", included: true },
+      { name: "No Premium Listing", included: false },
     ],
     buttonText: "Select Starter",
     plan: 'starter',
-    skuRange: '0-500', // SKU range for small retailers
+    skuRange: '250-500',
   },
   {
     title: "Basic Plan",
     originalPrice: "Rs 1,499",
-    price: "Rs 1,099 for 30 Days",
+    price: "Rs 999 for 60 Days",
     commission: "10% per order",
-    description: "Grow your small business.",
+    description: "Upgrade to grow your business with better reach.",
     features: [
       { name: "Online Ordering", included: true },
-      { name: "Standard Support", included: true },
+      { name: "Priority Support", included: true },
+      { name: "Delivery for First 500 Orders Free", included: true },
       { name: "Expanded Reach", included: true },
-      { name: "Premium Listing", included: false },
+      { name: "Premium Listing", included: true },
     ],
     buttonText: "Select Basic",
     plan: 'basic',
     skuRange: '500-999',
   },
-  {
-    title: "Advanced Plan",
-    originalPrice: "Rs 2,499",
-    price: "Rs 2,099 for 60 Days",
-    commission: "8% per order",
-    description: "Maximize your small business potential.",
-    features: [
-      { name: "Online Ordering", included: true },
-      { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
-      { name: "Premium Listing", included: true },
-    ],
-    buttonText: "Select Advanced",
-    plan: 'advanced',
-    skuRange: '1000-4999',
-  },
 ];
 
+
+// Plans for Medium Scale Retailers
 // Plans for Medium Scale Retailers
 const mediumScalePlans = [
   {
     title: "Growth Plan",
     originalPrice: "Rs 4,999",
-    price: "Rs 4,499 for 10 Days",
-    commission: "15% per order",
-    description: "Scale your medium business.",
+    price: "Rs 3,999 for 30 Days",
+    commission: "12% per order",
+    description: "Scale your medium business with extensive reach.",
     features: [
       { name: "Online Ordering", included: true },
       { name: "Standard Support", included: true },
       { name: "Expanded Reach", included: true },
       { name: "Access Premium Customers", included: false },
+      { name: "Free Delivery for First 300 Orders", included: true },
     ],
     buttonText: "Select Growth",
     plan: 'growth',
@@ -650,14 +656,16 @@ const mediumScalePlans = [
   {
     title: "Premium Plan",
     originalPrice: "Rs 8,999",
-    price: "Rs 7,999 for 30 Days",
-    commission: "12% per order",
-    description: "Expand your medium business reach.",
+    price: "Rs 6,999 for 60 Days",
+    commission: "10% per order",
+    description: "Gain premium features to grow your business faster.",
     features: [
       { name: "Online Ordering", included: true },
       { name: "Priority Support", included: true },
       { name: "Expanded Reach", included: true },
       { name: "Access Premium Customers", included: true },
+      { name: "Free Delivery for First 600 Orders", included: true },
+      { name: "Premium Listing", included: true },
     ],
     buttonText: "Select Premium",
     plan: 'premium',
@@ -666,14 +674,15 @@ const mediumScalePlans = [
   {
     title: "Enterprise Plan",
     originalPrice: "Rs 15,999",
-    price: "Rs 14,999 for 60 Days",
-    commission: "10% per order",
-    description: "Maximize your medium business growth.",
+    price: "Rs 12,999 for 90 Days",
+    commission: "8% per order",
+    description: "Maximize reach and growth with exclusive features.",
     features: [
       { name: "Online Ordering", included: true },
       { name: "Dedicated Support", included: true },
       { name: "Expanded Reach", included: true },
       { name: "Access Premium Customers", included: true },
+      { name: "Premium Listing", included: true },
       { name: "Growth Guarantee", included: true },
     ],
     buttonText: "Select Enterprise",
@@ -687,53 +696,57 @@ const largeScalePlans = [
   {
     title: "Pro Plan",
     originalPrice: "Rs 25,999",
-    price: "Rs 23,999 for 10 Days",
-    commission: "20% per order",
-    description: "Ideal for large retailers seeking expansion.",
+    price: "Rs 19,999 for 60 Days",
+    commission: "10% per order",
+    description: "High-growth plan for large retailers.",
     features: [
       { name: "Online Ordering", included: true },
       { name: "Priority Support", included: true },
-      { name: "Expanded Reach", included: true },
+      { name: "Maximum Reach", included: true },
       { name: "Access Premium Customers", included: true },
+      { name: "Free Delivery for First 1000 Orders", included: true },
     ],
     buttonText: "Select Pro",
     plan: 'pro',
-    skuRange: '500-999', // SKU range for large retailers
+    skuRange: '0-500',
   },
   {
     title: "Elite Plan",
     originalPrice: "Rs 45,999",
-    price: "Rs 42,999 for 60 Days",
-    commission: "15% per order",
-    description: "For large retailers wanting maximum visibility.",
+    price: "Rs 39,999 for 120 Days",
+    commission: "8% per order",
+    description: "Premium visibility for maximum expansion.",
     features: [
       { name: "Online Ordering", included: true },
       { name: "Dedicated Support", included: true },
       { name: "Maximum Reach", included: true },
       { name: "Access Premium Customers", included: true },
       { name: "Premium Listing", included: true },
+      { name: "Free Delivery for First 2000 Orders", included: true },
+      { name: "Growth Guarantee", included: true },
     ],
     buttonText: "Select Elite",
     plan: 'elite',
-    skuRange: '1000-4999',
+    skuRange: '500-999',
   },
   {
     title: "Ultimate Plan",
     originalPrice: "Rs 75,999",
     price: "Rs 69,999 for 180 Days",
-    commission: "12% per order",
-    description: "The best plan for large retailers.",
+    commission: "5% per order",
+    description: "The most comprehensive plan for large retailers.",
     features: [
       { name: "Online Ordering", included: true },
-      { name: "Dedicated Support", included: true },
-      { name: "Maximum Reach", included: true },
+      { name: "Dedicated VIP Support", included: true },
+      { name: "Maximum Reach with Targeted Campaigns", included: true },
       { name: "Access Premium Customers", included: true },
-      { name: "Premium Listing", included: true },
-      { name: "Growth Guarantee", included: true },
+      { name: "Premium Listing & Custom Branding", included: true },
+      { name: "Free Delivery for First 3000 Orders", included: true },
+      { name: "Growth Guarantee with ROI Assurance", included: true },
     ],
     buttonText: "Select Ultimate",
     plan: 'ultimate',
-    skuRange: '5000+',
+    skuRange: '1000+',
   },
 ];
 
@@ -1083,20 +1096,21 @@ export default function BusinessPage() {
 
         {/* Pricing Sections */}
         <PricingSection
-          title="Platform Fee Pricing Options For Small Scale Retailers Having 50 Outlets or Less PAN India"
-          plans={smallScalePlans}
-          scrollToSignup={scrollToSignup}
-        />
-        <PricingSection
-          title="Platform Fee Pricing Options For Medium Scale Retailers Having 50 To 500 Outlets or Less PAN India"
-          plans={mediumScalePlans}
-          scrollToSignup={scrollToSignup}
-        />
-        <PricingSection
-          title="Platform Fee Pricing Options For Large Scale Retails Having More than 500 Outlets PAN India"
-          plans={largeScalePlans}
-          scrollToSignup={scrollToSignup}
-        />
+  title="Affordable Platform Fee Plans for Small Retailers (Up to 50 Outlets PAN India)"
+  plans={smallScalePlans}
+  scrollToSignup={scrollToSignup}
+/>
+<PricingSection
+  title="Growth-Driven Platform Fee Plans for Medium Retailers (50 to 500 Outlets PAN India)"
+  plans={mediumScalePlans}
+  scrollToSignup={scrollToSignup}
+/>
+<PricingSection
+  title="Comprehensive Platform Fee Plans for Large Retailers (500+ Outlets PAN India)"
+  plans={largeScalePlans}
+  scrollToSignup={scrollToSignup}
+/>
+
         <AdditionalPricingOptionsSection />
 
         <HowItWorks />

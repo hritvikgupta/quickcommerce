@@ -8,8 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-
-// Reusable StoreCard component for displaying stores
+import { Menu, X } from "lucide-react";
+// import { useState } from "react";
 // Reusable StoreCard component for displaying stores
 const StoreCard = ({ store }) => (
   <Link href={`/store/${encodeURIComponent(store.name.toLowerCase())}`} key={store.name}>
@@ -87,12 +87,16 @@ const LandingHeader = () => (
 );
 
 const Navigation = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <nav className="bg-white shadow-md p-4">
+    <nav className="bg-white shadow-md p-4 relative z-50">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* Logo and Mobile Controls */}
           <div className="flex w-full md:w-auto justify-between items-center">
-            <Link href="/home" className="flex items-center">
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0">
               <Image
                 src="/images/green_logo.png"
                 alt="InstaMarkt Logo"
@@ -101,49 +105,120 @@ const Navigation = () => {
                 className="object-contain"
               />
             </Link>
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <Button 
-                className="bg-gray-400 cursor-not-allowed rounded-full text-white"
+            
+            {/* Mobile Controls */}
+            <div className="flex md:hidden items-center gap-4">
+              <button
+                className="bg-gray-400 cursor-not-allowed rounded-full text-white px-4 py-2"
                 disabled
+                aria-label="Store Opening Soon"
               >
                 <span className="text-sm font-bold">Store Opening Soon</span>
-              </Button>
-            </div>
-          </div>
-          
-          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-            <div className="hidden md:flex space-x-4">
-              <Link href="/aboutus">
-                <div className="px-4 py-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
-                  <span className="font-bold text-black hover:text-green-700">About</span>
-                </div>
-              </Link>
-              <Link href="/business">
-                <div className="px-4 py-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
-                  <span className="font-bold text-black hover:text-green-700">Services</span>
-                </div>
-              </Link>
-              <Link href="/contact">
-                <div className="px-4 py-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
-                  <span className="font-bold text-black hover:text-green-700">Contact</span>
-                </div>
-              </Link>
-            </div>
-            <div className="hidden md:block">
-              <Button 
-                className="bg-gray-400 cursor-not-allowed rounded-full text-white"
-                disabled
+              </button>
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 text-green-900 hover:bg-green-50 rounded-lg"
+                aria-label="Toggle mobile menu"
               >
-                <span className="font-bold">Store Opening Soon</span>
-              </Button>
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
             </div>
           </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex flex-row items-center gap-4 w-full md:w-auto">
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/aboutus"
+                className="font-bold text-black hover:text-green-700 px-3 py-2 rounded-md hover:bg-green-50 transition-colors"
+              >
+                About
+              </Link>
+              <Link
+                href="/business"
+                className="font-bold text-black hover:text-green-700 px-3 py-2 rounded-md hover:bg-green-50 transition-colors"
+              >
+                Services
+              </Link>
+              <Link
+                href="/contact"
+                className="font-bold text-black hover:text-green-700 px-3 py-2 rounded-md hover:bg-green-50 transition-colors"
+              >
+                Contact
+              </Link>
+            </div>
+            <button
+              className="bg-gray-400 cursor-not-allowed rounded-full text-white px-4 py-2"
+              disabled
+              aria-label="Store Opening Soon"
+            >
+              <span className="font-bold">Store Opening Soon</span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Panel */}
+          <div 
+            className={`
+              fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+              ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
+              md:hidden
+            `}
+            style={{ top: '0', zIndex: 1000 }}
+          >
+            {/* Mobile Menu Content */}
+            <div className="flex flex-col p-4">
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 text-green-900 hover:bg-green-50 rounded-lg"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="flex flex-col space-y-4">
+                <Link
+                  href="/aboutus"
+                  className="font-bold text-black hover:text-green-700 px-4 py-2 rounded-md hover:bg-green-50 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  About
+                </Link>
+                <Link
+                  href="/business"
+                  className="font-bold text-black hover:text-green-700 px-4 py-2 rounded-md hover:bg-green-50 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Services
+                </Link>
+                <Link
+                  href="/contact"
+                  className="font-bold text-black hover:text-green-700 px-4 py-2 rounded-md hover:bg-green-50 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Overlay for mobile menu */}
+          {isMobileMenuOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 md:hidden"
+              style={{ zIndex: 999 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+          )}
         </div>
       </div>
     </nav>
   );
 };
+
 
 const Hero = () => (
   <section className="bg-gradient-to-b from-gray-50 to-gray-100 py-12 md:py-24 overflow-hidden px-4 md:px-0">

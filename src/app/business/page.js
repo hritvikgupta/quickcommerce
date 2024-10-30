@@ -1047,56 +1047,60 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
     setSelectedPlan(plan);
   };
 
-  const plans = [
+  const plans =  [
     {
-      title: "Starter Plan",
-      originalPrice: "Rs 999",
-      price: "Rs 499 for 7 Days",
-      commission: "12% per order",
-      description: "Ideal for new small businesses.",
+      title: "Free Trial",
+      originalPrice: "Rs 499",
+      price: "Rs 0 for 15 Days",
+      commission: "14% per order",
+      description: "Get started at zero cost! Ideal for new small businesses.",
       features: [
         { name: "Online Ordering", included: true },
         { name: "Basic Support", included: true },
-        { name: "Limited Reach", included: false },
-        { name: "Premium Listing", included: false },
+        { name: "Delivery for First 50 Orders Free", included: true },
+        { name: "Limited Reach", included: true },
+        { name: "No Premium Listing", included: false },
+      ],
+      buttonText: "Start Free Trial",
+      plan: 'trial',
+      skuRange: '0-250', // SKU range for small retailers
+    },
+    {
+      title: "Starter Plan",
+      originalPrice: "Rs 999",
+      price: "Rs 499 for 30 Days",
+      commission: "12% per order",
+      description: "Perfect for small businesses to increase visibility.",
+      features: [
+        { name: "Online Ordering", included: true },
+        { name: "Standard Support", included: true },
+        { name: "Delivery for First 200 Orders Free", included: true },
+        { name: "Expanded Reach", included: true },
+        { name: "No Premium Listing", included: false },
       ],
       buttonText: "Select Starter",
       plan: 'starter',
-      skuRange: '0-500',
+      skuRange: '250-500',
     },
     {
       title: "Basic Plan",
       originalPrice: "Rs 1,499",
-      price: "Rs 1,099 for 30 Days",
+      price: "Rs 999 for 60 Days",
       commission: "10% per order",
-      description: "Grow your small business.",
+      description: "Upgrade to grow your business with better reach.",
       features: [
         { name: "Online Ordering", included: true },
-        { name: "Standard Support", included: true },
+        { name: "Priority Support", included: true },
+        { name: "Delivery for First 500 Orders Free", included: true },
         { name: "Expanded Reach", included: true },
-        { name: "Premium Listing", included: false },
+        { name: "Premium Listing", included: true },
       ],
       buttonText: "Select Basic",
       plan: 'basic',
       skuRange: '500-999',
     },
-    {
-      title: "Advanced Plan",
-      originalPrice: "Rs 2,499",
-      price: "Rs 2,099 for 60 Days",
-      commission: "8% per order",
-      description: "Maximize your small business potential.",
-      features: [
-        { name: "Online Ordering", included: true },
-        { name: "Priority Support", included: true },
-        { name: "Expanded Reach", included: true },
-        { name: "Premium Listing", included: true },
-      ],
-      buttonText: "Select Advanced",
-      plan: 'advanced',
-      skuRange: '1000-4999',
-    },
   ];
+  
 
   return (
     <section ref={pricingRef} className="py-12 px-4 md:px-6 bg-white lg:px-8">
@@ -1112,8 +1116,8 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
         </div>
   
         <h2 className="text-4xl font-bold mb-6 text-center text-green-900">
-          Platform Fee Starting Price Of just Rs 499 Rs For Small Retailers Of 50 Outlets or Less PAN India
-        </h2>
+        Platform fee starts at Rs 0 for first-time retail partners, then Rs 499 for small retailers with up to 50 outlets PAN India.
+                </h2>
   
         <p className="text-lg text-gray-600 mb-8 text-center">
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
