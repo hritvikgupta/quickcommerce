@@ -43,7 +43,7 @@ function MarketplaceContent() {
     { id: 2, label: 'Store Hours', completed: false, locked: true },
     { id: 3, label: 'Products / Menu', completed: false, locked: true },
     { id: 4, label: 'Pricing Plan', completed: false, locked: true },
-    { id: 5, label: 'Bank Account', completed: false, locked: true },
+    // { id: 5, label: 'Bank Account', completed: false, locked: true },
   ]);
   
   useEffect(() => {
