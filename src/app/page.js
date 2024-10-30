@@ -7,6 +7,7 @@ import { Apple, Smartphone,ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 
 // Reusable StoreCard component for displaying stores
 // Reusable StoreCard component for displaying stores
@@ -85,50 +86,64 @@ const LandingHeader = () => (
   </header>
 );
 
-const Navigation = () => (
-  <nav className="bg-white shadow-md p-4">
-    <div className="container mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex w-full md:w-auto justify-between items-center">
-          <Link href="/home" className="flex items-center">
-            <Image
-              src="/images/green_logo.png"
-              alt="InstaMarkt Logo"
-              width={180}
-              height={120}
-              className="object-contain"
-            />
-          </Link>
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <Button 
-              className="bg-gray-400 cursor-not-allowed rounded-full text-white"
-              disabled
-            >
-              <span className="text-sm font-bold">Store Opening Soon</span>
-            </Button>
+const Navigation = () => {
+  return (
+    <nav className="bg-white shadow-md p-4">
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex w-full md:w-auto justify-between items-center">
+            <Link href="/home" className="flex items-center">
+              <Image
+                src="/images/green_logo.png"
+                alt="InstaMarkt Logo"
+                width={180}
+                height={120}
+                className="object-contain"
+              />
+            </Link>
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button 
+                className="bg-gray-400 cursor-not-allowed rounded-full text-white"
+                disabled
+              >
+                <span className="text-sm font-bold">Store Opening Soon</span>
+              </Button>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          <div className="hidden md:flex space-x-4">
-            <Button variant="ghost" className="font-bold text-black hover:text-green-700">About</Button>
-            <Button variant="ghost" className="font-bold text-black hover:text-green-700">Services</Button>
-            <Button variant="ghost" className="font-bold text-black hover:text-green-700">Contact</Button>
-          </div>
-          <div className="hidden md:block">
-            <Button 
-              className="bg-gray-400 cursor-not-allowed rounded-full text-white"
-              disabled
-            >
-              <span className="font-bold">Store Opening Soon</span>
-            </Button>
+          
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+            <div className="hidden md:flex space-x-4">
+              <Link href="/aboutus">
+                <div className="px-4 py-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                  <span className="font-bold text-black hover:text-green-700">About</span>
+                </div>
+              </Link>
+              <Link href="/business">
+                <div className="px-4 py-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                  <span className="font-bold text-black hover:text-green-700">Services</span>
+                </div>
+              </Link>
+              <Link href="/contact">
+                <div className="px-4 py-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                  <span className="font-bold text-black hover:text-green-700">Contact</span>
+                </div>
+              </Link>
+            </div>
+            <div className="hidden md:block">
+              <Button 
+                className="bg-gray-400 cursor-not-allowed rounded-full text-white"
+                disabled
+              >
+                <span className="font-bold">Store Opening Soon</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </nav>
-);
+    </nav>
+  );
+};
 
 const Hero = () => (
   <section className="bg-gradient-to-b from-gray-50 to-gray-100 py-12 md:py-24 overflow-hidden px-4 md:px-0">

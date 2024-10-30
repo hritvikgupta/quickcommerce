@@ -249,10 +249,28 @@ const HowItWorks = () => {
   );
 };
 
-const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected, skuRange }) => {
+const PricingPlanCard = ({ 
+  title, 
+  price, 
+  originalPrice, 
+  commission, 
+  description, 
+  features, 
+  buttonText, 
+  onSelect, 
+  selected, 
+  skuRange,
+  scrollToSignup // Add scrollToSignup prop
+}) => {
+  // Handle both selection and scroll
+  const handleClick = (e) => {
+    e.preventDefault();
+    onSelect();
+    scrollToSignup(); // Scroll to signup form
+  };
+
   return (
     <div
-      onClick={onSelect}
       className={`border-2 rounded-lg p-4 md:p-6 flex flex-col space-y-3 md:space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
         selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
       } min-h-[400px] md:min-h-[450px] w-full`}
@@ -306,7 +324,10 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
       </div>
       
       <div className="space-y-3">
-        <Button className="bg-green-900 w-full hover:bg-green-700 rounded-full text-white py-3">
+        <Button 
+          className="bg-green-900 w-full hover:bg-green-700 rounded-full text-white py-3"
+          onClick={handleClick}
+        >
           {buttonText}
         </Button>
         <Link 
@@ -320,7 +341,7 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
   );
 };
 
-const PricingSection = ({ title, plans }) => {
+const PricingSection = ({ title, plans, scrollToSignup }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
@@ -356,7 +377,6 @@ const PricingSection = ({ title, plans }) => {
     }
   };
 
-  // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
@@ -377,12 +397,10 @@ const PricingSection = ({ title, plans }) => {
   return (
     <section className="py-8 md:py-12 px-4 md:px-6 bg-white lg:px-8">
       <div className="max-w-6xl mx-auto">
-        {/* Heading */}
         <h2 className="text-3xl md:text-4xl font-bold text-green-900 text-center mb-2 md:mb-4">
           {title}
         </h2>
 
-        {/* Contact Sales Link */}
         <Link
           href="/contact"
           className="text-sm text-green-600 hover:text-green-700 flex items-center justify-center mb-4 md:mb-6"
@@ -395,9 +413,8 @@ const PricingSection = ({ title, plans }) => {
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
         </p>
 
-        {/* Mobile view with single card carousel */}
+        {/* Mobile view */}
         <div className="relative md:hidden">
-          {/* Scrollable container */}
           <div
             ref={scrollRef}
             className="overflow-x-auto scrollbar-hide"
@@ -418,22 +435,12 @@ const PricingSection = ({ title, plans }) => {
                       {...plan}
                       onSelect={() => handlePlanSelect(plan.plan)}
                       selected={selectedPlan === plan.plan}
+                      scrollToSignup={scrollToSignup}
                     />
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-
-
-          {/* Navigation Arrows */}
-          <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center px-2">
-            {/* ... existing navigation buttons ... */}
-          </div>
-
-          {/* Carousel indicators */}
-          <div className="flex justify-center items-center space-x-3 mt-6">
-            {/* ... existing carousel indicators ... */}
           </div>
 
           {/* Current Plan Indicator */}
@@ -450,6 +457,7 @@ const PricingSection = ({ title, plans }) => {
               {...plan}
               onSelect={() => handlePlanSelect(plan.plan)}
               selected={selectedPlan === plan.plan}
+              scrollToSignup={scrollToSignup}
             />
           ))}
         </div>
@@ -457,7 +465,6 @@ const PricingSection = ({ title, plans }) => {
     </section>
   );
 };
-
 
 // Add to your global CSS
 const styles = `
@@ -1078,14 +1085,17 @@ export default function BusinessPage() {
         <PricingSection
           title="Platform Fee Pricing Options For Small Scale Retailers Having 50 Outlets or Less PAN India"
           plans={smallScalePlans}
+          scrollToSignup={scrollToSignup}
         />
         <PricingSection
           title="Platform Fee Pricing Options For Medium Scale Retailers Having 50 To 500 Outlets or Less PAN India"
           plans={mediumScalePlans}
+          scrollToSignup={scrollToSignup}
         />
         <PricingSection
           title="Platform Fee Pricing Options For Large Scale Retails Having More than 500 Outlets PAN India"
           plans={largeScalePlans}
+          scrollToSignup={scrollToSignup}
         />
         <AdditionalPricingOptionsSection />
 

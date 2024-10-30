@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Apple, Smartphone, ArrowRight, ChevronDown, Menu, X } from "lucide-react"; // Added Menu and X icons
 import { useRouter } from 'next/navigation'; // For navigation
-
+import axios from "axios";
 // Custom Label Component with Black Text
 const Label = ({ htmlFor, children }) => (
   <label htmlFor={htmlFor} className="block text-sm font-medium text-black mb-2">
@@ -130,7 +130,7 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
             )}
           </div>
 
-          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
+          <Button variant="ghost" className="font-bold ml-[-5px] text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
             Contact
           </Button>
           <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
@@ -231,13 +231,15 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
   );
 };
 const ContactPage = () => {
-  const [businessType, setBusinessType] = useState("");
   const [formData, setFormData] = useState({
     businessName: '',
     businessAddress: '',
+    businessType: '',
     email: '',
     phone: '',
+    message: ''
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -246,9 +248,77 @@ const ContactPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const SuccessMessage = () => (
+    <div className="text-center py-12 px-4">
+      <div className="mb-8">
+        <svg 
+          className="w-20 h-20 text-green-500 mx-auto mb-6" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth="2" 
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
+          />
+        </svg>
+        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+          Thank You for Reaching Out!
+        </h3>
+        <p className="text-lg text-gray-600 mb-2">
+          We've received your message and appreciate your interest in InstaMarkt.
+        </p>
+        <p className="text-lg text-gray-600">
+          Our team will contact you within the next 24 hours to discuss how we can help grow your business.
+        </p>
+      </div>
+      <div className="flex justify-center gap-4">
+        <Link href="/">
+          <Button className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8 py-3">
+            Return to Home
+          </Button>
+        </Link>
+        <Link href="/business">
+          <Button variant="outline" className="border-2 border-green-600 text-green-600 hover:bg-green-50 rounded-full px-8 py-3">
+            Explore Business Solutions
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
+
+    const contactData = {
+      fields: {
+        "Business Name": formData.businessName,
+        "Business Type": formData.businessType,
+        "Business Address": formData.businessAddress,
+        "Email": formData.email,
+        "Phone": formData.phone,
+        "Message": formData.message,
+        "Status": "New"
+      }
+    };
+
+    try {
+      const contactResponse = await axios.post(
+        `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Contact%20Us`,
+        contactData,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+    }
   };
 
   return (
@@ -273,7 +343,7 @@ const ContactPage = () => {
                   <h3 className="text-lg font-semibold mb-2">Call Us</h3>
                   <p className="text-white/90">Monday-Saturday</p>
                   <a href="tel:7023454603" className="block text-lg font-medium mt-2 hover:text-white/80">
-                    7023454603
+                    +91 7023454603
                   </a>
                 </div>
                 <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-all duration-300">
@@ -284,7 +354,7 @@ const ContactPage = () => {
                 </div>
               </div>
             </div>
-
+  
             <div className="md:w-1/2 relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-green-600/30 to-transparent rounded-3xl filter blur-2xl"></div>
               <Image
@@ -298,118 +368,205 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
-
+  
       {/* Contact Form Section */}
       <section id="contact-form" className="py-16 lg:py-24 px-4 md:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <Card className="overflow-visible border-0 shadow-2xl">
             <CardContent className="p-8 md:p-12">
               <div className="flex flex-col md:flex-row gap-12">
-                <div className="md:w-1/2">
-                  <h2 className="text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
-                  <p className="text-gray-600 mb-8">
-                    Fill out the form below and our team will get back to you within 24 hours.
-                  </p>
-
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <Label htmlFor="businessName" className="text-gray-700">Business Name</Label>
-                      <Input
-                        id="businessName"
-                        value={formData.businessName}
-                        onChange={handleInputChange}
-                        className="mt-1 focus:ring-green-500 focus:border-green-500"
-                        placeholder="Enter your business name"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="businessAddress" className="text-gray-700">Business Address</Label>
-                      <Input
-                        id="businessAddress"
-                        value={formData.businessAddress}
-                        onChange={handleInputChange}
-                        className="mt-1 focus:ring-green-500 focus:border-green-500"
-                        placeholder="Enter your business address"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {!isSubmitted ? (
+                  <div className="md:w-1/2">
+                    <h2 className="text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
+                    <p className="text-gray-600 mb-8">
+                      Fill out the form below and our team will get back to you within 24 hours.
+                    </p>
+  
+                    <form onSubmit={handleSubmit} className="space-y-6">
                       <div>
-                        <Label htmlFor="email" className="text-gray-700">Email Address</Label>
+                        <Label htmlFor="businessName">Business Name</Label>
                         <Input
-                          id="email"
-                          type="email"
-                          value={formData.email}
+                          id="businessName"
+                          value={formData.businessName}
                           onChange={handleInputChange}
-                          className="mt-1 focus:ring-green-500 focus:border-green-500"
-                          placeholder="name@business.com"
+                          className="mt-1 text-black"
+                          placeholder="Enter your business name"
+                          required
                         />
                       </div>
+  
                       <div>
-                        <Label htmlFor="phone" className="text-gray-700">Business Phone</Label>
-                        <Input
-                          id="phone"
-                          type="tel"
-                          value={formData.phone}
+                        <Label htmlFor="businessType">Business Type</Label>
+                        <select
+                          id="businessType"
+                          value={formData.businessType}
                           onChange={handleInputChange}
-                          className="mt-1 focus:ring-green-500 focus:border-green-500"
-                          placeholder="(123) 456-7890"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-700 bg-white"
+                          required
+                        >
+                          <option value="" disabled>Select business type</option>
+                          <option value="Restaurant">Restaurant</option>
+                          <option value="Grocery">Grocery</option>
+                          <option value="Alcohol">Alcohol</option>
+                          <option value="Convenience">Convenience</option>
+                          <option value="Flower Shop">Flower Shop</option>
+                          <option value="Pet Store">Pet Store</option>
+                          <option value="Retail">Retail</option>
+                        </select>
+                      </div>
+  
+                      <div>
+                        <Label htmlFor="businessAddress">Business Address</Label>
+                        <Input
+                          id="businessAddress"
+                          value={formData.businessAddress}
+                          onChange={handleInputChange}
+                          className="mt-1 text-black"
+                          placeholder="Enter your business address"
+                          required
                         />
                       </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="businessType" className="text-gray-700">Business Type</Label>
-                      <Select value={businessType} onValueChange={setBusinessType}>
-                        <SelectTrigger className="w-full mt-1">
-                          {businessType || "Select business type"}
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="restaurant">Restaurant</SelectItem>
-                          <SelectItem value="grocery">Grocery Store</SelectItem>
-                          <SelectItem value="retail">Retail Store</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full py-3 px-8 text-lg font-semibold transform hover:scale-105 transition-all duration-200 shadow-lg"
-                    >
-                      Contact Sales Team
-                      {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
-                    </Button>
-                  </form>
-                </div>
-
-                <div className="md:w-1/2 relative">
-                  <div className="sticky top-8">
-                    <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border border-green-100">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-6">Why Partner With Us?</h3>
-                      
-                      <div className="space-y-4">
-                        {[
-                          { icon: Users, title: "Reach More Customers", desc: "Connect with millions of potential customers" },
-                          { icon: TrendingUp, title: "Grow Your Revenue", desc: "Increase sales with our platform" },
-                          { icon: Clock, title: "Quick Setup", desc: "Get started in less than 24 hours" },
-                          { icon: Headphones, title: "24/7 Support", desc: "Always here to help you succeed" }
-                        ].map((item, index) => (
-                          <div key={index} className="flex items-start gap-4">
-                            <div className="bg-green-100 p-2 rounded-lg">
-                              <item.icon className="h-6 w-6 text-green-600" />
+  
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="email">Email Address</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            className="mt-1 text-black"
+                            placeholder="name@business.com"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="phone">Business Phone</Label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            className="mt-1 text-black"
+                            placeholder="(123) 456-7890"
+                            required
+                          />
+                        </div>
+                      </div>
+  
+                      <div>
+                        <Label htmlFor="message">Message</Label>
+                        <textarea
+                          id="message"
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          rows={4}
+                          className="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"
+                          placeholder="How can we help you?"
+                          required
+                        />
+                      </div>
+  
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full py-3 px-8 text-lg font-semibold transform hover:scale-105 transition-all duration-200 shadow-lg"
+                      >
+                        Contact Sales Team
+                      </Button>
+                    </form>
+                  </div>
+                ) : (
+                  <div className="w-full">
+                    <SuccessMessage />
+                  </div>
+                )}
+  
+                {!isSubmitted && (
+                  <div className="md:w-1/2 relative">
+                    <div className="sticky top-8">
+                      <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border border-green-100">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                          Why Partner With Us?
+                        </h3>
+                        
+                        <div className="space-y-6">
+                          <div className="flex items-start gap-4">
+                            <div className="bg-green-100 p-3 rounded-lg">
+                              <Users className="h-6 w-6 text-green-600" />
                             </div>
                             <div>
-                              <h4 className="font-semibold text-gray-900">{item.title}</h4>
-                              <p className="text-gray-600">{item.desc}</p>
+                              <h4 className="font-semibold text-gray-900">Reach More Customers</h4>
+                              <p className="text-gray-600">Connect with millions of potential customers in your area through our platform.</p>
                             </div>
                           </div>
-                        ))}
+  
+                          <div className="flex items-start gap-4">
+                            <div className="bg-green-100 p-3 rounded-lg">
+                              <TrendingUp className="h-6 w-6 text-green-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900">Grow Your Revenue</h4>
+                              <p className="text-gray-600">Boost your sales with our powerful platform and marketing tools.</p>
+                            </div>
+                          </div>
+  
+                          <div className="flex items-start gap-4">
+                            <div className="bg-green-100 p-3 rounded-lg">
+                              <Clock className="h-6 w-6 text-green-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900">Quick Setup</h4>
+                              <p className="text-gray-600">Get your business online and ready to accept orders in less than 24 hours.</p>
+                            </div>
+                          </div>
+  
+                          <div className="flex items-start gap-4">
+                            <div className="bg-green-100 p-3 rounded-lg">
+                              <Headphones className="h-6 w-6 text-green-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900">24/7 Support</h4>
+                              <p className="text-gray-600">Access round-the-clock support to help you succeed.</p>
+                            </div>
+                          </div>
+                        </div>
+  
+                        {/* Additional Info Box */}
+                        <div className="mt-8 bg-green-50 p-6 rounded-xl">
+                          <h4 className="font-semibold text-green-800 mb-3">
+                            Already a partner?
+                          </h4>
+                          <p className="text-green-700 mb-4">
+                            Contact our support team directly for assistance with your account.
+                          </p>
+                          {/* <Button 
+                            variant="outline" 
+                            className="w-full border-2 border-green-600 text-green-600 hover:bg-green-100 rounded-full"
+                            onClick={() => router.push('/support')}
+                          >
+                            Go to Support
+                          </Button> */}
+                        </div>
+  
+                        {/* Contact Information */}
+                        <div className="mt-8 pt-6 border-t border-green-100">
+                          <h4 className="font-semibold text-gray-900 mb-3">
+                            Need immediate assistance?
+                          </h4>
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-gray-600">
+                              <Phone className="h-4 w-4" />
+                              <span>+91 7023454603</span>
+                            </div>
+                            <p className="text-sm text-gray-500">
+                              Monday - Saturday, 9:00 AM - 6:00 PM IST
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </CardContent>
           </Card>

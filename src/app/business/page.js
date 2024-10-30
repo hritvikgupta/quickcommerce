@@ -332,7 +332,7 @@ const GrowBrand = () => {
   const scrollRef = useRef(null);
 
   const benefits = [
-    {"title":"Online Ordering", "description":"Add online ordering for your products directly from retail store in the city to keep up with quick commerce and pay only 1% per product of delivery and monthly platform fees.", "image":"/images/customer_notification.png"},
+    {"title":"Online Ordering", "description":"Add online ordering for your products directly from retail store in the city to keep up with quick commerce and pay only 1% per product of delivery and monthly platform fees.", "image":"/images/online_ordering.png"},
     {"title":"Actionable insights and incremental sales", "description":"With thoughtful controls and automation at your fingertips, Instamarkt helps you create impactful ads backed by industry-leading insights and real-time reporting.", "image":"/images/insights.png"},
     {"title":"Reach a wider audience with ease", "description":"Leverage our platform's expansive network to help your retail brand connect with a wider audience across multiple channels, enhancing your brand's visibility.", "image":"/images/audience.png"},
     {"title":"Efficient inventory management", "description":"Stay ahead with streamlined inventory tracking and real-time updates, minimizing stockouts and ensuring product availability for customers.", "image":"/images/inventory.png"},
@@ -977,10 +977,15 @@ const Footer = () => (
 
 
 
-const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected, skuRange }) => {
+const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected, skuRange, scrollToSignup }) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    onSelect();
+    scrollToSignup(); // Call scrollToSignup when button is clicked
+  };
+
   return (
     <div
-      onClick={onSelect}
       className={`border-2 rounded-lg p-6 flex flex-col space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
         selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
       } min-h-[450px]`}
@@ -988,10 +993,8 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
       <div className="flex-grow">
         <h2 className="text-2xl font-bold text-black">{title}</h2>
         
-        {/* SKU Range Section */}
         <p className="text-md text-gray-700 font-medium mb-2">SKU Range: {skuRange}</p>
         
-        {/* Pricing Section */}
         <div className="flex items-center space-x-2 mb-4">
           {originalPrice && <p className="text-xl text-red-500 line-through">{originalPrice}</p>}
           <p className="text-xl text-green-600 font-semibold">{price}</p>
@@ -999,11 +1002,9 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
         
         <hr className="border-gray-300 my-4" />
         
-        {/* Commission and Description */}
         <p className="text-md font-medium text-black">{commission}</p>
         <p className="text-md text-gray-600 mb-4">{description}</p>
         
-        {/* Features Section */}
         <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
           {features.map((feature, index) =>
             feature.included ? (
@@ -1017,7 +1018,6 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
         
         <hr className="border-gray-300 my-4" />
         
-        {/* Excluded Features */}
         <ul className="list-none ml-6 text-gray-600 space-y-1 mb-4">
           {features.map((feature, index) =>
             !feature.included ? (
@@ -1030,13 +1030,17 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
         </ul>
       </div>
       
-      <Button className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white">{buttonText}</Button>
+      <Button 
+        className="bg-green-900 mt-auto w-full hover:bg-green-700 rounded-full text-white"
+        onClick={handleClick}
+      >
+        {buttonText}
+      </Button>
     </div>
   );
 };
 
-
-const PricingSection = ({ pricingRef }) => {
+const PricingSection = ({ pricingRef, scrollToSignup }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const handlePlanSelect = (plan) => {
@@ -1058,7 +1062,7 @@ const PricingSection = ({ pricingRef }) => {
       ],
       buttonText: "Select Starter",
       plan: 'starter',
-      skuRange: '0-500', // SKU range added
+      skuRange: '0-500',
     },
     {
       title: "Basic Plan",
@@ -1074,7 +1078,7 @@ const PricingSection = ({ pricingRef }) => {
       ],
       buttonText: "Select Basic",
       plan: 'basic',
-      skuRange: '500-999', // SKU range added
+      skuRange: '500-999',
     },
     {
       title: "Advanced Plan",
@@ -1090,7 +1094,7 @@ const PricingSection = ({ pricingRef }) => {
       ],
       buttonText: "Select Advanced",
       plan: 'advanced',
-      skuRange: '1000-4999', // SKU range added
+      skuRange: '1000-4999',
     },
   ];
 
@@ -1115,7 +1119,7 @@ const PricingSection = ({ pricingRef }) => {
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
         </p>
   
-        <div className="flex flex-wrap justify-center gap-4"> {/* Flexbox centered container */}
+        <div className="flex flex-wrap justify-center gap-4">
           {plans.map((plan, index) => (
             <PricingPlanCard
               key={index}
@@ -1128,7 +1132,8 @@ const PricingSection = ({ pricingRef }) => {
               buttonText={plan.buttonText}
               onSelect={() => handlePlanSelect(plan.plan)}
               selected={selectedPlan === plan.plan}
-              skuRange={plan.skuRange} // Pass SKU Range to each card
+              skuRange={plan.skuRange}
+              scrollToSignup={scrollToSignup} // Pass scrollToSignup function to card
             />
           ))}
         </div>
@@ -1166,7 +1171,7 @@ export default function BusinessPage() {
         <Hero scrollToSignup={scrollToSignup} />
         <GrowBrand />
         <HowItWorks />
-        <PricingSection pricingRef={pricingRef} /> {/* Pricing Section */}
+        <PricingSection pricingRef={pricingRef} scrollToSignup={scrollToSignup} /> {/* Pricing Section */}
         <SignUpForm signUpRef={signUpRef} />
         <FAQ />
         <Footer />
