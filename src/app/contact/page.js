@@ -684,20 +684,28 @@ const SignUpForm = ({ signUpRef }) => {
               <div>
                 <label className="block text-gray-700 text-sm font-medium mb-1">Business Type</label>
                 <select
-                  value={businessType}
-                  onChange={(e) => setBusinessType(e.target.value)}
-                  required
-                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
-                >
-                  <option value="" disabled hidden>Select Business Type</option>
-                  <option value="Restaurant">Restaurant</option>
-                  <option value="Grocery">Grocery</option>
-                  <option value="Alcohol">Alcohol</option>
-                  <option value="Convenience">Convenience</option>
-                  <option value="Flower Shop">Flower Shop</option>
-                  <option value="Pet Store">Pet Store</option>
-                  <option value="Retail">Retail</option>
-                </select>
+  value={businessType}
+  onChange={(e) => setBusinessType(e.target.value)}
+  required
+  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
+>
+  <option value="" disabled hidden>Select Business Type</option>
+  <option value="Restaurant">Restaurant</option>
+  <option value="Grocery">Grocery</option>
+  <option value="Convenience">Convenience</option>
+  <option value="Flower Shop">Flower Shop</option>
+  <option value="Pet Store">Pet Store</option>
+  <option value="Retail">Retail</option>
+  <option value="Coffee Shop">Coffee Shop</option>
+  <option value="Shoes">Shoes</option>
+  <option value="Fashion">Fashion</option>
+  <option value="Lifestyle">Lifestyle</option>
+  <option value="Electronics">Electronics</option>
+  <option value="Books">Books</option>
+  <option value="Home Decor">Home Decor</option>
+  <option value="Health & Wellness">Health & Wellness</option>
+  <option value="Pharmacy">Pharmacy</option>
+</select>
               </div>
 
               <div>
