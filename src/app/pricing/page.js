@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Apple, ArrowRight, ChevronDown, Menu, X } from "lucide-react"; // Added Menu and X icons
+import { Apple, Smartphone, ArrowRight, ChevronDown, Menu, X } from "lucide-react"; // Added Menu and X icons
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -947,54 +947,111 @@ const FAQ = () => {
 
 
 const Footer = () => (
-  <footer className="bg-gray-100 py-12">
-    <div className="container mx-auto px-4 md:px-0 grid grid-cols-1 md:grid-cols-5 gap-8">
-        <div>
-          <h3 className="font-semibold mb-4 text-black">Get deliveries with InstaMarkt</h3>
-          <div className="flex space-x-2">
-            <Button variant="outline" size="sm" className="text-black border-green-900">
-              <Apple className="mr-2 h-4 w-4" /> iOS
+  <footer className="bg-gradient-to-b from-gray-50 to-gray-100 py-16 shadow-inner">
+    <div className="container mx-auto px-4 md:px-0">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
+        <div className="space-y-6">
+          <h3 className="font-bold text-xl text-gray-800 mb-4">Get deliveries with InstaMarkt</h3>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow"
+            >
+              <Apple className="mr-2 h-5 w-5" /> 
+              <span>iOS <span className="text-green-700">(Coming Soon)</span></span>
             </Button>
-            <Button variant="outline" size="sm" className="text-black border-green-900">
-              <ArrowRight className="mr-2 h-4 w-4" /> Android
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow"
+            >
+              <Smartphone className="mr-2 h-5 w-5" /> 
+              <span>Android <span className="text-green-700">(Coming Soon)</span></span>
             </Button>
           </div>
         </div>
+
         {[
-          { title: "Popular Departments", items: ["Fashion", "Electronics", "Home Essentials", "Beauty & Personal Care", "Health & Wellness"] },
-          { title: "More Departments", items: ["Alcohol", "Beverages", "Frozen Food", "Organic Grocery"] },
-          { title: "Get to Know Us", items: ["Press", "Careers", "Blog", "Ideas & Guides", "Help"] },
-          { title: "Groceries & Essentials", items: ["Grocery", "Dairy Products", "Meat", "Seafood", "Pantry Food"] }
+          { 
+            title: "Popular Departments", 
+            items: ["Fashion", "Electronics", "Home Essentials", "Beauty & Personal Care", "Health & Wellness"],
+            isDisabled: true
+          },
+          { 
+            title: "More Departments", 
+            items: ["Alcohol", "Beverages", "Frozen Food", "Organic Grocery"],
+            isDisabled: true
+          },
+          { 
+            title: "Get To Know Us", 
+            items: [
+              { text: "About Us", link: "/aboutus" },
+              { text: "Contact Us", link: "/contact" },
+              { text: "Promotions", link: "/services/promotions" },
+              { text: "Online Ordering", link: "/services/onlineordering" },
+              { text: "Delivery & Pickup", link: "/services/deliveryandpickup" }
+            ],
+            isDisabled: false
+          },
+          { 
+            title: "Groceries & Essentials", 
+            items: ["Grocery", "Dairy Products", "Meat", "Seafood", "Pantry Food"],
+            isDisabled: true
+          }
         ].map((column, index) => (
-          <div key={index}>
-            <h3 className="font-semibold mb-4 text-black">{column.title}</h3>
-            <ul className="space-y-2">
+          <div key={index} className="space-y-4">
+            <h3 className="font-bold text-lg text-gray-800 border-b border-gray-200 pb-2">
+              {column.title}
+            </h3>
+            <ul className="space-y-3">
               {column.items.map((item, itemIndex) => (
                 <li key={itemIndex}>
-                  <Link href="#" className="text-black hover:text-gray-700">
-                    {item}
-                  </Link>
+                  {column.isDisabled ? (
+                    <span className="text-gray-500 cursor-not-allowed hover:text-gray-600 transition-colors duration-200">
+                      {typeof item === 'object' ? item.text : item}
+                    </span>
+                  ) : (
+                    <Link 
+                      href={typeof item === 'object' ? item.link : '#'} 
+                      className="text-gray-600 hover:text-green-700 transition-colors duration-200 flex items-center group"
+                    >
+                      <ArrowRight className="h-4 w-4 opacity-0 -ml-5 group-hover:opacity-100 transition-all duration-200 text-green-700" />
+                      {typeof item === 'object' ? item.text : item}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
-      <div className="container mx-auto mt-8 pt-8 border-t border-gray-300">
-        <div className="flex justify-between items-center">
-          <p className="text-black">&copy; 2024 InstaMarkt</p>
-          <div className="flex space-x-4">
-            <Link href="#" className="text-black hover:text-gray-700">
+
+      <div className="mt-16 pt-8 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-gray-600 text-center sm:text-left">
+            &copy; 2024 InstaMarkt. All rights reserved.
+          </p>
+          <div className="flex space-x-6">
+            <Link 
+              href="#" 
+              className="text-gray-600 hover:text-green-700 transition-colors duration-200"
+            >
               Terms of Service
             </Link>
-            <Link href="#" className="text-black hover:text-gray-700">
+            <Link 
+              href="#" 
+              className="text-gray-600 hover:text-green-700 transition-colors duration-200"
+            >
               Privacy Policy
             </Link>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
 );
+
 
 export default function BusinessPage() {
   const signUpRef = useRef(null);
