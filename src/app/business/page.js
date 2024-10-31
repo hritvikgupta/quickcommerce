@@ -985,7 +985,19 @@ const Footer = () => (
 
 
 
-const PricingPlanCard = ({ title, price, originalPrice, commission, description, features, buttonText, onSelect, selected, skuRange, scrollToSignup }) => {
+const PricingPlanCard = ({ 
+  title, 
+  price, 
+  originalPrice, 
+  commission, 
+  description, 
+  features, 
+  buttonText, 
+  onSelect, 
+  selected, 
+  skuRange,
+  scrollToSignup
+}) => {
   const handleClick = (e) => {
     e.preventDefault();
     onSelect();
@@ -994,75 +1006,76 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
 
   return (
     <div
-      className={`w-full md:w-[340px] border-2 rounded-lg p-4 md:p-6 flex flex-col transition-transform transform hover:scale-105 hover:shadow-lg ${
+      className={`border-2 rounded-lg p-4 md:p-6 flex flex-col space-y-3 md:space-y-4 transition-transform transform hover:scale-105 hover:shadow-lg ${
         selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-      } min-h-[500px] md:min-h-[650px]`} // Reduced height for mobile
+      } min-h-[400px] md:min-h-[450px] w-full`}
     >
-      {/* Header Section */}
-      <div className="h-[60px]">
-        <h2 className="text-xl md:text-2xl font-bold text-black mb-2">{title}</h2>
-        <p className="text-sm md:text-md text-gray-700 font-medium">SKU Range: {skuRange}</p>
-      </div>
-
-      {/* Pricing Section */}
-      <div className="h-[60px] md:h-[80px] flex flex-col justify-center">
-        <div className="flex items-center gap-2 mb-1">
-          {originalPrice && <p className="text-lg md:text-xl text-red-500 line-through">{originalPrice}</p>}
-          <p className="text-lg md:text-xl text-green-600 font-semibold">{price}</p>
+      <div className="flex-grow">
+        <h2 className="text-xl md:text-2xl font-bold text-black">{title}</h2>
+        
+        <p className="text-sm md:text-md text-gray-700 font-medium mb-2">
+          SKU Range: {skuRange}
+        </p>
+        
+        <div className="flex items-center flex-wrap gap-2 mb-3 md:mb-4">
+          {originalPrice && (
+            <p className="text-lg md:text-xl text-red-500 line-through">
+              {originalPrice}
+            </p>
+          )}
+          <p className="text-lg md:text-xl text-green-600 font-semibold">
+            {price}
+          </p>
         </div>
+        
+        <hr className="border-gray-300 my-3 md:my-4" />
+        
         <p className="text-sm md:text-md font-medium text-black">{commission}</p>
+        <p className="text-sm md:text-md text-gray-600 mb-3 md:mb-4">{description}</p>
+        
+        <ul className="list-none space-y-1 mb-3 md:mb-4">
+          {features.map((feature, index) =>
+            feature.included ? (
+              <li key={index} className="flex items-start text-sm">
+                <span className="text-green-600 mr-2 mt-0.5">&#10003;</span>
+                <span className="text-gray-600">{feature.name}</span>
+              </li>
+            ) : null
+          )}
+        </ul>
+        
+        <hr className="border-gray-300 my-3 md:my-4" />
+        
+        <ul className="list-none space-y-1 mb-3 md:mb-4">
+          {features.map((feature, index) =>
+            !feature.included ? (
+              <li key={index} className="flex items-start text-sm">
+                <span className="text-red-600 mr-2 mt-0.5">&#10060;</span>
+                <span className="text-gray-600">{feature.name}</span>
+              </li>
+            ) : null
+          )}
+        </ul>
       </div>
-
-      <hr className="border-gray-300 my-3 md:my-4" />
-
-      {/* Description Section */}
-      <div className="h-[60px] md:h-[80px]">
-        <p className="text-sm md:text-md text-gray-600">{description}</p>
-      </div>
-
-      {/* Features Section */}
-      <div className="flex-grow overflow-auto py-3 md:py-4">
-        <div className="space-y-3 md:space-y-4">
-          {/* Included Features */}
-          <ul className="list-none space-y-1.5 md:space-y-2">
-            {features.map((feature, index) =>
-              feature.included ? (
-                <li key={index} className="flex items-start text-xs md:text-sm">
-                  <span className="text-green-600 mr-2 mt-0.5">✓</span>
-                  <span className="text-gray-600">{feature.name}</span>
-                </li>
-              ) : null
-            )}
-          </ul>
-
-          <hr className="border-gray-300" />
-
-          {/* Not Included Features */}
-          <ul className="list-none space-y-1.5 md:space-y-2">
-            {features.map((feature, index) =>
-              !feature.included ? (
-                <li key={index} className="flex items-start text-xs md:text-sm">
-                  <span className="text-red-600 mr-2 mt-0.5">✕</span>
-                  <span className="text-gray-600">{feature.name}</span>
-                </li>
-              ) : null
-            )}
-          </ul>
-        </div>
-      </div>
-
-      {/* Button Section */}
-      <div className="h-[50px] md:h-[60px]  md:pt-4">
+      
+      <div className="space-y-3">
         <Button 
-          className="w-full bg-green-900 hover:bg-green-700 rounded-full text-white py-2 md:py-3"
+          className="bg-green-900 w-full hover:bg-green-700 rounded-full text-white py-3"
           onClick={handleClick}
         >
-          <span className="text-sm md:text-base">{buttonText}</span>
+          {buttonText}
         </Button>
+        <Link 
+          href="/contact" 
+          className="block text-center text-sm text-green-600 hover:text-green-700 underline"
+        >
+          Contact Sales for Query
+        </Link>
       </div>
     </div>
   );
 };
+
 
 
 const PricingSection = ({ pricingRef, scrollToSignup }) => {
@@ -1072,7 +1085,7 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
     setSelectedPlan(plan);
   };
 
-  const plans =  [
+  const plans = [
     {
       title: "Free Trial",
       originalPrice: "Rs 499",
@@ -1088,7 +1101,7 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
       ],
       buttonText: "Start Free Trial",
       plan: 'trial',
-      skuRange: '0-250', // SKU range for small retailers
+      skuRange: '0-250',
     },
     {
       title: "Starter Plan",
@@ -1125,38 +1138,42 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
       skuRange: '500-999',
     },
   ];
-  
 
   return (
     <section ref={pricingRef} className="py-8 md:py-12 px-4 md:px-6 bg-white lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-end mb-4">
+        {/* Updated "See more pricing" button container */}
+        <div className="flex justify-end mb-6 md:mb-4">
           <Link
             href="/pricing"
-            className="text-green-900 text-bold hover:text-green-800 flex items-center text-sm md:text-base"
+            className="inline-flex items-center justify-center px-4 py-2 md:px-6 md:py-2.5 
+                     bg-green-900 hover:bg-green-700 text-white rounded-full 
+                     text-sm md:text-base font-medium transition-colors duration-200
+                     shadow-sm hover:shadow-md active:scale-95 transform"
           >
             See more pricing
-            <ArrowRight className="ml-1 h-4 w-4" />
+            <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
           </Link>
         </div>
-  
+
         <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-center text-green-900">
           Platform fee starts at Rs 0 for first-time retail partners, then Rs 499 for small retailers with up to 50 outlets PAN India.
         </h2>
-  
+
         <p className="text-base md:text-lg text-gray-600 mb-8 md:mb-12 text-center">
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
         </p>
-  
-        <div className="flex flex-wrap justify-center items-stretch gap-4 md:gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {plans.map((plan, index) => (
-            <PricingPlanCard
-              key={index}
-              {...plan}
-              onSelect={() => handlePlanSelect(plan.plan)}
-              selected={selectedPlan === plan.plan}
-              scrollToSignup={scrollToSignup}
-            />
+            <div key={index} className="w-full">
+              <PricingPlanCard
+                {...plan}
+                onSelect={() => handlePlanSelect(plan.plan)}
+                selected={selectedPlan === plan.plan}
+                scrollToSignup={scrollToSignup}
+              />
+            </div>
           ))}
         </div>
       </div>

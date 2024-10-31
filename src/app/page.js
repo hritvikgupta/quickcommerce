@@ -6,7 +6,7 @@ import { Card, CardContent } from "./components/ui/card";
 import { Apple, Smartphone,ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { Menu, X } from "lucide-react";
 // import { useState } from "react";
@@ -580,6 +580,80 @@ const Footer = () => (
   </footer>
 );    
 
+const DemoVideo = () => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 2.0;
+    }
+  }, []);
+
+  return (
+    <section className="bg-white py-20">
+      <div className="container mx-auto px-4 md:px-0">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-6">
+              Experience Seamless Shopping with InstaMarkt
+            </h2>
+            <ul className="space-y-6 text-black text-base md:text-lg">
+              <li className="flex flex-col gap-2">
+                <strong className="text-green-900">1. Browse & Select Your Favorites</strong>
+                <p className="text-gray-600">
+                  Explore thousands of products from your local stores. Compare prices, check availability, and add items to your cart with just a few taps.
+                </p>
+              </li>
+              <li className="flex flex-col gap-2">
+                <strong className="text-green-900">2. Choose Delivery Options</strong>
+                <p className="text-gray-600">
+                  Select your preferred delivery time slot or opt for express delivery. Track your order in real-time and get updates right to your phone.
+                </p>
+              </li>
+              <li className="flex flex-col gap-2">
+                <strong className="text-green-900">3. Pay & Enjoy</strong>
+                <p className="text-gray-600">
+                  Multiple payment options available - UPI, cards, or cash on delivery. Earn rewards on every purchase and enjoy exclusive member benefits.
+                </p>
+              </li>
+              <li className="flex flex-col gap-2">
+                <strong className="text-green-900">4. Rate & Review</strong>
+                <p className="text-gray-600">
+                  Share your experience, rate products, and help other shoppers make informed decisions. Your feedback helps us improve!
+                </p>
+              </li>
+            </ul>
+            
+            <div className="mt-8">
+              <p className="text-sm text-gray-500 italic">
+                "Join thousands of happy customers who have made InstaMarkt their go-to shopping destination. Download our app now and experience the difference!"
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <div className="w-full max-w-[600px] aspect-video rounded-lg overflow-hidden shadow-lg">
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                src="https://oeffyqfy88qvayhg.public.blob.vercel-storage.com/StoreVideo-Z78Ieyii5wGWdjvVrawhESHHPCbnN5.mp4"
+                playsInline
+                controls
+                muted
+              />
+            </div>
+            <p className="mt-4 text-sm text-gray-600 text-center">
+              Watch how easy it is to shop with InstaMarkt
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+
 const DeliverySection = () => (
   <section className="py-12 md:py-20 bg-white px-4 md:px-0">
     <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
@@ -678,6 +752,8 @@ export default function LandingPage() {
 
         <BenefitsSection />
         <ProductsSection />
+        <DemoVideo /> {/* Insert the new section here */}
+
         <DeliverySection /> {/* Insert the new section here */}
 
         {/* <PopularItemsSection /> */}

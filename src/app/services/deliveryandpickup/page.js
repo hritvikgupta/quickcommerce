@@ -405,6 +405,9 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
     const [businessName, setBusinessName] = useState('');
     const [businessType, setBusinessType] = useState('');
     const [businessAddress, setBusinessAddress] = useState('');
+    const [businessState, setBusinessState] = useState('');
+    const [businessCity, setBusinessCity] = useState('');
+    const [businessPincode, setBusinessPincode] = useState('');
     const [skuCount, setSkuCount] = useState('');
     const [businessEmail, setBusinessEmail] = useState('');
     const [businessPhone, setBusinessPhone] = useState('');
@@ -414,19 +417,22 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
       e.preventDefault();
       if (businessName) {
         router.push(`/marketplace?businessName=${encodeURIComponent(businessName)}`);
-  
+    
         const businessData = {
           fields: {
             Name: businessName,
             Type: businessType,
             Address: businessAddress.trim(),
+            State: businessState.trim(),
+            City: businessCity.trim(),
+            Pincode: parseInt(businessPincode.trim()), // Convert to number
             "SKU Count": skuCount,
             "Business Email": businessEmail,
             "Business Phone": businessPhone,
             Status: 'Pending'
           }
         };
-  
+    
         try {
           const businessResponse = await axios.post(
             `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table`,
@@ -438,10 +444,8 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
               },
             }
           );
-  
-          const businessRecordId = businessResponse.data.id;
-          console.log("Business record ID:", businessRecordId);
-  
+    
+          console.log("Business record ID:", businessResponse.data.id);
         } catch (error) {
           console.error("Error adding data to Airtable:", error);
           console.error("Error details:", error.response ? error.response.data : "No response data");
@@ -453,7 +457,6 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
       <section ref={signUpRef} className="bg-green-500 py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-start justify-between max-w-6xl mx-auto">
-            {/* Left side content */}
             <div className="w-full md:w-5/12 mb-10 md:mb-0 md:pr-8 text-white">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
                 Sign up and unlock sales
@@ -478,7 +481,6 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
               </ul>
             </div>
   
-            {/* Right side form */}
             <div className="w-full md:w-6/12 bg-white rounded-lg shadow-xl p-6 md:p-8">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -494,6 +496,33 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
                 </div>
   
                 <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Business Type</label>
+                  <select
+  value={businessType}
+  onChange={(e) => setBusinessType(e.target.value)}
+  required
+  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
+>
+  <option value="" disabled hidden>Select Business Type</option>
+  <option value="Restaurant">Restaurant</option>
+  <option value="Grocery">Grocery</option>
+  <option value="Convenience">Convenience</option>
+  <option value="Flower Shop">Flower Shop</option>
+  <option value="Pet Store">Pet Store</option>
+  <option value="Retail">Retail</option>
+  <option value="Coffee Shop">Coffee Shop</option>
+  <option value="Shoes">Shoes</option>
+  <option value="Fashion">Fashion</option>
+  <option value="Lifestyle">Lifestyle</option>
+  <option value="Electronics">Electronics</option>
+  <option value="Books">Books</option>
+  <option value="Home Decor">Home Decor</option>
+  <option value="Health & Wellness">Health & Wellness</option>
+  <option value="Pharmacy">Pharmacy</option>
+</select>
+                </div>
+  
+                <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">Business Address</label>
                   <input
                     type="text"
@@ -506,22 +535,39 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
                 </div>
   
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Business Type</label>
-                  <select
-                    value={businessType}
-                    onChange={(e) => setBusinessType(e.target.value)}
+                  <label className="block text-gray-700 text-sm font-medium mb-1">State</label>
+                  <input
+                    type="text"
+                    placeholder="Enter state"
+                    value={businessState}
+                    onChange={(e) => setBusinessState(e.target.value)}
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
-                  >
-                    <option value="" disabled hidden>Select Business Type</option>
-                    <option value="Restaurant">Restaurant</option>
-                    <option value="Grocery">Grocery</option>
-                    <option value="Alcohol">Alcohol</option>
-                    <option value="Convenience">Convenience</option>
-                    <option value="Flower Shop">Flower Shop</option>
-                    <option value="Pet Store">Pet Store</option>
-                    <option value="Retail">Retail</option>
-                  </select>
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                  />
+                </div>
+  
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">City</label>
+                  <input
+                    type="text"
+                    placeholder="Enter city"
+                    value={businessCity}
+                    onChange={(e) => setBusinessCity(e.target.value)}
+                    required
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                  />
+                </div>
+  
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Pincode</label>
+                  <input
+                    type="number"
+                    placeholder="Enter pincode"
+                    value={businessPincode}
+                    onChange={(e) => setBusinessPincode(e.target.value)}
+                    required
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+                  />
                 </div>
   
                 <div>
@@ -577,6 +623,7 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
       </section>
     );
   };
+  
 const GrowBrand = () => {
     return (
       <section className="bg-white py-20">
