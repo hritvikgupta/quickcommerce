@@ -3,7 +3,7 @@
 
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
-import { Apple, Smartphone,ArrowRight, Clock, MapPin,ChevronDown } from "lucide-react";
+import { Apple, Smartphone,ArrowRight, Clock, MapPin,ChevronDown,ShoppingBag,Star,StorefrontIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
