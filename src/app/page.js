@@ -185,7 +185,7 @@ const Navigation = () => {
               <Image
                 src="/images/green_logo.png"
                 alt="InstaMarkt Logo"
-                width={180}
+                width={280}
                 height={120}
                 className="object-contain"
               />
