@@ -726,27 +726,34 @@ const GrowBrand = () => {
       <div className="container mx-auto px-4 md:px-0">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
           <div className="space-y-6">
-            <h3 className="font-bold text-xl text-gray-800 mb-4">Get deliveries with InstaMarkt</h3>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <h3 className="font-bold text-xl text-gray-800 mb-4 text-center md:text-left">
+              Get deliveries with InstaMarkt
+            </h3>
+            <div className="flex flex-col items-center md:items-start gap-4">
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow"
+                className="w-full max-w-[250px] bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow flex justify-center items-center"
               >
-                <Apple className="mr-2 h-5 w-5" /> 
-                <span>iOS <span className="text-green-700">(Coming Soon)</span></span>
+                <div className="flex items-center justify-center">
+                  <Apple className="h-5 w-5" />
+                  <span className="ml-2">iOS <span className="text-green-700">(Coming Soon)</span></span>
+                </div>
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow"
+                className="w-full max-w-[250px] bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow flex justify-center items-center"
               >
-                <Smartphone className="mr-2 h-5 w-5" /> 
-                <span>Android <span className="text-green-700">(Coming Soon)</span></span>
+                <div className="flex items-center justify-center">
+                  <Smartphone className="h-5 w-5" />
+                  <span className="ml-2">Android <span className="text-green-700">(Coming Soon)</span></span>
+                </div>
               </Button>
             </div>
           </div>
   
+          {/* Rest of the footer content remains the same */}
           {[
             { 
               title: "Popular Departments", 
@@ -776,12 +783,12 @@ const GrowBrand = () => {
             }
           ].map((column, index) => (
             <div key={index} className="space-y-4">
-              <h3 className="font-bold text-lg text-gray-800 border-b border-gray-200 pb-2">
+              <h3 className="font-bold text-lg text-gray-800 border-b border-gray-200 pb-2 text-center md:text-left">
                 {column.title}
               </h3>
               <ul className="space-y-3">
                 {column.items.map((item, itemIndex) => (
-                  <li key={itemIndex}>
+                  <li key={itemIndex} className="text-center md:text-left">
                     {column.isDisabled ? (
                       <span className="text-gray-500 cursor-not-allowed hover:text-gray-600 transition-colors duration-200">
                         {typeof item === 'object' ? item.text : item}
@@ -789,7 +796,7 @@ const GrowBrand = () => {
                     ) : (
                       <Link 
                         href={typeof item === 'object' ? item.link : '#'} 
-                        className="text-gray-600 hover:text-green-700 transition-colors duration-200 flex items-center group"
+                        className="text-gray-600 hover:text-green-700 transition-colors duration-200 inline-flex items-center group"
                       >
                         <ArrowRight className="h-4 w-4 opacity-0 -ml-5 group-hover:opacity-100 transition-all duration-200 text-green-700" />
                         {typeof item === 'object' ? item.text : item}
@@ -825,7 +832,8 @@ const GrowBrand = () => {
         </div>
       </div>
     </footer>
-  );
+  ); 
+  
   
 
 export default function BusinessPage() {

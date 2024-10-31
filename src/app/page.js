@@ -12,34 +12,30 @@ import { Menu, X } from "lucide-react";
 // import { useState } from "react";
 // Reusable StoreCard component for displaying stores
 const StoreCard = ({ store }) => (
-  <Link href={`/store/${encodeURIComponent(store.name.toLowerCase())}`} key={store.name}>
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-4 flex items-start space-x-4">
-        <div className="w-16 h-16 bg-gray-200 rounded-md flex-shrink-0 flex items-center justify-center overflow-hidden">
-          {store.logo && (
-            <Image src={store.logo} alt={`${store.name} logo`} width={64} height={64} />
-          )}
+  <Card className="bg-white">
+    <CardContent className="p-4 flex items-start space-x-4">
+      <div className="w-16 h-16 bg-gray-200 rounded-md flex-shrink-0 flex items-center justify-center overflow-hidden">
+        {store.logo && (
+          <Image src={store.logo} alt={`${store.name} logo`} width={64} height={64} />
+        )}
+      </div>
+      <div className="flex-grow text-black">
+        <h3 className="font-bold text-lg">{store.name}</h3>
+        <p className="text-sm text-green-600">{store.description}</p>
+        <div className="mt-2 space-x-2">
+          <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
+            {store.banner?.text || "No Banner Text"}
+          </span>
         </div>
-        <div className="flex-grow text-black">
-          <h3 className="font-bold text-lg">{store.name}</h3>
-          <p className="text-sm text-green-600">{store.description}</p>
-          <div className="mt-2 space-x-2">
-            <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
-              {store.banner?.text || "No Banner Text"}
-            </span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  </Link>
+      </div>
+    </CardContent>
+  </Card>
 );
 
-// Add the new Store Section here
 const StoreSection = () => {
   const [stores, setStores] = useState([]);
 
   useEffect(() => {
-    // Fetch stores data from storage (mock data or API)
     fetch("/data/retailers.json")
       .then(res => {
         if (!res.ok) {
@@ -48,10 +44,9 @@ const StoreSection = () => {
         return res.json();
       })
       .then(data => {
-        console.log("Data fetched from retailers.json:", data); // Log fetched data
-        // Convert object values to an array
+        console.log("Data fetched from retailers.json:", data);
         const storeArray = Object.values(data);
-        setStores(storeArray);  // Set the array of stores
+        setStores(storeArray);
       })
       .catch(error => {
         console.error("Error fetching stores data:", error);
@@ -60,21 +55,28 @@ const StoreSection = () => {
 
   return (
     <section className="py-20 bg-white">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-12 text-center text-black">
           Order from stores in your area
         </h2>
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {stores.length > 0 ? (
-            stores.map((store, index) => <StoreCard key={index} store={store} />)
+            stores.map((store, index) => (
+              <div key={index} className="transform transition-transform">
+                <StoreCard store={store} />
+              </div>
+            ))
           ) : (
-            <p>No stores available or still loading...</p>
+            <div className="col-span-full flex justify-center items-center py-8">
+              <p className="text-gray-500 text-lg">Loading stores...</p>
+            </div>
           )}
         </div>
       </div>
     </section>
   );
 };
+
 
 const LandingHeader = () => (
   <header className="bg-orange-600 text-black p-4">
@@ -479,27 +481,34 @@ const Footer = () => (
     <div className="container mx-auto px-4 md:px-0">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
         <div className="space-y-6">
-          <h3 className="font-bold text-xl text-gray-800 mb-4">Get deliveries with InstaMarkt</h3>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <h3 className="font-bold text-xl text-gray-800 mb-4 text-center md:text-left">
+            Get deliveries with InstaMarkt
+          </h3>
+          <div className="flex flex-col items-center md:items-start gap-4">
             <Button 
               variant="outline" 
               size="lg" 
-              className="bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow"
+              className="w-full max-w-[250px] bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow flex justify-center items-center"
             >
-              <Apple className="mr-2 h-5 w-5" /> 
-              <span>iOS <span className="text-green-700">(Coming Soon)</span></span>
+              <div className="flex items-center justify-center">
+                <Apple className="h-5 w-5" />
+                <span className="ml-2">iOS <span className="text-green-700">(Coming Soon)</span></span>
+              </div>
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
-              className="bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow"
+              className="w-full max-w-[250px] bg-white hover:bg-gray-50 text-gray-800 border-2 border-green-700 hover:border-green-800 transition-all duration-300 shadow-sm hover:shadow flex justify-center items-center"
             >
-              <Smartphone className="mr-2 h-5 w-5" /> 
-              <span>Android <span className="text-green-700">(Coming Soon)</span></span>
+              <div className="flex items-center justify-center">
+                <Smartphone className="h-5 w-5" />
+                <span className="ml-2">Android <span className="text-green-700">(Coming Soon)</span></span>
+              </div>
             </Button>
           </div>
         </div>
 
+        {/* Rest of the footer content remains the same */}
         {[
           { 
             title: "Popular Departments", 
@@ -529,12 +538,12 @@ const Footer = () => (
           }
         ].map((column, index) => (
           <div key={index} className="space-y-4">
-            <h3 className="font-bold text-lg text-gray-800 border-b border-gray-200 pb-2">
+            <h3 className="font-bold text-lg text-gray-800 border-b border-gray-200 pb-2 text-center md:text-left">
               {column.title}
             </h3>
             <ul className="space-y-3">
               {column.items.map((item, itemIndex) => (
-                <li key={itemIndex}>
+                <li key={itemIndex} className="text-center md:text-left">
                   {column.isDisabled ? (
                     <span className="text-gray-500 cursor-not-allowed hover:text-gray-600 transition-colors duration-200">
                       {typeof item === 'object' ? item.text : item}
@@ -542,7 +551,7 @@ const Footer = () => (
                   ) : (
                     <Link 
                       href={typeof item === 'object' ? item.link : '#'} 
-                      className="text-gray-600 hover:text-green-700 transition-colors duration-200 flex items-center group"
+                      className="text-gray-600 hover:text-green-700 transition-colors duration-200 inline-flex items-center group"
                     >
                       <ArrowRight className="h-4 w-4 opacity-0 -ml-5 group-hover:opacity-100 transition-all duration-200 text-green-700" />
                       {typeof item === 'object' ? item.text : item}
@@ -578,7 +587,7 @@ const Footer = () => (
       </div>
     </div>
   </footer>
-);    
+); 
 
 const DemoVideo = () => {
   const videoRef = useRef(null);
