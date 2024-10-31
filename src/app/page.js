@@ -3,13 +3,41 @@
 
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
-import { Apple, Smartphone,ArrowRight, Clock, MapPin,ChevronDown,ShoppingBag,Star,StorefrontIcon } from "lucide-react";
+import { Apple, Smartphone,ArrowRight, Footprints, Shirt, Sofa, Home, Clock, MapPin,ChevronDown,ShoppingBag,Star,StorefrontIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { Menu, X } from "lucide-react";
 // import { useState } from "react";
+const getStoreCategories = (storeName) => {
+  const categoryMap = {
+    'Bata': ['Shoes', 'Footwear', 'Accessories'],
+    'Liberty': ['Shoes', 'Footwear', 'Accessories'],
+    'Clarks': ['Shoes', 'Footwear', 'Premium Footwear'],
+    'Croma': ['Electronics', 'Home Appliances', 'Gadgets'],
+    'FabIndia': ['Clothing', 'Fashion', 'Ethnic Wear'],
+    'Trends': ['Fashion', 'Clothing', 'Accessories'],
+    'Lifestyle': ['Fashion', 'Clothing', 'Home Decor'],
+    'Godrej': ['Electronics', 'Home Appliances', 'Furniture'],
+    'IKEA': ['Furniture', 'Home Decor', 'Home Essentials']
+  };
+
+  return categoryMap[storeName] || ['General', 'Retail'];
+};
+
+const getCategoryIcon = (category) => {
+  const iconMap = {
+    'Shoes': <Footprints className="w-3 h-3" />,
+    'Electronics': <Smartphone className="w-3 h-3" />,
+    'Fashion': <Shirt className="w-3 h-3" />,
+    'Furniture': <Sofa className="w-3 h-3" />,
+    'Home Appliances': <Home className="w-3 h-3" />
+  };
+
+  return iconMap[category] || null;
+};
+
 const StoreCard = ({ store }) => (
   <Card className="bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
     <CardContent className="p-6">
@@ -50,23 +78,14 @@ const StoreCard = ({ store }) => (
             )}
           </div>
 
-          {/* Delivery Time Badge */}
-          <div className="mb-3">
+          {/* Store Type & Delivery Badge */}
+          <div className="flex flex-wrap gap-2 mb-3">
             <span className="inline-flex items-center bg-blue-50 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
               <Clock className="w-4 h-4 mr-1.5" />
               {store.deliveryTime || '10-15'} mins away
             </span>
-          </div>
-
-          {/* Tags Section */}
-          <div className="flex flex-wrap gap-2">
-            {store.banner?.text && (
-              <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
-                {store.banner.text}
-              </span>
-            )}
             {store.isOpen && (
-              <span className="inline-flex items-center bg-green-50 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center bg-green-50 text-green-700 text-sm font-medium px-3 py-1 rounded-full">
                 <div className="w-1.5 h-1.5 bg-green-600 rounded-full mr-1.5"></div>
                 Open Now
               </span>
@@ -74,15 +93,33 @@ const StoreCard = ({ store }) => (
           </div>
 
           {/* Categories Section */}
-          <div className="flex flex-wrap gap-2 mt-3">
-            {['Beverages', 'Frozen Food', 'Grocery', 'Snacks'].map((category, index) => (
+          <div className="flex flex-wrap gap-2">
+            {getStoreCategories(store.name).map((category, index) => (
               <span 
                 key={index}
                 className="inline-flex items-center bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-full"
               >
+                {getCategoryIcon(category)}
+                {getCategoryIcon(category) && <span className="mr-1"></span>}
                 {category}
               </span>
             ))}
+          </div>
+
+          {/* Store Features */}
+          <div className="flex flex-wrap gap-2 mt-3">
+            {store.features?.map((feature, index) => (
+              <span 
+                key={index}
+                className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full"
+              >
+                {feature}
+              </span>
+            )) || (
+              <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                Free Delivery Available
+              </span>
+            )}
           </div>
 
           {/* Footer Section */}
@@ -103,7 +140,6 @@ const StoreCard = ({ store }) => (
     </CardContent>
   </Card>
 );
-
 const StoreSection = () => {
   const [stores, setStores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
