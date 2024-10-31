@@ -3,29 +3,101 @@
 
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
-import { Apple, Smartphone,ArrowRight, ChevronDown } from "lucide-react";
+import { Apple, Smartphone,ArrowRight, Clock, MapPin,ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { Menu, X } from "lucide-react";
 // import { useState } from "react";
-// Reusable StoreCard component for displaying stores
 const StoreCard = ({ store }) => (
-  <Card className="bg-white">
-    <CardContent className="p-4 flex items-start space-x-4">
-      <div className="w-16 h-16 bg-gray-200 rounded-md flex-shrink-0 flex items-center justify-center overflow-hidden">
-        {store.logo && (
-          <Image src={store.logo} alt={`${store.name} logo`} width={64} height={64} />
-        )}
-      </div>
-      <div className="flex-grow text-black">
-        <h3 className="font-bold text-lg">{store.name}</h3>
-        <p className="text-sm text-green-600">{store.description}</p>
-        <div className="mt-2 space-x-2">
-          <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
-            {store.banner?.text || "No Banner Text"}
-          </span>
+  <Card className="bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+    <CardContent className="p-6">
+      <div className="flex items-start gap-6">
+        {/* Logo Section */}
+        <div className="w-20 h-20 bg-gray-50 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm">
+          {store.logo ? (
+            <Image 
+              src={store.logo} 
+              alt={`${store.name} logo`} 
+              width={80} 
+              height={80} 
+              className="object-cover"
+            />
+          ) : (
+            <StorefrontIcon className="w-10 h-10 text-gray-400" />
+          )}
+        </div>
+
+        {/* Content Section */}
+        <div className="flex-grow min-w-0">
+          <div className="flex items-start justify-between mb-2">
+            <div>
+              <h3 className="font-bold text-xl text-gray-900 mb-1 truncate">
+                {store.name}
+              </h3>
+              <p className="text-green-600 text-sm font-medium line-clamp-2">
+                {store.description}
+              </p>
+            </div>
+            {store.rating && (
+              <div className="flex items-center bg-green-50 px-2 py-1 rounded-full">
+                <Star className="w-4 h-4 text-green-600 mr-1" />
+                <span className="text-sm font-semibold text-green-700">
+                  {store.rating}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Delivery Time Badge */}
+          <div className="mb-3">
+            <span className="inline-flex items-center bg-blue-50 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
+              <Clock className="w-4 h-4 mr-1.5" />
+              {store.deliveryTime || '10-15'} mins away
+            </span>
+          </div>
+
+          {/* Tags Section */}
+          <div className="flex flex-wrap gap-2">
+            {store.banner?.text && (
+              <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
+                {store.banner.text}
+              </span>
+            )}
+            {store.isOpen && (
+              <span className="inline-flex items-center bg-green-50 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">
+                <div className="w-1.5 h-1.5 bg-green-600 rounded-full mr-1.5"></div>
+                Open Now
+              </span>
+            )}
+          </div>
+
+          {/* Categories Section */}
+          <div className="flex flex-wrap gap-2 mt-3">
+            {['Beverages', 'Frozen Food', 'Grocery', 'Snacks'].map((category, index) => (
+              <span 
+                key={index}
+                className="inline-flex items-center bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-full"
+              >
+                {category}
+              </span>
+            ))}
+          </div>
+
+          {/* Footer Section */}
+          <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center text-gray-600">
+              <MapPin className="w-4 h-4 mr-1.5" />
+              <span className="text-sm">{store.distance || '1.2'} km away</span>
+            </div>
+            {store.minOrder && (
+              <div className="flex items-center text-gray-600">
+                <ShoppingBag className="w-4 h-4 mr-1.5" />
+                <span className="text-sm">Min. ₹{store.minOrder}</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </CardContent>
@@ -34,6 +106,8 @@ const StoreCard = ({ store }) => (
 
 const StoreSection = () => {
   const [stores, setStores] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("/data/retailers.json")
@@ -44,39 +118,48 @@ const StoreSection = () => {
         return res.json();
       })
       .then(data => {
-        console.log("Data fetched from retailers.json:", data);
         const storeArray = Object.values(data);
         setStores(storeArray);
+        setIsLoading(false);
       })
       .catch(error => {
         console.error("Error fetching stores data:", error);
+        setError(error.message);
+        setIsLoading(false);
       });
   }, []);
 
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-12 text-center text-black">
+        <h2 className="text-3xl font-bold mb-4 text-center text-gray-900">
           Order from stores in your area
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {stores.length > 0 ? (
-            stores.map((store, index) => (
-              <div key={index} className="transform transition-transform">
+        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+          Get your favorite items delivered quickly from the best local stores near you
+        </p>
+
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-700"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-600 py-8">
+            Error loading stores: {error}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {stores.map((store, index) => (
+              <div key={index}>
                 <StoreCard store={store} />
               </div>
-            ))
-          ) : (
-            <div className="col-span-full flex justify-center items-center py-8">
-              <p className="text-gray-500 text-lg">Loading stores...</p>
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 };
-
 
 const LandingHeader = () => (
   <header className="bg-orange-600 text-black p-4">
