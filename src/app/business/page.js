@@ -996,80 +996,70 @@ const PricingPlanCard = ({ title, price, originalPrice, commission, description,
     <div
       className={`w-full md:w-[340px] border-2 rounded-lg p-4 md:p-6 flex flex-col transition-transform transform hover:scale-105 hover:shadow-lg ${
         selected ? 'border-green-600 bg-white' : 'border-gray-300 bg-white'
-      } min-h-[500px] md:min-h-[650px]`}
+      } min-h-[500px] md:min-h-[650px]`} // Reduced height for mobile
     >
       {/* Header Section */}
-      <div className="mb-4">
-        <h2 className="text-xl md:text-2xl font-bold text-black mb-1">
-          {title}
-        </h2>
-        <p className="text-sm md:text-md text-gray-700 font-medium">
-          SKU Range: {skuRange}
-        </p>
+      <div className="h-[60px]">
+        <h2 className="text-xl md:text-2xl font-bold text-black mb-2">{title}</h2>
+        <p className="text-sm md:text-md text-gray-700 font-medium">SKU Range: {skuRange}</p>
       </div>
 
       {/* Pricing Section */}
-      <div className="mb-4">
+      <div className="h-[60px] md:h-[80px] flex flex-col justify-center">
         <div className="flex items-center gap-2 mb-1">
-          {originalPrice && (
-            <p className="text-lg md:text-xl text-red-500 line-through">
-              {originalPrice}
-            </p>
-          )}
-          <p className="text-lg md:text-xl text-green-600 font-semibold">
-            {price}
-          </p>
+          {originalPrice && <p className="text-lg md:text-xl text-red-500 line-through">{originalPrice}</p>}
+          <p className="text-lg md:text-xl text-green-600 font-semibold">{price}</p>
         </div>
-        <p className="text-sm md:text-md font-medium text-black">
-          {commission}
-        </p>
+        <p className="text-sm md:text-md font-medium text-black">{commission}</p>
       </div>
 
-      <hr className="border-gray-300 mb-4" />
+      <hr className="border-gray-300 my-3 md:my-4" />
 
       {/* Description Section */}
-      <div className="mb-4">
-        <p className="text-sm md:text-md text-gray-600">
-          {description}
-        </p>
+      <div className="h-[60px] md:h-[80px]">
+        <p className="text-sm md:text-md text-gray-600">{description}</p>
       </div>
 
       {/* Features Section */}
-      <div className="flex-grow">
-        {/* Included Features */}
-        <ul className="list-none space-y-2 mb-3">
-          {features.map((feature, index) =>
-            feature.included ? (
-              <li key={index} className="flex items-start text-xs md:text-sm">
-                <span className="text-green-600 mr-2 mt-0.5">✓</span>
-                <span className="text-gray-600">{feature.name}</span>
-              </li>
-            ) : null
-          )}
-        </ul>
+      <div className="flex-grow overflow-auto py-3 md:py-4">
+        <div className="space-y-3 md:space-y-4">
+          {/* Included Features */}
+          <ul className="list-none space-y-1.5 md:space-y-2">
+            {features.map((feature, index) =>
+              feature.included ? (
+                <li key={index} className="flex items-start text-xs md:text-sm">
+                  <span className="text-green-600 mr-2 mt-0.5">✓</span>
+                  <span className="text-gray-600">{feature.name}</span>
+                </li>
+              ) : null
+            )}
+          </ul>
 
-        <hr className="border-gray-300 my-3" />
+          <hr className="border-gray-300" />
 
-        {/* Not Included Features */}
-        <ul className="list-none space-y-2 mb-3">
-          {features.map((feature, index) =>
-            !feature.included ? (
-              <li key={index} className="flex items-start text-xs md:text-sm">
-                <span className="text-red-600 mr-2 mt-0.5">✕</span>
-                <span className="text-gray-600">{feature.name}</span>
-              </li>
-            ) : null
-          )}
-        </ul>
+          {/* Not Included Features */}
+          <ul className="list-none space-y-1.5 md:space-y-2">
+            {features.map((feature, index) =>
+              !feature.included ? (
+                <li key={index} className="flex items-start text-xs md:text-sm">
+                  <span className="text-red-600 mr-2 mt-0.5">✕</span>
+                  <span className="text-gray-600">{feature.name}</span>
+                </li>
+              ) : null
+            )}
+          </ul>
+        </div>
       </div>
 
       {/* Button Section */}
-      <Button 
-        className="w-full bg-green-900 hover:bg-green-700 rounded-full text-white py-2 md:py-3"
-        onClick={handleClick}
-      >
-        <span className="text-sm md:text-base">{buttonText}</span>
-      </Button>
+      <div className="h-[50px] md:h-[60px]  md:pt-4">
+        <Button 
+          className="w-full bg-green-900 hover:bg-green-700 rounded-full text-white py-2 md:py-3"
+          onClick={handleClick}
+        >
+          <span className="text-sm md:text-base">{buttonText}</span>
+        </Button>
+      </div>
     </div>
   );
 };
