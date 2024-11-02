@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, createContext, useContext, Suspense} from 'react';
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -7,6 +7,15 @@ import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 import { X } from 'lucide-react';
+const LoadingSpinner = () => (
+  <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-900 mx-auto"></div>
+      <p className="mt-4 text-gray-600">Loading...</p>
+    </div>
+  </div>
+);
+
 
 async function hashPassword(password) {
   const encoder = new TextEncoder();
@@ -469,7 +478,9 @@ const FormField = ({ label, children, error }) => (
   </div>
 );
 
-const AuthPage = () => {
+
+
+const AuthPageClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("login");
@@ -1059,6 +1070,23 @@ const handleGoogleResponse = async (response) => {
 
   />
   </>
+  );
+};
+
+
+const AuthPageLoading = () => (
+  <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-900 mx-auto"></div>
+      <p className="mt-4 text-gray-600">Loading...</p>
+    </div>
+  </div>
+);
+const AuthPage = () => {
+  return (
+    <Suspense fallback={<AuthPageLoading />}>
+      <AuthPageClient />
+    </Suspense>
   );
 };
 
