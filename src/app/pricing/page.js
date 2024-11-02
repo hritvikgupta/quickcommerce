@@ -8,6 +8,7 @@ import { Apple, Smartphone, ArrowRight, ChevronDown, Menu, X } from "lucide-reac
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const globalStyles = `
   .scrollbar-hide {
@@ -341,6 +342,7 @@ const PricingPlanCard = ({
   );
 };
 
+
 const PricingSection = ({ title, plans, scrollToSignup }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -380,10 +382,10 @@ const PricingSection = ({ title, plans, scrollToSignup }) => {
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
-        const scrollPosition = scrollRef.current.scrollLeft;
+        const { scrollLeft } = scrollRef.current;
         const cardWidth = scrollRef.current.clientWidth;
-        const newActiveSlide = Math.round(scrollPosition / cardWidth);
-        setCurrentIndex(newActiveSlide);
+        const newIndex = Math.round(scrollLeft / cardWidth);
+        setCurrentIndex(newIndex);
       }
     };
 
@@ -413,11 +415,36 @@ const PricingSection = ({ title, plans, scrollToSignup }) => {
           Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
         </p>
 
-        {/* Mobile view */}
+        {/* Mobile view with permanent scroll arrows */}
         <div className="relative md:hidden">
+          {/* Left Arrow - Always visible but disabled at first slide */}
+          <button
+            onClick={handlePrev}
+            disabled={currentIndex === 0}
+            className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 rounded-r-full p-2 shadow-lg transition-opacity ${
+              currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-100 hover:bg-white'
+            }`}
+            aria-label="Previous plan"
+          >
+            <ChevronLeft className="h-8 w-8 text-green-900" />
+          </button>
+
+          {/* Right Arrow - Always visible but disabled at last slide */}
+          <button
+            onClick={handleNext}
+            disabled={currentIndex === plans.length - 1}
+            className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 rounded-l-full p-2 shadow-lg transition-opacity ${
+              currentIndex === plans.length - 1 ? 'opacity-50 cursor-not-allowed' : 'opacity-100 hover:bg-white'
+            }`}
+            aria-label="Next plan"
+          >
+            <ChevronRight className="h-8 w-8 text-green-900" />
+          </button>
+
+          {/* Mobile scroll container */}
           <div
             ref={scrollRef}
-            className="overflow-x-auto scrollbar-hide"
+            className="overflow-x-auto scrollbar-hide relative"
             style={{ scrollSnapType: 'x mandatory' }}
           >
             <div
@@ -428,7 +455,7 @@ const PricingSection = ({ title, plans, scrollToSignup }) => {
                 <div
                   key={index}
                   className="flex-shrink-0"
-                  style={{ width: `${100 / plans.length}%` }}
+                  style={{ width: `${100 / plans.length}%`, scrollSnapAlign: 'start' }}
                 >
                   <div className="px-4">
                     <PricingPlanCard
@@ -443,8 +470,22 @@ const PricingSection = ({ title, plans, scrollToSignup }) => {
             </div>
           </div>
 
+          {/* Dots indicator */}
+          <div className="flex justify-center gap-2 mt-4">
+            {plans.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollToSlide(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  currentIndex === index ? 'bg-green-900 w-4' : 'bg-gray-300'
+                }`}
+                aria-label={`Go to plan ${index + 1}`}
+              />
+            ))}
+          </div>
+
           {/* Current Plan Indicator */}
-          <div className="text-center mt-4 text-sm font-medium text-gray-600">
+          <div className="text-center mt-2 text-sm font-medium text-gray-600">
             {currentIndex + 1} of {plans.length} - {plans[currentIndex].title}
           </div>
         </div>
@@ -465,6 +506,7 @@ const PricingSection = ({ title, plans, scrollToSignup }) => {
     </section>
   );
 };
+
 
 // Add to your global CSS
 const styles = `
