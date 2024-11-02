@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,Suspense } from 'react';
 import axios from 'axios';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line
@@ -9,6 +9,16 @@ import {
   Store, Package, Clock, TrendingUp, Settings, Users, ShoppingBag, ChevronDown, Bell
 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+
+
+const LoadingSpinner = () => (
+  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-900 mx-auto"></div>
+      <p className="mt-4 text-gray-600">Loading dashboard data...</p>
+    </div>
+  </div>
+);
 
 // Card Components
 const Card = ({ children, className = "" }) => (
@@ -689,7 +699,7 @@ const SettingsContent = ({ businessData, businessId, onUpdate }) => {
   );
 };
 
-const RetailerDashboard = () => {
+const DashboardContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState('overview');
@@ -1017,6 +1027,14 @@ const RetailerDashboard = () => {
         {renderContent()}
       </div>
     </div>
+  );
+};
+
+const RetailerDashboard = () => {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <DashboardContent />
+    </Suspense>
   );
 };
 
