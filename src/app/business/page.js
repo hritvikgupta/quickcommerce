@@ -39,8 +39,8 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
           <Image
             src="/images/insta_market_business.png"
             alt="InstaMarkt Logo"
-            width={200}
-            height={75}
+            width={300}
+            height={150}
             className="object-contain"
           />
         </Link>
