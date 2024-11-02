@@ -773,7 +773,7 @@ const handleSignup = async (e) => {
         body: JSON.stringify({
           fields: {
             "Business Password": hashedPassword,
-            "Business Name": signupName,
+            "Name": signupName,
             "Auth Type": "email"
           }
         }),
