@@ -21,10 +21,19 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
+    // Prevent body scroll when mobile menu is open
+    document.body.style.overflow = !isMobileMenuOpen ? 'hidden' : 'unset';
   };
 
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   return (
-    <header className="bg-white shadow-sm p-4">
+    <header className="bg-white shadow-sm p-4 sticky top-0 z-50">
       <div className="flex justify-between items-center">
         <Link href="/business" className="flex items-center space-x-2">
           <Image
@@ -37,7 +46,11 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
         </Link>
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden" onClick={toggleMobileMenu}>
+        <button 
+          className="md:hidden z-50" 
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
+        >
           {isMobileMenuOpen ? (
             <X className="h-6 w-6 text-green-900" />
           ) : (
@@ -47,13 +60,21 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-1">
-          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/business')}>
+          <Button 
+            variant="ghost" 
+            className="font-bold text-green-900 hover:text-green-700" 
+            onClick={() => router.push('/business')}
+          >
             Home
           </Button>
-          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={scrollToPricing}>
+          <Button 
+            variant="ghost" 
+            className="font-bold text-green-900 hover:text-green-700" 
+            onClick={scrollToPricing}
+          >
             Pricing
           </Button>
-          
+
           {/* Services Dropdown */}
           <div className="relative">
             <button
@@ -64,67 +85,186 @@ const Header = ({ scrollToPricing, scrollToSignup }) => {
             </button>
             {isDropdownOpen && (
               <div className="absolute bg-white shadow-lg rounded-md mt-2 p-2 w-48 z-10">
-                <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">Online Ordering</Link>
-                <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">Delivery & Pickup</Link>
-                <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">Promotions</Link>
+                <Link href="/services/onlineordering" className="block px-4 py-2 text-black hover:bg-gray-100">
+                  Online Ordering
+                </Link>
+                <Link href="/services/deliveryandpickup" className="block px-4 py-2 text-black hover:bg-gray-100">
+                  Delivery & Pickup
+                </Link>
+                <Link href="/services/promotions" className="block px-4 py-2 text-black hover:bg-gray-100">
+                  Promotions
+                </Link>
               </div>
             )}
           </div>
 
-          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/contact')}>
+          <Button 
+            variant="ghost" 
+            className="font-bold text-green-900 hover:text-green-700" 
+            onClick={() => router.push('/contact')}
+          >
             Contact
           </Button>
-          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/aboutus')}>
+          <Button 
+            variant="ghost" 
+            className="font-bold text-green-900 hover:text-green-700" 
+            onClick={() => router.push('/aboutus')}
+          >
             About Us
           </Button>
-          <Button variant="ghost" className="font-bold text-green-900 hover:text-green-700" onClick={() => router.push('/')}>
+          <Button 
+            variant="ghost" 
+            className="font-bold text-green-900 hover:text-green-700" 
+            onClick={() => router.push('/')}
+          >
             Go To InstaMarkt Store
+          </Button>
+        </div>
+
+        {/* Desktop Action Buttons */}
+        <div className="hidden md:flex space-x-2">
+          <Button 
+            className="bg-white hover:bg-gray-50 border-2 border-green-900 rounded-full text-black transition-all duration-200" 
+            onClick={() => router.push('/auth')}
+          >
+            <p className="text-black font-bold">Login/Signup</p>
+          </Button>
+          <Button 
+            className="bg-green-900 hover:bg-green-700 rounded-full text-white" 
+            onClick={scrollToSignup}
+          >
+            <p className="text-white font-bold">Get Started</p>
           </Button>
         </div>
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-16 left-0 right-0 bg-white shadow-lg z-50 md:hidden">
-            <div className="flex flex-col p-4 space-y-3">
-              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/business')}>
-                Home
-              </Button>
-              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={scrollToPricing}>
-                Pricing
-              </Button>
-              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                Services {isDropdownOpen ? <ChevronDown className="inline ml-2" /> : <ChevronDown className="inline ml-2" />}
-              </Button>
-              {isDropdownOpen && (
-                <div className="pl-4 space-y-2">
-                  <Link href="/services/onlineordering" className="block py-2 text-green-900">Online Ordering</Link>
-                  <Link href="/services/deliveryandpickup" className="block py-2 text-green-900">Delivery & Pickup</Link>
-                  <Link href="/services/promotions" className="block py-2 text-green-900">Promotions</Link>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden">
+            <div className="fixed top-16 right-0 w-full max-w-sm h-screen bg-white shadow-lg overflow-y-auto">
+              <div className="flex flex-col p-4 space-y-3">
+                {/* Navigation Links */}
+                <div className="space-y-2">
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      router.push('/business');
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Home
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      scrollToPricing();
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Pricing
+                  </Button>
                 </div>
-              )}
-              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/contact')}>
-                Contact
-              </Button>
-              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/aboutus')}>
-                About Us
-              </Button>
-              <Button variant="ghost" className="w-full text-left font-bold text-green-900" onClick={() => router.push('/')}>
-                Go To InstaMarkt Store
-              </Button>
+
+                {/* Services Section */}
+                <div className="py-2 space-y-2 border-t border-gray-100">
+                  <p className="text-sm font-semibold text-gray-500 px-3">Services</p>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      router.push('/services/onlineordering');
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Online Ordering
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      router.push('/services/deliveryandpickup');
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Delivery & Pickup
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      router.push('/services/promotions');
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Promotions
+                  </Button>
+                </div>
+
+                {/* Additional Links */}
+                <div className="py-2 space-y-2 border-t border-gray-100">
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      router.push('/contact');
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Contact
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      router.push('/aboutus');
+                      toggleMobileMenu();
+                    }}
+                  >
+                    About Us
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-left font-bold text-green-900 justify-start" 
+                    onClick={() => {
+                      router.push('/');
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Go To InstaMarkt Store
+                  </Button>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="pt-4 space-y-2 border-t border-gray-100">
+                  <Button 
+                    className="w-full bg-white text-black hover:bg-gray-50 border-2 border-green-900 text-black rounded-full" 
+                    onClick={() => {
+                      router.push('/auth');
+                      toggleMobileMenu();
+                    }}
+                  >
+
+            <p className="text-black font-bold">Login/Signup</p>
+                  </Button>
+                  <Button 
+                    className="w-full bg-green-900 hover:bg-green-700 text-white rounded-full" 
+                    onClick={() => {
+                      scrollToSignup();
+                      toggleMobileMenu();
+                    }}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         )}
-
-        <div className="hidden md:flex space-x-2">
-          <Button className="bg-green-900 hover:bg-green-700 rounded-full text-white" onClick={scrollToSignup}>
-            <p className="text-white font-bold">Get Started</p>
-          </Button>
-        </div>
       </div>
     </header>
   );
 };
-
 
 
 const Hero = ({ scrollToSignup }) => {
@@ -616,6 +756,20 @@ const GrowBrand = () => {
   //   );
   // };
   
+  const generateBusinessId = (businessName, businessType, businessCity, businessPhone, businessPincode, businessEmail) => {
+    const cleanBusinessName = businessName.trim().toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 3);
+    const cleanBusinessType = businessType.trim().toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 3);
+    const cleanCity = businessCity.trim().toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 3);
+    // Take last 4 digits of phone number
+    const lastFourPhone = businessPhone.slice(-4);
+    // Take last 3 digits of pincode
+    const lastThreePincode = businessPincode.slice(-3);
+    // Take first part of email before @
+    const cleanEmail = businessEmail.split('@')[0].substring(0, 3);
+    
+    return `BIZ-${cleanBusinessName}${cleanBusinessType}${cleanCity}-${lastFourPhone}${lastThreePincode}${cleanEmail}`;
+  };
+  
   const SignUpForm = ({ signUpRef }) => {
     const [businessName, setBusinessName] = useState('');
     const [businessType, setBusinessType] = useState('');
@@ -626,45 +780,86 @@ const GrowBrand = () => {
     const [skuCount, setSkuCount] = useState('');
     const [businessEmail, setBusinessEmail] = useState('');
     const [businessPhone, setBusinessPhone] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-      if (businessName) {
-        router.push(`/marketplace?businessName=${encodeURIComponent(businessName)}`);
-    
+      
+      // Prevent double submission
+      if (isSubmitting) return;
+      setIsSubmitting(true);
+  
+      try {
+        // Generate business ID
+        const businessId = generateBusinessId(
+          businessName,
+          businessType,
+          businessCity,
+          businessPhone,
+          businessPincode,
+          businessEmail
+        );
+  
+        // Check if businessId already exists
+        const checkResponse = await axios.get(
+          `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table?filterByFormula={Business ID}='${businessId}'`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+  
+        // If business exists, show error and return
+        if (checkResponse.data.records.length > 0) {
+          alert('A business with similar details already exists. Please verify your information or contact support if you believe this is an error.');
+          setIsSubmitting(false);
+          return;
+        }
+  
+        // If business doesn't exist, proceed with creation
         const businessData = {
           fields: {
+            "Business ID": businessId,
             Name: businessName,
             Type: businessType,
             Address: businessAddress.trim(),
             State: businessState.trim(),
             City: businessCity.trim(),
-            Pincode: parseInt(businessPincode.trim()), // Convert to number
+            Pincode: parseInt(businessPincode.trim()),
             "SKU Count": skuCount,
-            "Business Email": businessEmail,
-            "Business Phone": businessPhone,
-            Status: 'Pending'
+            "Business Email": businessEmail.trim(),
+            "Business Phone": businessPhone.trim(),
+            Status: 'Pending',
           }
         };
-    
-        try {
-          const businessResponse = await axios.post(
-            `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table`,
-            businessData,
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-    
-          console.log("Business record ID:", businessResponse.data.id);
-        } catch (error) {
-          console.error("Error adding data to Airtable:", error);
-          console.error("Error details:", error.response ? error.response.data : "No response data");
-        }
+  
+        const businessResponse = await axios.post(
+          `https://api.airtable.com/v0/${process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID}/Business%20Table`,
+          businessData,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_PAT}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+  
+        console.log("Business record created:", businessResponse.data);
+        
+        // Store business ID in localStorage
+        localStorage.setItem('businessId', businessId);
+        
+        // Navigate to marketplace
+        router.push(`/marketplace?businessName=${encodeURIComponent(businessName)}&businessId=${encodeURIComponent(businessId)}`);
+  
+      } catch (error) {
+        console.error("Error:", error);
+        alert('There was an error processing your request. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
     };
   

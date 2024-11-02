@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {  Monitor, Mail, Link2, Upload, Check, X, ChevronDown } from 'lucide-react';
 import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation'; // For navigation
+import { useRouter, useSearchParams } from 'next/navigation'; // For navigation
 
 //updates something
 
@@ -1089,14 +1089,32 @@ const PricingPlanCard = ({ title, originalPrice, price, commission, description,
     </Button>
   </div>
 );
+
 const SuccessModal = ({ isOpen, onClose }) => {
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  
   if (!isOpen) return null;
 
   const handleClose = () => {
+
     onClose();
+    // Redirect back to business page
     router.push('/business');
+    // // Get all parameters to pass to retailer dashboard
+    // const params = {
+    //   businessId: searchParams.get('businessId'),
+    //   businessName: searchParams.get('businessName'),
+    //   businessType: searchParams.get('businessType'),
+    //   userName: searchParams.get('userName'),
+    //   userEmail: searchParams.get('userEmail'),
+    //   userPicture: searchParams.get('userPicture')
+    // };
+
+    // // Check if we should redirect to retailer dashboard
+    // if (searchParams.get('redirectTo') === 'retailer') {
+    //   router.push('/retaildasboard?' + new URLSearchParams(params));
+    // }
   };
 
   return (
@@ -1127,6 +1145,7 @@ const SuccessModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
+
 export default function MainContent({ selectedStep, onComplete, businessName }) {
   const [accessToken, setAccessToken] = useState(null);
 
@@ -1467,7 +1486,7 @@ export default function MainContent({ selectedStep, onComplete, businessName }) 
         {renderHeader()}
         <SuccessModal isOpen={isModalOpen} onClose={() => {
       setIsModalOpen(false);
-      router.push('/business');
+      router.push('/retaildasboard');
     }} />
       </div>
       <div className="w-full max-w-5xl">

@@ -9,16 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@analytics/segment": "^2.1.0",
     "@radix-ui/react-scroll-area": "^1.2.0",
     "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
     "dropbox": "^10.34.0",
     "formidable": "^3.5.2",
+    "google-auth-library": "^9.14.2",
     "lucide-react": "^0.453.0",
+    "mixpanel-browser": "^2.55.1",
     "next": "14.2.15",
+    "nextjs-google-analytics": "^2.3.7",
     "react": "^18",
     "react-dom": "^18",
     "react-slick": "^0.30.2",
+    "recharts": "^2.13.2",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.5.4"
   },
