@@ -865,7 +865,66 @@ const MenuSection = ({ menuOption, setMenuOption, onSubmit, businessName, select
   );
 };
 
- 
+const d2cPlans = [
+  {
+    title: "D2C Starter",
+    originalPrice: "Rs 2,999",
+    price: "Rs 1,499 for 30 Days",
+    commission: "12% per order",
+    description: "Perfect for new D2C brands starting their journey.",
+    features: [
+      { name: "Online Store Setup", included: true },
+      { name: "Basic Analytics", included: true },
+      { name: "Standard Support", included: true },
+      { name: "Social Media Integration", included: true },
+      { name: "Custom Domain", included: false },
+      { name: "Advanced Marketing Tools", included: false },
+    ],
+    buttonText: "Start D2C Journey",
+    plan: 'd2c_starter',
+    skuRange: '0-100 Products',
+  },
+  {
+    title: "D2C Growth",
+    originalPrice: "Rs 5,999",
+    price: "Rs 3,999 for 60 Days",
+    commission: "10% per order",
+    description: "Scale your D2C brand with advanced features.",
+    features: [
+      { name: "Online Store Setup", included: true },
+      { name: "Advanced Analytics", included: true },
+      { name: "Priority Support", included: true },
+      { name: "Social Media Integration", included: true },
+      { name: "Custom Domain", included: true },
+      { name: "Basic Marketing Tools", included: true },
+      { name: "Inventory Management", included: true },
+    ],
+    buttonText: "Choose Growth",
+    plan: 'd2c_growth',
+    skuRange: '100-500 Products',
+  },
+  {
+    title: "D2C Enterprise",
+    originalPrice: "Rs 9,999",
+    price: "Rs 7,999 for 90 Days",
+    commission: "8% per order",
+    description: "Enterprise solutions for established D2C brands.",
+    features: [
+      { name: "Advanced Store Customization", included: true },
+      { name: "Real-time Analytics", included: true },
+      { name: "24/7 Dedicated Support", included: true },
+      { name: "Multi-channel Integration", included: true },
+      { name: "Custom Domain & SSL", included: true },
+      { name: "Advanced Marketing Suite", included: true },
+      { name: "AI-Powered Insights", included: true },
+      { name: "Priority Processing", included: true },
+    ],
+    buttonText: "Go Enterprise",
+    plan: 'd2c_enterprise',
+    skuRange: '500+ Products',
+  },
+];
+
 
 
 // Plans for Small Scale Retailers
@@ -1386,6 +1445,7 @@ export default function MainContent({ selectedStep, onComplete, businessName }) 
     if (planScale === 'small') return smallScalePlans;
     if (planScale === 'medium') return mediumScalePlans;
     if (planScale === 'large') return largeScalePlans;
+    if (planScale === 'd2c') return d2cPlans;
     return [];
   };
 
@@ -1436,44 +1496,45 @@ export default function MainContent({ selectedStep, onComplete, businessName }) 
             setSelectedFile={setSelectedFile}
           />
         );
-      case 4:
-        return (
-          <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900">Choose Your Plan</h2>
-              <p className="text-gray-600 mt-2">Select the plan that best fits your business</p>
+        case 4:
+          return (
+            <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">Choose Your Plan</h2>
+                <p className="text-gray-600 mt-2">Select the plan that best fits your business</p>
+              </div>
+        
+              <div className="flex justify-center space-x-4 mb-8">
+                {['small', 'medium', 'large', 'd2c'].map((scale) => (
+                  <Button
+                    key={scale}
+                    onClick={() => setPlanScale(scale)}
+                    className={`
+                      rounded-full font-medium text-lg px-6 py-2
+                      ${planScale === scale 
+                        ? 'bg-green-900 text-white shadow-lg' 
+                        : 'bg-green-50 text-green-900 hover:bg-green-100'}
+                    `}
+                  >
+                    {scale === 'd2c' ? 'D2C' : `${scale.charAt(0).toUpperCase() + scale.slice(1)} Scale`}
+                  </Button>
+                ))}
+              </div>
+        
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {getPlansByScale().map((plan, index) => (
+                  <PricingPlanCard
+                    key={index}
+                    {...plan}
+                    onSelect={() => handlePlanSelect(plan)}
+                    selected={selectedPlan === plan.title}
+                  />
+                ))}
+              </div>
             </div>
-
-            <div className="flex justify-center space-x-4 mb-8">
-            {['small', 'medium', 'large'].map((scale) => (
- <Button
-   key={scale}
-   onClick={() => setPlanScale(scale)}
-   className={`
-     rounded-full font-medium text-lg px-6 py-2
-     ${planScale === scale 
-       ? 'bg-green-900 text-white shadow-lg' 
-       : 'bg-green-50 text-green-900 hover:bg-green-100'}
-   `}
- >
-   {scale.charAt(0).toUpperCase() + scale.slice(1)} Scale
- </Button>
-))}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {getPlansByScale().map((plan, index) => (
-                <PricingPlanCard
-                  key={index}
-                  {...plan}
-                  onSelect={() => handlePlanSelect(plan)}
-                  selected={selectedPlan === plan.title}
-                />
-              ))}
-            </div>
-          </div>
-        );
-      default:
+          );
+      
+        default:
         return <p>Select a section to get started.</p>;
     }
   };
