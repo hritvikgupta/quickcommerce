@@ -4,7 +4,20 @@ import { useState, useEffect, useRef } from 'react'; // Import useRef for refere
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Apple, Smartphone,ArrowRight, ChevronDown, Menu, X } from "lucide-react"; // Added Menu and X icons
+import { 
+  Apple, 
+  Smartphone, 
+  ArrowRight, 
+  ChevronDown, 
+  Menu, 
+  X, 
+  CheckIcon,
+  ChevronLeft, 
+  ChevronRight,
+  Info,
+  Calendar,
+  CreditCard
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'; // For navigation
@@ -1288,87 +1301,89 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
     setSelectedPlan(plan);
   };
 
-  const plans = [
+  // Featured plans for the business page preview
+  const featuredPlans = [
     {
-      title: "Free Trial",
-      originalPrice: "Rs 499",
-      price: "Rs 0 for 15 Days",
-      commission: "14% per order",
-      description: "Get started at zero cost! Ideal for new small businesses.",
-      features: [
-        { name: "Online Ordering", included: true },
-        { name: "Basic Support", included: true },
-        { name: "Delivery for First 50 Orders Free", included: true },
-        { name: "Limited Reach", included: true },
-        { name: "No Premium Listing", included: false },
-      ],
-      buttonText: "Start Free Trial",
-      plan: 'trial',
-      skuRange: '0-250',
-    },
-    {
-      title: "Starter Plan",
+      title: "Retailer Basic",
       originalPrice: "Rs 999",
       price: "Rs 499 for 30 Days",
       commission: "12% per order",
-      description: "Perfect for small businesses to increase visibility.",
+      description: "Perfect for small retailers starting their digital journey",
       features: [
-        { name: "Online Ordering", included: true },
+        { name: "Online Store Setup", included: true },
+        { name: "Basic Analytics", included: true },
         { name: "Standard Support", included: true },
-        { name: "Delivery for First 200 Orders Free", included: true },
-        { name: "Expanded Reach", included: true },
-        { name: "No Premium Listing", included: false },
+        { name: "Limited Reach", included: true },
+        { name: "Premium Features", included: false },
       ],
-      buttonText: "Select Starter",
-      plan: 'starter',
-      skuRange: '250-500',
+      buttonText: "Start Basic",
+      plan: 'retail_basic',
+      skuRange: '0-250 Products',
     },
     {
-      title: "Basic Plan",
-      originalPrice: "Rs 1,499",
-      price: "Rs 999 for 60 Days",
+      title: "D2C Growth",
+      originalPrice: "Rs 5,999",
+      price: "Rs 3,999 for 60 Days",
       commission: "10% per order",
-      description: "Upgrade to grow your business with better reach.",
+      description: "Ideal for D2C brands looking to scale operations",
       features: [
-        { name: "Online Ordering", included: true },
+        { name: "Brand Storefront", included: true },
+        { name: "Advanced Analytics", included: true },
         { name: "Priority Support", included: true },
-        { name: "Delivery for First 500 Orders Free", included: true },
-        { name: "Expanded Reach", included: true },
-        { name: "Premium Listing", included: true },
+        { name: "Marketing Tools", included: true },
+        { name: "Custom Domain", included: true },
       ],
-      buttonText: "Select Basic",
-      plan: 'basic',
-      skuRange: '500-999',
+      buttonText: "Choose Growth",
+      plan: 'd2c_growth',
+      skuRange: '100-500 Products',
+    },
+    {
+      title: "Enterprise",
+      originalPrice: "Rs 15,999",
+      price: "Custom Pricing",
+      commission: "8% per order",
+      description: "For large retailers and established D2C brands",
+      features: [
+        { name: "Custom Integration", included: true },
+        { name: "Dedicated Support", included: true },
+        { name: "Advanced Features", included: true },
+        { name: "Priority Processing", included: true },
+        { name: "Custom Solutions", included: true },
+      ],
+      buttonText: "Contact Sales",
+      plan: 'enterprise',
+      skuRange: '500+ Products',
     },
   ];
 
   return (
-    <section ref={pricingRef} className="py-8 md:py-12 px-4 md:px-6 bg-white lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Updated "See more pricing" button container */}
-        <div className="flex justify-end mb-6 md:mb-4">
+    <section ref={pricingRef} className="py-12 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header with See More Pricing */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+          <div className="text-center md:text-left mb-6 md:mb-0">
+            <h2 className="text-3xl md:text-4xl font-bold text-green-900">
+              Flexible Pricing for Every Business
+            </h2>
+            <p className="mt-2 text-lg text-gray-600">
+              Choose the plan that best fits your business needs
+            </p>
+          </div>
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center px-4 py-2 md:px-6 md:py-2.5 
+            className="inline-flex items-center justify-center px-6 py-3
                      bg-green-900 hover:bg-green-700 text-white rounded-full 
-                     text-sm md:text-base font-medium transition-colors duration-200
-                     shadow-sm hover:shadow-md active:scale-95 transform"
+                     text-base font-medium transition-colors duration-200
+                     shadow-sm hover:shadow-md"
           >
-            See more pricing
-            <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+            See detailed pricing
+            <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </div>
 
-        <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-center text-green-900">
-          Platform fee starts at Rs 0 for first-time retail partners, then Rs 499 for small retailers with up to 50 outlets PAN India.
-        </h2>
-
-        <p className="text-base md:text-lg text-gray-600 mb-8 md:mb-12 text-center">
-          Select a plan that fits your goals and budget. Each plan comes with unique benefits to help your business grow.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-          {plans.map((plan, index) => (
+        {/* Plans Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {featuredPlans.map((plan, index) => (
             <div key={index} className="w-full">
               <PricingPlanCard
                 {...plan}
@@ -1379,11 +1394,35 @@ const PricingSection = ({ pricingRef, scrollToSignup }) => {
             </div>
           ))}
         </div>
+
+        {/* Additional Info */}
+        <div className="mt-12 text-center">
+          <p className="text-gray-600">
+            Looking for more options? Check out our{' '}
+            <Link href="/pricing" className="text-green-600 hover:text-green-700 font-medium">
+              detailed pricing page
+            </Link>
+            {' '}for all available plans and features.
+          </p>
+          <div className="mt-4 flex justify-center space-x-4">
+            <div className="flex items-center">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              <span className="text-gray-700">Free trial available</span>
+            </div>
+            <div className="flex items-center">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              <span className="text-gray-700">No credit card required</span>
+            </div>
+            <div className="flex items-center">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              <span className="text-gray-700">Cancel anytime</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
-
 
 export default function BusinessPage() {
   const signUpRef = useRef(null); // Ref for the SignUpForm section
