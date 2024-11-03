@@ -200,7 +200,7 @@ const Hero = ({ scrollToSignup }) => (
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-400 leading-tight mb-6">
             Boost Your Retail Business With{" "}
             <span className="text-green-600 inline-block">Quick Commerce{" "}</span> 
-            and Increase Your Sale With Promotion And Offers For Your{" "}
+            {" "} and Increase Your Sale With Promotion And Offers For Your{" "}
             <span className="text-green-600 inline-block">Current and Potential Customers</span>
           </h1>
           
