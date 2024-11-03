@@ -1275,12 +1275,13 @@ const PricingPlanCard = ({
       </div>
       
       <div className="space-y-3">
-        <Button 
-          className="bg-green-900 w-full hover:bg-green-700 rounded-full text-white py-3"
-          onClick={handleClick}
-        >
-          {buttonText}
-        </Button>
+      <Link href="/contact">
+      <Button 
+        className="bg-green-900 w-full hover:bg-green-700 rounded-full text-white py-3"
+      >
+        {buttonText}
+      </Button>
+    </Link>
         <Link 
           href="/contact" 
           className="block text-center text-sm text-green-600 hover:text-green-700 underline"
