@@ -277,7 +277,7 @@ const Hero = ({ scrollToSignup }) => {
         {/* Main Content */}
         <div className="w-full text-center relative z-20">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-black leading-tight">
-            Boost Your Retail Business With{" "}
+          Transform Your Retail and D2C Business{" "}
             <span className="bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
               Quick Commerce
             </span>

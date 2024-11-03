@@ -4,11 +4,23 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Apple, Smartphone, ArrowRight, ChevronDown, Menu, X } from "lucide-react"; // Added Menu and X icons
+import { 
+  Apple, 
+  Smartphone, 
+  ArrowRight, 
+  ChevronDown, 
+  Menu, 
+  X, 
+  CheckIcon,
+  ChevronLeft, 
+  ChevronRight,
+  Info,
+  Calendar,
+  CreditCard
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const globalStyles = `
   .scrollbar-hide {
@@ -249,6 +261,66 @@ const HowItWorks = () => {
     </section>
   );
 };
+
+const d2cPlans = [
+  {
+    title: "D2C Starter",
+    originalPrice: "Rs 2,999",
+    price: "Rs 1,499 for 30 Days",
+    commission: "12% per order",
+    description: "Perfect for new D2C brands starting their journey.",
+    features: [
+      { name: "Online Store Setup", included: true },
+      { name: "Basic Analytics", included: true },
+      { name: "Standard Support", included: true },
+      { name: "Social Media Integration", included: true },
+      { name: "Custom Domain", included: false },
+      { name: "Advanced Marketing Tools", included: false },
+    ],
+    buttonText: "Start D2C Journey",
+    plan: 'd2c_starter',
+    skuRange: '0-100 Products',
+  },
+  {
+    title: "D2C Growth",
+    originalPrice: "Rs 5,999",
+    price: "Rs 3,999 for 60 Days",
+    commission: "10% per order",
+    description: "Scale your D2C brand with advanced features.",
+    features: [
+      { name: "Online Store Setup", included: true },
+      { name: "Advanced Analytics", included: true },
+      { name: "Priority Support", included: true },
+      { name: "Social Media Integration", included: true },
+      { name: "Custom Domain", included: true },
+      { name: "Basic Marketing Tools", included: true },
+      { name: "Inventory Management", included: true },
+    ],
+    buttonText: "Choose Growth",
+    plan: 'd2c_growth',
+    skuRange: '100-500 Products',
+  },
+  {
+    title: "D2C Enterprise",
+    originalPrice: "Rs 9,999",
+    price: "Rs 7,999 for 90 Days",
+    commission: "8% per order",
+    description: "Enterprise solutions for established D2C brands.",
+    features: [
+      { name: "Advanced Store Customization", included: true },
+      { name: "Real-time Analytics", included: true },
+      { name: "24/7 Dedicated Support", included: true },
+      { name: "Multi-channel Integration", included: true },
+      { name: "Custom Domain & SSL", included: true },
+      { name: "Advanced Marketing Suite", included: true },
+      { name: "AI-Powered Insights", included: true },
+      { name: "Priority Processing", included: true },
+    ],
+    buttonText: "Go Enterprise",
+    plan: 'd2c_enterprise',
+    skuRange: '500+ Products',
+  },
+];
 
 const PricingPlanCard = ({ 
   title, 
@@ -1167,50 +1239,207 @@ const Footer = () => (
   </footer>
 ); 
 
+const BusinessModelSelection = ({ scrollToPricing }) => (
+  <div className="py-12 bg-gradient-to-r from-green-50 to-green-100">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-green-900">Choose Your Business Model</h2>
+        <p className="mt-4 text-lg text-gray-600">
+          Whether you're a retailer or a D2C brand, we have plans tailored for your success
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {/* Retailer Card */}
+        <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+          <h3 className="text-2xl font-bold text-green-900 mb-4">For Retailers</h3>
+          <p className="text-gray-600 mb-6">
+            Perfect for brick-and-mortar stores looking to expand their reach through online channels.
+          </p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-center text-gray-700">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              Multi-store management
+            </li>
+            <li className="flex items-center text-gray-700">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              Inventory sync across locations
+            </li>
+            <li className="flex items-center text-gray-700">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              Local delivery optimization
+            </li>
+          </ul>
+          <Button 
+            className="w-full bg-green-900 hover:bg-green-700 text-white rounded-full"
+            onClick={scrollToPricing}
+          >
+            View Retailer Plans
+          </Button>
+        </div>
+
+        {/* D2C Card */}
+        <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+          <h3 className="text-2xl font-bold text-green-900 mb-4">For D2C Brands</h3>
+          <p className="text-gray-600 mb-6">
+            Ideal for brands selling directly to consumers through online channels.
+          </p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-center text-gray-700">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              Brand-focused storefronts
+            </li>
+            <li className="flex items-center text-gray-700">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              Direct customer relationships
+            </li>
+            <li className="flex items-center text-gray-700">
+              <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+              Marketing tools & analytics
+            </li>
+          </ul>
+          <Button 
+            className="w-full bg-green-900 hover:bg-green-700 text-white rounded-full"
+            onClick={scrollToPricing}
+          >
+            View D2C Plans
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 
 
 export default function BusinessPage() {
   const signUpRef = useRef(null);
-  const pricingRef = useRef(null);
+  const d2cPricingRef = useRef(null);
+  const retailerPricingRef = useRef(null);
 
   const scrollToSignup = () => {
-    if (signUpRef.current) {
-      signUpRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    signUpRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-  const scrollToPricing = () => {
-    if (pricingRef.current) {
-      pricingRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+
+  const scrollToD2CPricing = () => {
+    d2cPricingRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const scrollToRetailerPricing = () => {
+    retailerPricingRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Modified BusinessModelSelection component with separate scroll functions
+  const BusinessModelSelection = () => (
+    <div className="py-12 bg-gradient-to-r from-green-50 to-green-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-green-900">Choose Your Business Model</h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Whether you're a retailer or a D2C brand, we have plans tailored for your success
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Retailer Card */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <h3 className="text-2xl font-bold text-green-900 mb-4">For Retailers</h3>
+            <p className="text-gray-600 mb-6">
+              Perfect for brick-and-mortar stores looking to expand their reach through online channels.
+            </p>
+            <ul className="space-y-3 mb-8">
+              <li className="flex items-center text-gray-700">
+                <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                Multi-store management
+              </li>
+              <li className="flex items-center text-gray-700">
+                <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                Inventory sync across locations
+              </li>
+              <li className="flex items-center text-gray-700">
+                <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                Local delivery optimization
+              </li>
+            </ul>
+            <Button 
+              className="w-full bg-green-900 hover:bg-green-700 text-white rounded-full"
+              onClick={scrollToRetailerPricing}
+            >
+              View Retailer Plans
+            </Button>
+          </div>
+
+          {/* D2C Card */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <h3 className="text-2xl font-bold text-green-900 mb-4">For D2C Brands</h3>
+            <p className="text-gray-600 mb-6">
+              Ideal for brands selling directly to consumers through online channels.
+            </p>
+            <ul className="space-y-3 mb-8">
+              <li className="flex items-center text-gray-700">
+                <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                Brand-focused storefronts
+              </li>
+              <li className="flex items-center text-gray-700">
+                <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                Direct customer relationships
+              </li>
+              <li className="flex items-center text-gray-700">
+                <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                Marketing tools & analytics
+              </li>
+            </ul>
+            <Button 
+              className="w-full bg-green-900 hover:bg-green-700 text-white rounded-full"
+              onClick={scrollToD2CPricing}
+            >
+              View D2C Plans
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header scrollToSignup={scrollToSignup} /> {/* Pass scrollToSignup here */}
+      <Header scrollToSignup={scrollToSignup} />
       <main>
-        <Hero scrollToSignup={scrollToSignup} scrollToPricing={scrollToPricing} />
+        <Hero scrollToSignup={scrollToSignup} />
+        
+        <BusinessModelSelection />
 
-        {/* Pricing Sections */}
-        <PricingSection
-  title="Affordable Platform Fee Plans for Small Retailers (Up to 50 Outlets PAN India)"
-  plans={smallScalePlans}
-  scrollToSignup={scrollToSignup}
-/>
-<PricingSection
-  title="Growth-Driven Platform Fee Plans for Medium Retailers (50 to 500 Outlets PAN India)"
-  plans={mediumScalePlans}
-  scrollToSignup={scrollToSignup}
-/>
-<PricingSection
-  title="Comprehensive Platform Fee Plans for Large Retailers (500+ Outlets PAN India)"
-  plans={largeScalePlans}
-  scrollToSignup={scrollToSignup}
-/>
+        {/* D2C Pricing Section */}
+        <div ref={d2cPricingRef}>
+          <PricingSection
+            title="Direct-to-Consumer (D2C) Brand Plans"
+            plans={d2cPlans}
+            scrollToSignup={scrollToSignup}
+          />
+        </div>
+
+        {/* Retailer Pricing Sections */}
+        <div ref={retailerPricingRef}>
+          <PricingSection
+            title="Affordable Platform Fee Plans for Small Retailers"
+            plans={smallScalePlans}
+            scrollToSignup={scrollToSignup}
+          />
+          <PricingSection
+            title="Growth-Driven Platform Fee Plans for Medium Retailers"
+            plans={mediumScalePlans}
+            scrollToSignup={scrollToSignup}
+          />
+          <PricingSection
+            title="Comprehensive Platform Fee Plans for Large Retailers"
+            plans={largeScalePlans}
+            scrollToSignup={scrollToSignup}
+          />
+        </div>
 
         <AdditionalPricingOptionsSection />
-
         <HowItWorks />
-        <SignUpForm signUpRef={signUpRef} />  {/* Pass the signUpRef to the SignUpForm */}
+        <SignUpForm signUpRef={signUpRef} />
         <FAQ />
         <Footer />
       </main>
